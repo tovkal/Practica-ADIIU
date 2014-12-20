@@ -5,5 +5,5 @@ Practica ADIIU
 
 Pases:
 
-- [ ] Generar model
+- [x] Generar model
 - [ ] Crear operacions CRUD (Aka fer port)
