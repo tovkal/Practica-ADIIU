@@ -11,6 +11,26 @@ type Categorias struct {
 	Imagen string `db:"imagen" json:"imagen"`
 }
 
+func compareCategorias(a, b Categorias) bool {
+	if &a == &b {
+		return true
+	}
+
+	if a.Nombre != b.Nombre {
+		return false
+	}
+
+	if a.Texto != b.Texto {
+		return false
+	}
+
+	if a.Imagen != b.Imagen {
+		return false
+	}
+
+	return true
+}
+
 type Entradas struct {
 	Id            int64     `db:"id" json:"id"`
 	Idmedicamento int64     `db:"idmedicamento" json:"idmedicamento"`
