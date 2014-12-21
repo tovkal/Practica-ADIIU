@@ -36,7 +36,6 @@ func (api *Api) PostCategoria(w rest.ResponseWriter, r *rest.Request) {
 }
 
 func (api *Api) PutCategoria(w rest.ResponseWriter, r *rest.Request) {
-
 	id := r.PathParam("id")
 	categoria := Categorias{}
 	if api.DB.First(&categoria, id).Error != nil {
