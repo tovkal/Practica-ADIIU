@@ -2,18 +2,9 @@ package main
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/tovkal/go-json-rest/rest"
 )
-
-type Reminder struct {
-	Id        int64     `json:"id"`
-	Message   string    `sql:"size:1024" json:"message"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
-	DeletedAt time.Time `json:"-"`
-}
 
 func (api *Api) GetAllCategorias(w rest.ResponseWriter, r *rest.Request) {
 	categorias := []Categorias{}
