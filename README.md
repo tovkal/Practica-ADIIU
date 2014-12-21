@@ -10,9 +10,9 @@ Pases:
     - [ ] Categoria
         - [x] Read all (20/12/2014)
         - [x] Read one given name (20/12/2014)
-        - [ ] Create
-        - [ ] Update
-        - [ ] Delete
+        - [x] Create
+        - [x] Update
+        - [x] Delete
     - [ ] Entradas
         - [ ] Read all
         - [ ] Read all between two dates

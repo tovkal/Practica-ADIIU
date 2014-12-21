@@ -18,9 +18,9 @@ func main() {
 	err := handler.SetRoutes(
 		&rest.Route{"GET", "/categorias", api.GetAllCategorias},
 		&rest.Route{"GET", "/categorias/:id", api.GetCategoria},
-		&rest.Route{"POST", "/reminders", api.PostReminder},
-		&rest.Route{"PUT", "/reminders/:id", api.PutReminder},
-		&rest.Route{"DELETE", "/reminders/:id", api.DeleteReminder},
+		&rest.Route{"POST", "/categorias", api.PostCategoria},
+		&rest.Route{"PUT", "/categorias/:id", api.PutCategoria},
+		&rest.Route{"DELETE", "/categorias/:id", api.DeleteCategoria},
 	)
 	if err != nil {
 		log.Fatal(err)

@@ -31,51 +31,53 @@ func (api *Api) GetCategoria(w rest.ResponseWriter, r *rest.Request) {
 	w.WriteJson(&categoria)
 }
 
-func (api *Api) PostReminder(w rest.ResponseWriter, r *rest.Request) {
-	reminder := Reminder{}
-	if err := r.DecodeJsonPayload(&reminder); err != nil {
+func (api *Api) PostCategoria(w rest.ResponseWriter, r *rest.Request) {
+	categoria := Categorias{}
+	if err := r.DecodeJsonPayload(&categoria); err != nil {
 		rest.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	if err := api.DB.Save(&reminder).Error; err != nil {
+	if err := api.DB.Save(&categoria).Error; err != nil {
 		rest.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.WriteJson(&reminder)
+	w.WriteJson(&categoria)
 }
 
-func (api *Api) PutReminder(w rest.ResponseWriter, r *rest.Request) {
+func (api *Api) PutCategoria(w rest.ResponseWriter, r *rest.Request) {
 
 	id := r.PathParam("id")
-	reminder := Reminder{}
-	if api.DB.First(&reminder, id).Error != nil {
+	categoria := Categorias{}
+	if api.DB.First(&categoria, id).Error != nil {
 		rest.NotFound(w, r)
 		return
 	}
 
-	updated := Reminder{}
+	updated := Categorias{}
 	if err := r.DecodeJsonPayload(&updated); err != nil {
 		rest.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	reminder.Message = updated.Message
+	categoria.Nombre = updated.Nombre
+	categoria.Texto = updated.Texto
+	categoria.Imagen = updated.Imagen
 
-	if err := api.DB.Save(&reminder).Error; err != nil {
+	if err := api.DB.Save(&categoria).Error; err != nil {
 		rest.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.WriteJson(&reminder)
+	w.WriteJson(&categoria)
 }
 
-func (api *Api) DeleteReminder(w rest.ResponseWriter, r *rest.Request) {
+func (api *Api) DeleteCategoria(w rest.ResponseWriter, r *rest.Request) {
 	id := r.PathParam("id")
-	reminder := Reminder{}
-	if api.DB.First(&reminder, id).Error != nil {
+	categoria := Categorias{}
+	if api.DB.First(&categoria, id).Error != nil {
 		rest.NotFound(w, r)
 		return
 	}
-	if err := api.DB.Delete(&reminder).Error; err != nil {
+	if err := api.DB.Delete(&categoria).Error; err != nil {
 		rest.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
