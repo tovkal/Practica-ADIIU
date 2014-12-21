@@ -60,12 +60,12 @@ func (api *Api) PutNoticia(w rest.ResponseWriter, r *rest.Request) {
 	w.WriteJson(&noticia)
 }
 
-func (api *Api) GetNoticiaFromDate(w rest.ResponseWriter, r *rest.Request) {
+func (api *Api) GetNoticiasFromDate(w rest.ResponseWriter, r *rest.Request) {
 	date := r.PathParam("date")
-	noticia := Noticias{}
-	if api.DB.Where("inicio <= ? and fin >=", date, date).First(&noticia).Error != nil {
+	noticias := []Noticias{}
+	if api.DB.Where("inicio <= ? and fin >=", date, date).First(&noticias).Error != nil {
 		rest.NotFound(w, r)
 		return
 	}
-	w.WriteJson(&noticia)
+	w.WriteJson(&noticias)
 }

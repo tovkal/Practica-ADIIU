@@ -51,13 +51,15 @@ func main() {
 		// Noticias
 		&rest.Route{"GET", "/noticias", api.GetAllNoticias},
 		&rest.Route{"GET", "/noticias/:id", api.GetNoticia},
-		&rest.Route{"GET", "/noticias/:date", api.GetNoticiaFromDate},
+		&rest.Route{"GET", "/noticias/date/:date", api.GetNoticiasFromDate},
 		&rest.Route{"POST", "/noticias", api.PostNoticia},
 		&rest.Route{"PUT", "/noticias/:id", api.PutNoticia},
 	)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	log.Print("Running")
 
 	log.Fatal(http.ListenAndServe(":8080", &handler))
 }
