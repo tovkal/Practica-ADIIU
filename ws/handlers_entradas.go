@@ -15,12 +15,12 @@ func (api *Api) GetAllEntradas(w rest.ResponseWriter, r *rest.Request) {
 func (api *Api) GetEntrada(w rest.ResponseWriter, r *rest.Request) {
 	fromDate := r.PathParam("fromDate")
 	toDate := r.PathParam("toDate")
-	entrada := Entradas{}
-	if api.DB.Where("fechahora >= ? AND fechahora <= ?", fromDate, toDate).First(&entrada).Error != nil {
+	entradas := []Entradas{}
+	if api.DB.Where("fechahora >= ? AND fechahora <= ?", fromDate, toDate).Find(&entradas).Error != nil {
 		rest.NotFound(w, r)
 		return
 	}
-	w.WriteJson(&entrada)
+	w.WriteJson(&entradas)
 }
 
 func (api *Api) PostEntrada(w rest.ResponseWriter, r *rest.Request) {
