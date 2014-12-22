@@ -38,6 +38,26 @@ type Entradas struct {
 	Fechahora     time.Time `db:"fechahora" json:"fechahora"`
 }
 
+func compareEntradas(a, b Entradas) bool {
+	if &a == &b {
+		return true
+	}
+
+	if a.Idmedicamento != b.Idmedicamento {
+		return false
+	}
+
+	if a.Cantidad != b.Cantidad {
+		return false
+	}
+
+	if a.Fechahora != b.Fechahora {
+		return false
+	}
+
+	return true
+}
+
 type Farmacias struct {
 	Id    int64  `db:"id" json:"id"`
 	Nik   string `db:"nik" json:"nik"`
