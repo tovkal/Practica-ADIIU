@@ -65,6 +65,26 @@ type Farmacias struct {
 	Nivel int64  `db:"nivel" json:"nivel"`
 }
 
+func compareFarmacias(a, b Farmacias) bool {
+	if &a == &b {
+		return true
+	}
+
+	if a.Nik != b.Nik {
+		return false
+	}
+
+	if a.Pass != b.Pass {
+		return false
+	}
+
+	if a.Nivel != b.Nivel {
+		return false
+	}
+
+	return true
+}
+
 type Medicamentos struct {
 	Id          int64  `db:"id" json:"id"`
 	Idcategoria int64  `db:"idcategoria" json:"idcategoria"`
