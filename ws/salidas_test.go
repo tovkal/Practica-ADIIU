@@ -34,7 +34,6 @@ func TestGetSalida(t *testing.T) {
 
 	responseStruct := []Salidas{}
 	decodeJsonPayload(resp, &responseStruct, t)
-	// TODO check returned was expected, but returns an array
 }
 
 func TestPostSalida(t *testing.T) {

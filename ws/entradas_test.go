@@ -34,7 +34,6 @@ func TestGetEntrada(t *testing.T) {
 
 	responseStruct := []Entradas{}
 	decodeJsonPayload(resp, &responseStruct, t)
-	// TODO check returned was expected, but returns an array
 	//isReturnedEntradaExpected(originalEntrada, responseStruct, t)
 }
 
