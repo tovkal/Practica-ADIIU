@@ -16,7 +16,7 @@ func (api *Api) GetEntrada(w rest.ResponseWriter, r *rest.Request) {
 	fromDate := r.PathParam("fromDate")
 	toDate := r.PathParam("toDate")
 	entrada := Entradas{}
-	if api.DB.Where("fechahora >= ? and fechahora <=", fromDate, toDate).First(&entrada).Error != nil {
+	if api.DB.Where("fechahora >= ? AND fechahora <= ?", fromDate, toDate).First(&entrada).Error != nil {
 		rest.NotFound(w, r)
 		return
 	}

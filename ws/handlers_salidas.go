@@ -16,7 +16,7 @@ func (api *Api) GetSalida(w rest.ResponseWriter, r *rest.Request) {
 	fromDate := r.PathParam("fromDate")
 	toDate := r.PathParam("toDate")
 	salida := Salidas{}
-	if api.DB.Where("fechahora >= ? and fechahora <=", fromDate, toDate).First(&salida).Error != nil {
+	if api.DB.Where("fechahora >= ? AND fechahora <= ?", fromDate, toDate).First(&salida).Error != nil {
 		rest.NotFound(w, r)
 		return
 	}

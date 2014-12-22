@@ -25,12 +25,12 @@ func main() {
 
 		// Entradas
 		&rest.Route{"GET", "/entradas", api.GetAllEntradas},
-		&rest.Route{"GET", "/entradas/:fromDate:toDate", api.GetEntrada},
+		&rest.Route{"GET", "/entradas/:fromDate/:toDate", api.GetEntrada},
 		&rest.Route{"POST", "/entradas", api.PostEntrada},
 
 		// Salidas
 		&rest.Route{"GET", "/salidas", api.GetAllSalidas},
-		&rest.Route{"GET", "/salidas/:fromDate:toDate", api.GetSalida},
+		&rest.Route{"GET", "/salidas/:fromDate/:toDate", api.GetSalida},
 		&rest.Route{"POST", "/salidas", api.PostSalida},
 
 		// Farmacias
