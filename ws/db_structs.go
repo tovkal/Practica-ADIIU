@@ -89,3 +89,27 @@ type Salidas struct {
 	Cantidad      int64     `db:"cantidad" json:"cantidad"`
 	Idfarmacia    int64     `db:"idfarmacia" json:"idfarmacia"`
 }
+
+func compareSalidas(a, b Salidas) bool {
+	if &a == &b {
+		return true
+	}
+
+	if a.Idmedicamento != b.Idmedicamento {
+		return false
+	}
+
+	if a.Fechahora != b.Fechahora {
+		return false
+	}
+
+	if a.Cantidad != b.Cantidad {
+		return false
+	}
+
+	if a.Idfarmacia != b.Idfarmacia {
+		return false
+	}
+
+	return true
+}
