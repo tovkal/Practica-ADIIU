@@ -14,12 +14,12 @@ func (api *Api) GetAllNoticias(w rest.ResponseWriter, r *rest.Request) {
 
 func (api *Api) GetNoticia(w rest.ResponseWriter, r *rest.Request) {
 	id := r.PathParam("id")
-	noticia := Noticias{}
-	if api.DB.First(&noticia, id).Error != nil {
+	noticias := []Noticias{}
+	if api.DB.Find(&noticias, id).Error != nil {
 		rest.NotFound(w, r)
 		return
 	}
-	w.WriteJson(&noticia)
+	w.WriteJson(&noticias)
 }
 
 func (api *Api) PostNoticia(w rest.ResponseWriter, r *rest.Request) {

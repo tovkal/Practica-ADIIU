@@ -134,6 +134,26 @@ type Noticias struct {
 	Fin    time.Time `db:"fin" json:"fin"`
 }
 
+func compareNoticias(a, b Noticias) bool {
+	if &a == &b {
+		return true
+	}
+
+	if a.Texto != b.Texto {
+		return false
+	}
+
+	if a.Inicio != b.Inicio {
+		return false
+	}
+
+	if a.Fin != b.Fin {
+		return false
+	}
+
+	return true
+}
+
 type Salidas struct {
 	Id            int64     `db:"id" json:"id"`
 	Idmedicamento int64     `db:"idmedicamento" json:"idmedicamento"`
