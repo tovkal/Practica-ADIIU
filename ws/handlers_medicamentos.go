@@ -14,9 +14,9 @@ func (api *Api) GetAllMedicamentos(w rest.ResponseWriter, r *rest.Request) {
 }
 
 func (api *Api) GetMedicamento(w rest.ResponseWriter, r *rest.Request) {
-	nombre := r.PathParam("nombre")
+	id := r.PathParam("id")
 	medicamento := Medicamentos{}
-	if api.DB.First(&medicamento, nombre).Error != nil {
+	if api.DB.First(&medicamento, id).Error != nil {
 		rest.NotFound(w, r)
 		return
 	}
@@ -37,9 +37,9 @@ func (api *Api) PostMedicamento(w rest.ResponseWriter, r *rest.Request) {
 }
 
 func (api *Api) PutMedicamento(w rest.ResponseWriter, r *rest.Request) {
-	nombre := r.PathParam("nombre")
+	id := r.PathParam("id")
 	medicamento := Medicamentos{}
-	if api.DB.First(&medicamento, nombre).Error != nil {
+	if api.DB.First(&medicamento, id).Error != nil {
 		rest.NotFound(w, r)
 		return
 	}
@@ -65,9 +65,9 @@ func (api *Api) PutMedicamento(w rest.ResponseWriter, r *rest.Request) {
 }
 
 func (api *Api) DeleteMedicamento(w rest.ResponseWriter, r *rest.Request) {
-	nombre := r.PathParam("nombre")
+	id := r.PathParam("id")
 	medicamento := Medicamentos{}
-	if api.DB.First(&medicamento, nombre).Error != nil {
+	if api.DB.First(&medicamento, id).Error != nil {
 		rest.NotFound(w, r)
 		return
 	}
@@ -79,7 +79,7 @@ func (api *Api) DeleteMedicamento(w rest.ResponseWriter, r *rest.Request) {
 }
 
 func (api *Api) SumaEnAlmancen(w rest.ResponseWriter, r *rest.Request) {
-	nombre := r.PathParam("nombre")
+	id := r.PathParam("id")
 	quantity := r.PathParam("quantity")
 
 	enAlmacen, err := strconv.ParseInt(quantity, 10, 64)
@@ -89,7 +89,7 @@ func (api *Api) SumaEnAlmancen(w rest.ResponseWriter, r *rest.Request) {
 	}
 
 	medicamento := Medicamentos{}
-	if api.DB.First(&medicamento, nombre).Error != nil {
+	if api.DB.First(&medicamento, id).Error != nil {
 		rest.NotFound(w, r)
 		return
 	}

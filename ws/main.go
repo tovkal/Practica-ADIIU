@@ -42,11 +42,11 @@ func main() {
 
 		// Medicamentos
 		&rest.Route{"GET", "/medicamentos", api.GetAllMedicamentos},
-		&rest.Route{"GET", "/medicamentos/:nombre", api.GetMedicamento},
+		&rest.Route{"GET", "/medicamentos/:id", api.GetMedicamento},
 		&rest.Route{"POST", "/medicamentos", api.PostMedicamento},
-		&rest.Route{"PUT", "/medicamentos/:nombre", api.PutMedicamento},
-		&rest.Route{"DELETE", "/medicamentos/:nombre", api.DeleteMedicamento},
-		&rest.Route{"PUT", "/medicamentos/:nombre/stock/:quantity", api.SumaEnAlmancen},
+		&rest.Route{"PUT", "/medicamentos/:id", api.PutMedicamento},
+		&rest.Route{"DELETE", "/medicamentos/:id", api.DeleteMedicamento},
+		&rest.Route{"PUT", "/medicamentos/:id/stock/:quantity", api.SumaEnAlmancen},
 
 		// Noticias
 		&rest.Route{"GET", "/noticias", api.GetAllNoticias},

@@ -95,6 +95,38 @@ type Medicamentos struct {
 	Enalmacen   int64  `db:"enalmacen" json:"enalmacen"`
 }
 
+func compareMedicamentos(a, b Medicamentos) bool {
+	if &a == &b {
+		return true
+	}
+
+	if a.Idcategoria != b.Idcategoria {
+		return false
+	}
+
+	if a.Texto != b.Texto {
+		return false
+	}
+
+	if a.Imagen != b.Imagen {
+		return false
+	}
+
+	if a.Nombre != b.Nombre {
+		return false
+	}
+
+	if a.Codigo != b.Codigo {
+		return false
+	}
+
+	if a.Enalmacen != b.Enalmacen {
+		return false
+	}
+
+	return true
+}
+
 type Noticias struct {
 	Id     int64     `db:"id" json:"id"`
 	Texto  string    `db:"texto" json:"texto"`

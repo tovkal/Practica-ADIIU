@@ -11,7 +11,7 @@ import (
 
 func test(operation string, method string, json string) (response *http.Response) {
 	url := "http://localhost:8080/" + operation
-	fmt.Println("URL:>", url)
+	fmt.Printf("Method: %s, URL: %s\n", method, url)
 
 	var jsonStr = []byte(json)
 	req, err := http.NewRequest(method, url, bytes.NewBuffer(jsonStr))
