@@ -1,4 +1,4 @@
-package main
+package ws
 
 import (
 	"time"
@@ -11,7 +11,7 @@ type Categorias struct {
 	Imagen string `db:"imagen" json:"imagen"`
 }
 
-func compareCategorias(a, b Categorias) bool {
+func (a *Categorias) isEqualTo(b *Categorias) bool {
 	if &a == &b {
 		return true
 	}

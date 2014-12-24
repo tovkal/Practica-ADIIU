@@ -1,4 +1,4 @@
-package main
+package ws
 
 import (
 	"bytes"
@@ -26,9 +26,16 @@ func test(operation string, method string, json string) (response *http.Response
 	return resp
 }
 
+// Deprecated
 func isOK(resp *http.Response, t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Error("Operation did not return OK, got ", resp.Status)
+	}
+}
+
+func CodeIs(resp *http.Response, expectedCode int, t *testing.T) {
+	if resp.StatusCode != expectedCode {
+		t.Errorf("Code %d expected, got: %d", expectedCode, resp.StatusCode)
 	}
 }
 

@@ -1,4 +1,4 @@
-package main
+package ws
 
 import (
 	"github.com/tovkal/go-json-rest/rest"

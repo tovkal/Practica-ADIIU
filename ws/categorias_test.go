@@ -1,4 +1,4 @@
-package main
+package ws
 
 import (
 	"encoding/json"
@@ -12,7 +12,7 @@ var testCategoria = Categorias{Nombre: "Nombre", Texto: "Descripción", Imagen: 
 func TestGetAllCategorias(t *testing.T) {
 	resp := test("categorias", "GET", "")
 
-	isOK(resp, t)
+	CodeIs(resp, 200, t)
 }
 
 func TestGetCategoria(t *testing.T) {
@@ -20,9 +20,9 @@ func TestGetCategoria(t *testing.T) {
 
 	isOK(resp, t)
 
-	responseStruct := Categorias{}
-	decodeJsonPayload(resp, &responseStruct, t)
-	isReturnedCategoriaExpected(originalCategoria, responseStruct, t)
+	response := Categorias{}
+	decodeJsonPayload(resp, &response, t)
+	isReturnedStructExpected(response, originalCategoria, t)
 }
 
 func TestPostCategoria(t *testing.T) {
@@ -31,12 +31,12 @@ func TestPostCategoria(t *testing.T) {
 
 	isOK(resp, t)
 
-	responseStruct := Categorias{}
-	decodeJsonPayload(resp, &responseStruct, t)
-	isReturnedCategoriaExpected(testCategoria, responseStruct, t)
+	response := Categorias{}
+	decodeJsonPayload(resp, &response, t)
+	isReturnedStructExpected(response, testCategoria, t)
 
 	// Save returned struct, which includes the id for later tests
-	testCategoria = responseStruct
+	testCategoria = response
 }
 
 func TestPutCategoria(t *testing.T) {
@@ -47,9 +47,9 @@ func TestPutCategoria(t *testing.T) {
 
 	isOK(resp, t)
 
-	responseStruct := Categorias{}
-	decodeJsonPayload(resp, &responseStruct, t)
-	isReturnedCategoriaExpected(updated, responseStruct, t)
+	response := Categorias{}
+	decodeJsonPayload(resp, &response, t)
+	isReturnedStructExpected(response, updated, t)
 }
 
 func TestDeleteCategoria(t *testing.T) {
@@ -60,10 +60,10 @@ func TestDeleteCategoria(t *testing.T) {
 
 // Private functions
 
-func isReturnedCategoriaExpected(compareTo Categorias, responseStruct Categorias, t *testing.T) {
-	if !compareCategorias(compareTo, responseStruct) {
-		a, _ := json.Marshal(responseStruct)
-		b, _ := json.Marshal(compareTo)
-		t.Errorf("Categoria retrieved does not match the expected result. Got \n%s, expected \n%s", a, b)
+func isReturnedStructExpected(response Categorias, expected Categorias, t *testing.T) {
+	if !response.isEqualTo(&expected) {
+		responseJson, _ := json.Marshal(response)
+		expectedJson, _ := json.Marshal(expected)
+		t.Errorf("Returned result does not match expected result. Got \n%s, expected \n%s\n", responseJson, expectedJson)
 	}
 }
