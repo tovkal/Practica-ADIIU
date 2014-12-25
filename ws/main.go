@@ -56,7 +56,7 @@ func main() {
 		&rest.Route{"PUT", "/noticias/:id", api.PutNoticia},
 
 		//File upload
-		&rest.Route{"POST", "/upload/", uploadHandler},
+		&rest.Route{"POST", "/upload/", api.UploadHandler},
 	)
 	if err != nil {
 		log.Fatal(err)

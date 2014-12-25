@@ -1,27 +1,28 @@
 package ws
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 	"os"
+
+	"github.com/tovkal/go-json-rest/rest"
 )
 
-func uploadHandler(w http.ResponseWriter, r *http.Request) {
+func (api *Api) UploadHandler(w rest.ResponseWriter, r *rest.Request) {
 
 	// the FormFile function takes in the POST input id file
-	file, header, err := r.FormFile("file")
+	file, header, err := r.Request.FormFile("file")
 
 	if err != nil {
-		fmt.Fprintln(w, err)
+		rest.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	defer file.Close()
 
-	out, err := os.Create("/uploads/" + header.Filename)
+	out, err := os.Create("/files/images/" + header.Filename)
 	if err != nil {
-		fmt.Fprintf(w, "Unable to create the file for writing. Check your write access privilege")
+		rest.Error(w, "Unable to create the file for writing. Check your write access privilege", http.StatusInternalServerError)
 		return
 	}
 
@@ -30,9 +31,10 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	// write the content from POST to the file
 	_, err = io.Copy(out, file)
 	if err != nil {
-		fmt.Fprintln(w, err)
+		rest.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
-	fmt.Fprintf(w, "File uploaded successfully : ")
-	fmt.Fprintf(w, header.Filename)
+	w.WriteJson("File uploaded successfully : " + header.Filename)
+	w.WriteHeader(http.StatusOK)
 }
