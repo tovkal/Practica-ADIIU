@@ -40,4 +40,4 @@ Pases:
         - [x] Create
         - [x] Update
         - [x] Delete
-- [ ] File uploader
+- [x] File uploader
