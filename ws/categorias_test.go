@@ -7,33 +7,36 @@ import (
 )
 
 var originalCategoria = Categorias{Id: 1, Nombre: "Pediatría", Texto: "Productos para niños de 0 a 3 años", Imagen: "pediatria.png"}
+var categoriasList = [2]Categorias{originalCategoria, Categorias{Id: 2, Nombre: "Higiene", Texto: "Productos para la igiene corporal", Imagen: "higiene.png"}}
 var testCategoria = Categorias{Nombre: "Nombre", Texto: "Descripción", Imagen: "image.png"}
 
 func TestGetAllCategorias(t *testing.T) {
-	resp := test("categorias", "GET", "")
+	resp := sendTest("categorias", "GET", "")
 
 	CodeIs(resp, 200, t)
+	ContentTypeIsJson(resp, t)
+
+	isResponseExpected(resp, categoriasList, t)
 }
 
 func TestGetCategoria(t *testing.T) {
-	resp := test("categorias/1", "GET", "")
+	resp := sendTest("categorias/1", "GET", "")
 
-	isOK(resp, t)
+	CodeIs(resp, 200, t)
+	ContentTypeIsJson(resp, t)
 
-	response := Categorias{}
-	decodeJsonPayload(resp, &response, t)
-	isReturnedStructExpected(response, originalCategoria, t)
+	isResponseExpected(resp, originalCategoria, t)
 }
 
 func TestPostCategoria(t *testing.T) {
 	jsonBytes, _ := json.Marshal(testCategoria)
-	resp := test("categorias", "POST", string(jsonBytes))
+	resp := sendTest("categorias", "POST", string(jsonBytes))
 
-	isOK(resp, t)
+	CodeIs(resp, 200, t)
+	ContentTypeIsJson(resp, t)
 
 	response := Categorias{}
 	decodeJsonPayload(resp, &response, t)
-	isReturnedStructExpected(response, testCategoria, t)
 
 	// Save returned struct, which includes the id for later tests
 	testCategoria = response
@@ -43,27 +46,17 @@ func TestPutCategoria(t *testing.T) {
 	updated := testCategoria
 	updated.Texto = "Updated"
 	jsonBytes, _ := json.Marshal(updated)
-	resp := test("categorias/"+strconv.FormatInt(updated.Id, 10), "PUT", string(jsonBytes))
+	resp := sendTest("categorias/"+strconv.FormatInt(updated.Id, 10), "PUT", string(jsonBytes))
 
-	isOK(resp, t)
+	CodeIs(resp, 200, t)
+	ContentTypeIsJson(resp, t)
 
-	response := Categorias{}
-	decodeJsonPayload(resp, &response, t)
-	isReturnedStructExpected(response, updated, t)
+	isResponseExpected(resp, updated, t)
 }
 
 func TestDeleteCategoria(t *testing.T) {
-	resp := test("categorias/"+strconv.FormatInt(testCategoria.Id, 10), "DELETE", "")
+	resp := sendTest("categorias/"+strconv.FormatInt(testCategoria.Id, 10), "DELETE", "")
 
-	isOK(resp, t)
-}
-
-// Private functions
-
-func isReturnedStructExpected(response Categorias, expected Categorias, t *testing.T) {
-	if !response.isEqualTo(&expected) {
-		responseJson, _ := json.Marshal(response)
-		expectedJson, _ := json.Marshal(expected)
-		t.Errorf("Returned result does not match expected result. Got \n%s, expected \n%s\n", responseJson, expectedJson)
-	}
+	CodeIs(resp, 200, t)
+	ContentTypeIsJson(resp, t)
 }

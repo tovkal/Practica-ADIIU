@@ -22,38 +22,25 @@ func init() {
 }
 
 func TestGetAllEntradas(t *testing.T) {
-	resp := test("entradas", "GET", "")
+	resp := sendTest("entradas", "GET", "")
 
-	isOK(resp, t)
+	CodeIs(resp, 200, t)
+	ContentTypeIsJson(resp, t)
 }
 
 func TestGetEntrada(t *testing.T) {
-	resp := test("entradas/2014-11-25/2014-11-27", "GET", "")
+	resp := sendTest("entradas/2014-11-25/2014-11-27", "GET", "")
 
-	isOK(resp, t)
+	CodeIs(resp, 200, t)
+	ContentTypeIsJson(resp, t)
 
-	responseStruct := []Entradas{}
-	decodeJsonPayload(resp, &responseStruct, t)
-	//isReturnedEntradaExpected(originalEntrada, responseStruct, t)
+	isResponseExpected(resp, [1]Entradas{originalEntrada}, t)
 }
 
 func TestPostEntrada(t *testing.T) {
 	jsonBytes, _ := json.Marshal(testEntrada)
-	resp := test("entradas", "POST", string(jsonBytes))
+	resp := sendTest("entradas", "POST", string(jsonBytes))
 
-	isOK(resp, t)
-
-	responseStruct := Entradas{}
-	decodeJsonPayload(resp, &responseStruct, t)
-	isReturnedEntradaExpected(testEntrada, responseStruct, t)
-}
-
-// Private functions
-
-func isReturnedEntradaExpected(compareTo Entradas, responseStruct Entradas, t *testing.T) {
-	if !compareEntradas(compareTo, responseStruct) {
-		a, _ := json.Marshal(responseStruct)
-		b, _ := json.Marshal(compareTo)
-		t.Errorf("Entrada retrieved does not match the expected result. Got \n%s, expected \n%s", a, b)
-	}
+	CodeIs(resp, 200, t)
+	ContentTypeIsJson(resp, t)
 }

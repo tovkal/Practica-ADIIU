@@ -11,26 +11,6 @@ type Categorias struct {
 	Imagen string `db:"imagen" json:"imagen"`
 }
 
-func (a *Categorias) isEqualTo(b *Categorias) bool {
-	if &a == &b {
-		return true
-	}
-
-	if a.Nombre != b.Nombre {
-		return false
-	}
-
-	if a.Texto != b.Texto {
-		return false
-	}
-
-	if a.Imagen != b.Imagen {
-		return false
-	}
-
-	return true
-}
-
 type Entradas struct {
 	Id            int64     `db:"id" json:"id"`
 	Idmedicamento int64     `db:"idmedicamento" json:"idmedicamento"`
@@ -38,51 +18,11 @@ type Entradas struct {
 	Fechahora     time.Time `db:"fechahora" json:"fechahora"`
 }
 
-func compareEntradas(a, b Entradas) bool {
-	if &a == &b {
-		return true
-	}
-
-	if a.Idmedicamento != b.Idmedicamento {
-		return false
-	}
-
-	if a.Cantidad != b.Cantidad {
-		return false
-	}
-
-	if a.Fechahora != b.Fechahora {
-		return false
-	}
-
-	return true
-}
-
 type Farmacias struct {
 	Id    int64  `db:"id" json:"id"`
 	Nik   string `db:"nik" json:"nik"`
 	Pass  string `db:"pass" json:"pass"`
 	Nivel int64  `db:"nivel" json:"nivel"`
-}
-
-func compareFarmacias(a, b Farmacias) bool {
-	if &a == &b {
-		return true
-	}
-
-	if a.Nik != b.Nik {
-		return false
-	}
-
-	if a.Pass != b.Pass {
-		return false
-	}
-
-	if a.Nivel != b.Nivel {
-		return false
-	}
-
-	return true
 }
 
 type Medicamentos struct {
@@ -95,63 +35,11 @@ type Medicamentos struct {
 	Enalmacen   int64  `db:"enalmacen" json:"enalmacen"`
 }
 
-func compareMedicamentos(a, b Medicamentos) bool {
-	if &a == &b {
-		return true
-	}
-
-	if a.Idcategoria != b.Idcategoria {
-		return false
-	}
-
-	if a.Texto != b.Texto {
-		return false
-	}
-
-	if a.Imagen != b.Imagen {
-		return false
-	}
-
-	if a.Nombre != b.Nombre {
-		return false
-	}
-
-	if a.Codigo != b.Codigo {
-		return false
-	}
-
-	if a.Enalmacen != b.Enalmacen {
-		return false
-	}
-
-	return true
-}
-
 type Noticias struct {
 	Id     int64     `db:"id" json:"id"`
 	Texto  string    `db:"texto" json:"texto"`
 	Inicio time.Time `db:"inicio" json:"inicio"`
 	Fin    time.Time `db:"fin" json:"fin"`
-}
-
-func compareNoticias(a, b Noticias) bool {
-	if &a == &b {
-		return true
-	}
-
-	if a.Texto != b.Texto {
-		return false
-	}
-
-	if a.Inicio != b.Inicio {
-		return false
-	}
-
-	if a.Fin != b.Fin {
-		return false
-	}
-
-	return true
 }
 
 type Salidas struct {
@@ -160,28 +48,4 @@ type Salidas struct {
 	Fechahora     time.Time `db:"fechahora" json:"fechahora"`
 	Cantidad      int64     `db:"cantidad" json:"cantidad"`
 	Idfarmacia    int64     `db:"idfarmacia" json:"idfarmacia"`
-}
-
-func compareSalidas(a, b Salidas) bool {
-	if &a == &b {
-		return true
-	}
-
-	if a.Idmedicamento != b.Idmedicamento {
-		return false
-	}
-
-	if a.Fechahora != b.Fechahora {
-		return false
-	}
-
-	if a.Cantidad != b.Cantidad {
-		return false
-	}
-
-	if a.Idfarmacia != b.Idfarmacia {
-		return false
-	}
-
-	return true
 }

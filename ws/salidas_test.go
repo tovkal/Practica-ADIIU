@@ -22,37 +22,25 @@ func init() {
 }
 
 func TestGetAllSalidas(t *testing.T) {
-	resp := test("salidas", "GET", "")
+	resp := sendTest("salidas", "GET", "")
 
-	isOK(resp, t)
+	CodeIs(resp, 200, t)
+	ContentTypeIsJson(resp, t)
 }
 
 func TestGetSalida(t *testing.T) {
-	resp := test("salidas/2014-11-29/2014-11-30", "GET", "")
+	resp := sendTest("salidas/2014-11-29/2014-11-30", "GET", "")
 
-	isOK(resp, t)
+	CodeIs(resp, 200, t)
+	ContentTypeIsJson(resp, t)
 
-	responseStruct := []Salidas{}
-	decodeJsonPayload(resp, &responseStruct, t)
+	isResponseExpected(resp, [1]Salidas{originalSalida}, t)
 }
 
 func TestPostSalida(t *testing.T) {
 	jsonBytes, _ := json.Marshal(testSalida)
-	resp := test("salidas", "POST", string(jsonBytes))
+	resp := sendTest("salidas", "POST", string(jsonBytes))
 
-	isOK(resp, t)
-
-	responseStruct := Salidas{}
-	decodeJsonPayload(resp, &responseStruct, t)
-	isReturnedSalidaExpected(testSalida, responseStruct, t)
-}
-
-// Private functions
-
-func isReturnedSalidaExpected(compareTo Salidas, responseStruct Salidas, t *testing.T) {
-	if !compareSalidas(compareTo, responseStruct) {
-		a, _ := json.Marshal(responseStruct)
-		b, _ := json.Marshal(compareTo)
-		t.Errorf("Salida retrieved does not match the expected result. Got \n%s, expected \n%s", a, b)
-	}
+	CodeIs(resp, 200, t)
+	ContentTypeIsJson(resp, t)
 }
