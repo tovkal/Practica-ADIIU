@@ -1,4 +1,4 @@
-package ws
+package main
 
 import (
 	"github.com/tovkal/go-json-rest/rest"
@@ -62,7 +62,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Print("Running")
+	log.Print("Running!")
 
 	log.Fatal(http.ListenAndServe(":8080", &handler))
 }

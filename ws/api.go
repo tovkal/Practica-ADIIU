@@ -1,4 +1,4 @@
-package ws
+package main
 
 import (
 	"log"
