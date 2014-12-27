@@ -13,6 +13,7 @@ func main() {
 
 	handler := rest.ResourceHandler{
 		EnableRelaxedContentType: true,
+		EnableStatusService:      true,
 	}
 
 	err := handler.SetRoutes(
@@ -57,6 +58,12 @@ func main() {
 
 		//File upload
 		&rest.Route{"POST", "/upload/", api.UploadHandler},
+
+		&rest.Route{"GET", "/.status",
+			func(w rest.ResponseWriter, r *rest.Request) {
+				w.WriteJson(handler.GetStatus())
+			},
+		},
 	)
 	if err != nil {
 		log.Fatal(err)

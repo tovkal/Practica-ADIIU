@@ -9,7 +9,6 @@ import (
 )
 
 func (api *Api) UploadHandler(w rest.ResponseWriter, r *rest.Request) {
-
 	// the FormFile function takes in the POST input id file
 	file, header, err := r.Request.FormFile("file")
 
@@ -22,19 +21,18 @@ func (api *Api) UploadHandler(w rest.ResponseWriter, r *rest.Request) {
 
 	out, err := os.Create("/files/images/" + header.Filename)
 	if err != nil {
-		rest.Error(w, "Unable to create the file for writing. Check your write access privilege", http.StatusInternalServerError)
+		rest.Error(w, "Unable to create the file. Check your write permissions", http.StatusInternalServerError)
 		return
 	}
 
 	defer out.Close()
 
 	// write the content from POST to the file
-	_, err = io.Copy(out, file)
-	if err != nil {
+	if _, err = io.Copy(out, file); err != nil {
 		rest.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	w.WriteJson("File uploaded successfully : " + header.Filename)
+	w.WriteJson("File uploaded successfully: " + header.Filename)
 	w.WriteHeader(http.StatusOK)
 }

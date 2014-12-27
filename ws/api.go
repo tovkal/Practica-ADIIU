@@ -14,7 +14,7 @@ type Api struct {
 // Init the database
 func (api *Api) InitDB() {
 	var err error
-	api.DB, err = gorm.Open("mysql", "mascaro:mascaro@/wsfarmacia?charset=utf8&parseTime=True")
+	api.DB, err = gorm.Open("mysql", "wsfarmacia:wsfarmacia@/wsfarmacia?charset=utf8&parseTime=True")
 	if err != nil {
 		log.Fatalf("Got error when connect database, the error is '%v'", err)
 	}
