@@ -50,7 +50,7 @@ func TestGetNoticia(t *testing.T) {
 	CodeIs(resp, 200, t)
 	ContentTypeIsJson(resp, t)
 
-	isResponseExpected(resp, originalNoticia, t)
+	isResponseExpected(resp, [1]Noticias{originalNoticia}, t)
 }
 
 func TestPostNoticia(t *testing.T) {

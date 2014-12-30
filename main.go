@@ -59,6 +59,7 @@ func main() {
 		//File upload
 		&rest.Route{"POST", "/upload/", api.UploadHandler},
 
+		// Status
 		&rest.Route{"GET", "/.status",
 			func(w rest.ResponseWriter, r *rest.Request) {
 				w.WriteJson(handler.GetStatus())
@@ -69,7 +70,11 @@ func main() {
 		log.Fatal(err)
 	}
 
+	http.Handle("/api/", http.StripPrefix("/api", &handler))
+
+	http.Handle("/", http.FileServer(http.Dir("static/")))
+
 	log.Print("Running!")
 
-	log.Fatal(http.ListenAndServe(":8080", &handler))
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }

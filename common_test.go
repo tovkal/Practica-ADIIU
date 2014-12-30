@@ -12,12 +12,12 @@ import (
 // Send request to API, given the operation (one of the routes), the method (PUT, GET, etc.)
 // and a json string
 func sendTest(operation string, method string, json string) (response *http.Response) {
-	url := "http://localhost:8080/" + operation
+	url := "http://localhost:8080/api/" + operation
 	fmt.Printf("Method: %s, URL: %s\n", method, url)
 
 	var jsonStr = []byte(json)
 	req, err := http.NewRequest(method, url, bytes.NewBuffer(jsonStr))
-	req.Header.Set("Content-Type", "application/json; charset=utf8")
+	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -50,7 +50,7 @@ func HeaderIs(r *http.Response, headerKey, expectedValue string, t *testing.T) {
 
 // CHeck if the response's content type is a json with utf8 charset
 func ContentTypeIsJson(r *http.Response, t *testing.T) {
-	HeaderIs(r, "Content-Type", "application/json; charset=utf8", t)
+	HeaderIs(r, "Content-Type", "application/json; charset=UTF-8", t)
 }
 
 // Gets the body from the http response
