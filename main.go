@@ -1,10 +1,24 @@
 package main
 
 import (
-	"github.com/tovkal/go-json-rest/rest"
+	"fmt"
+	"html/template"
 	"log"
 	"net/http"
+	"path"
+	"strings"
+
+	"github.com/tovkal/go-json-rest/rest"
 )
+
+// Template caching
+var templates = template.Must(template.ParseFiles(
+	makePath("head"),
+	makePath("footer"),
+	makePath("header"),
+	makePath("menu"),
+	makePath("categorias"),
+))
 
 func main() {
 
@@ -70,11 +84,32 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// API
 	http.Handle("/api/", http.StripPrefix("/api", &handler))
 
+	// Web pages
+	http.HandleFunc("/categorias", renderTemplate)
+	http.HandleFunc("/entradas", renderTemplate)
+	http.HandleFunc("/salidas", renderTemplate)
+	http.HandleFunc("/farmacias", renderTemplate)
+	http.HandleFunc("/medicamentos", renderTemplate)
+	http.HandleFunc("/noticias", renderTemplate)
+
+	// TODO This should redirect to the index i tal, with renderTemplate
 	http.Handle("/", http.FileServer(http.Dir("static/")))
 
-	log.Print("Running!")
-
+	log.Print("Ready to serve!")
 	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func renderTemplate(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Serving template with url = " + r.URL.Path)
+	url := strings.TrimPrefix(r.URL.Path, "/")
+	if err := templates.ExecuteTemplate(w, url, nil); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func makePath(name string) string {
+	return path.Join("tmpl", name+".html")
 }

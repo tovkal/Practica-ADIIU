@@ -1,0 +1,51 @@
+{{define "categorias"}}
+{{template "head"}}
+{{template "header"}}
+<div class="content col-md-9">
+	<table id="categoriasTable" class="table table-hover">
+		<thead>
+			<tr>
+				<th class="col-md-2">Imatge</th>
+				<th class="col-md-3">Nom</th>
+				<th class="col-md-4">Text</th>
+				<th class="col-md-1"><button id="createSeccioBtn" type="button" class="btn btn-success" onclick=""><span class="glyphicon glyphicon-plus"></span></button></th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+<script type="application/javascript">
+	$(document).ready(function() {
+		setupTable();
+	});
+
+	function setupTable() {
+		$.ajax({
+			type: "GET",
+			datatype: "json",
+			url: "/api/categorias",
+			success: function(result) {
+				$("#categoriasTable").DataTable({
+					paging: false,
+					info: false,
+					searching: false,
+					data: result,
+					columns: [
+						{
+							data: "imagen",
+							render: function (data, type, full, meta) {
+								return "<img src='/img/uploads/" + data + "' />";
+							}
+						},
+						{data: 'nombre'},
+						{data: "texto"}
+					]
+				});
+			}
+		});
+	}
+</script>
+{{template "menu"}}
+{{template "footer"}}
+{{end}}
