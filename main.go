@@ -71,7 +71,7 @@ func main() {
 		&rest.Route{"PUT", "/noticias/:id", api.PutNoticia},
 
 		//File upload
-		&rest.Route{"POST", "/upload/", api.UploadHandler},
+		&rest.Route{"POST", "/upload", api.UploadHandler},
 
 		// Status
 		&rest.Route{"GET", "/.status",

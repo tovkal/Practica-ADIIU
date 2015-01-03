@@ -8,14 +8,14 @@
 				<th class="col-md-2">Imatge</th>
 				<th class="col-md-3">Nom</th>
 				<th class="col-md-4">Text</th>
-				<th class="col-md-1"><button id="createSeccioBtn" type="button" class="btn btn-success" onclick=""><span class="glyphicon glyphicon-plus"></span></button></th>
+				<th class="col-md-1"><button id="createSeccioBtn" type="button" class="btn btn-success" onclick="$('#categoriasModal').modal('show')"><span class="glyphicon glyphicon-plus"></span></button></th>
 			</tr>
 		</thead>
 		<tbody>
 		</tbody>
 	</table>
 </div>
-<script type="application/javascript">
+<script>
 	$(document).ready(function() {
 		setupTable();
 	});
@@ -26,26 +26,147 @@
 			datatype: "json",
 			url: "/api/categorias",
 			success: function(result) {
+				console.log(result);
 				$("#categoriasTable").DataTable({
 					paging: false,
 					info: false,
 					searching: false,
 					data: result,
+					order: [[1, "asc"]],
+					columnDefs: [
+						{
+							targets: 0,
+							orderable: false
+						},
+						{
+							targets: 2,
+							orderable: false
+						},
+						{
+							targets: 3,
+							orderable: false
+						}
+					],
 					columns: [
 						{
 							data: "imagen",
 							render: function (data, type, full, meta) {
-								return "<img src='/img/uploads/" + data + "' />";
+								return "<img src='/img/uploads/" + data + "' width='100' />";
 							}
 						},
 						{data: 'nombre'},
-						{data: "texto"}
+						{data: "texto"},
+						{
+							data: "id",
+							render: function(data, type, full, meta) {
+								var readBtn = '<button type="button" class="btn btn-default" value='+ data + ' onclick="readCategoria(this.value)"><span class="glyphicon glyphicon-eye-open"></span></button>';
+								var editBtn = '<button type="button" class="btn btn-primary" value='+ data + ' onclick="editCategoria(this.value)"><span class="glyphicon glyphicon-edit"></span></button>';
+								var deleteBtn = '<button type="button" class="btn btn-danger" value='+ data + ' onclick="deleteCategoria(this.value)"><span class="glyphicon glyphicon-trash"></span></button>';
+								return '<div class="btn-group-vertical" role="group" aria-label="Action buttons" style="padding-left:10px;">'+ readBtn + editBtn + deleteBtn + '</div>'
+							}
+						}
 					]
 				});
 			}
 		});
 	}
 </script>
+
+<div class="modal fade" id="categoriasModal" tabindex="-1" role="dialog" aria-labelledby="titolModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Tancar</span></button>
+                <h4 class="modal-title" id="titolModal">Categoria</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form id="filterForm" class="form-horizontal" role="form">
+                    	<div class="form-group">
+                    		<label for="nom" class="col-sm-2 control-label">Nom</label>
+                    		<div class="col-sm-10">
+                    			<input type="text" id="nom" name="nom" class="form-control" placeholder="Nom" />
+                    		</div>
+                    	</div>
+                    	<div class="form-group">
+                    		<label for="text" class="col-sm-2 control-label">Text</label>
+                    		<div class="col-sm-10">
+                    			<input type="text" id="text" name="text" class="form-control" placeholder="Text descriptiu" />
+                    		</div>
+                    	</div>
+                    	<div class="form-group">
+                    		<label for="text" class="col-sm-2 control-label">Imatge</label>
+                    		<div class="col-sm-10">
+                    			<div id="photoUpload">
+		                            <!-- Standar form -->
+		                            <div class="row">
+		                            	<div class="col-sm-12">
+		                            		<div class="row">
+		                            			<div class="col-sm-8">
+				                                    <input type="file" name="photoFile" id="js-upload-files" />
+				                                </div>
+				                                <div class="col-sm-4">
+				                                	<button type="button" class="btn btn-sm btn-primary pull-right" id="js-upload-submit">Pujar foto</button>
+			                                	</div>
+		                            		</div>
+		                                </div>
+		                            </div>
+		                            <!-- Drop zone -->
+		                            <span id="helpBlock" class="help-block">Arrosega i amolla una foto al recuadre per pujar-la</span>
+		                            <div class="upload-drop-zone" id="drop-zone"></div>
+		                            <!-- Progress bar -->
+		                            <div class="progress">
+		                                <div id="photoProgressBar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0;">
+		                                </div>
+		                            </div>
+		                        </div>
+                    		</div>
+                    	</div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Tancar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+	$(document).ready(function() {
+		// Reset photo upload progress bar
+		$("#photoProgressBar").width('0%');
+	});
+	var $modal = $('#categoriasModal');
+	var $nom = $('#nom');
+	var $text = $('#text');
+
+	function readCategoria(id) {
+		$.ajax({
+			type: "GET",
+			datatype: "json",
+			url: "/api/categorias/" + id,
+			success: function(data) {
+				console.log(data);
+				$nom.val(data.nombre);
+				$text.val(data.texto);
+				setBackgroundImage('drop-zone', data.imagen);
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert("Error reading Categoria. Got:\n" + errorThrown); // DEBUG
+			}
+		});
+		$modal.modal('show');
+	}
+
+	// Util function
+	function setBackgroundImage(element, image) {
+		$("#" + element).css('background-image', 'url(img/uploads/' + image + ')');
+		$("#" + element).css('background-repeat', 'no-repeat');
+		$("#" + element).css('background-position', 'center center');
+		$("#" + element).css('background-size', '200px');
+	}
+</script>
+
 {{template "menu"}}
 {{template "footer"}}
 {{end}}
