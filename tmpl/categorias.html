@@ -8,7 +8,7 @@
 				<th class="col-md-2">Imatge</th>
 				<th class="col-md-3">Nom</th>
 				<th class="col-md-4">Text</th>
-				<th class="col-md-1"><button id="createSeccioBtn" type="button" class="btn btn-success" onclick="$('#categoriasModal').modal('show')"><span class="glyphicon glyphicon-plus"></span></button></th>
+				<th class="col-md-1"><button id="createSeccioBtn" type="button" class="btn btn-success" onclick="createCategoria()"><span class="glyphicon glyphicon-plus"></span></button></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -16,6 +16,8 @@
 	</table>
 </div>
 <script>
+	var table;
+
 	$(document).ready(function() {
 		setupTable();
 	});
@@ -27,7 +29,7 @@
 			url: "/api/categorias",
 			success: function(result) {
 				console.log(result);
-				$("#categoriasTable").DataTable({
+				table = $("#categoriasTable").DataTable({
 					paging: false,
 					info: false,
 					searching: false,
@@ -51,6 +53,9 @@
 						{
 							data: "imagen",
 							render: function (data, type, full, meta) {
+								if(data == "") {
+									return "";
+								}
 								return "<img src='/img/uploads/" + data + "' width='100' />";
 							}
 						},
@@ -81,21 +86,23 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                    <form id="filterForm" class="form-horizontal" role="form">
+                	<div id="modalAlert" class="alert alert-danger hidden" role="alert"></div>
+                    <form id="categoriaForm" class="form-horizontal" role="form">
                     	<div class="form-group">
-                    		<label for="nom" class="col-sm-2 control-label">Nom</label>
+                    		<label for="nombre" class="col-sm-2 control-label">Nom</label>
                     		<div class="col-sm-10">
-                    			<input type="text" id="nom" name="nom" class="form-control" placeholder="Nom" />
+                    			<input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nom" />
                     		</div>
                     	</div>
                     	<div class="form-group">
-                    		<label for="text" class="col-sm-2 control-label">Text</label>
+                    		<label for="texto" class="col-sm-2 control-label">Text</label>
                     		<div class="col-sm-10">
-                    			<input type="text" id="text" name="text" class="form-control" placeholder="Text descriptiu" />
+                    			<input type="text" id="texto" name="texto" class="form-control" placeholder="Text descriptiu" />
                     		</div>
                     	</div>
                     	<div class="form-group">
-                    		<label for="text" class="col-sm-2 control-label">Imatge</label>
+                    		<label for="imagen" class="col-sm-2 control-label">Imatge</label>
+                    		<input type="hidden" id="imagen" name="imagen" value="">
                     		<div class="col-sm-10">
                     			<div id="photoUpload">
 		                            <!-- Standar form -->
@@ -126,7 +133,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Tancar</button>
+                <button id="actionBtn" type="button" class="btn btn-default">Tancar</button>
             </div>
         </div>
     </div>    
@@ -135,17 +142,31 @@
 <script src="js/uploadPhoto.js"></script>
 <script>
 	var $modal = $('#categoriasModal');
-	var $nom = $('#nom');
-	var $text = $('#text');
+	var $form = $('#categoriaForm');
+	var $nombre = $('#nombre');
+	var $texto = $('#texto');
+	var $btn = $("#actionBtn");
+	var $alert = $("#modalAlert");
 
 	$(document).ready(function() {
 		// Reset photo upload progress bar
 		$("#photoProgressBar").width('0%');
 	});
 
+	// Setup and show modal
+	function createCategoria() {
+		enablePhotoUpload();
+		removeBackgroundImage('drop-zone');
+
+		changeButton($btn, 'create', 'Crear', 'submitCategoria');
+
+		$modal.modal('show');
+	}
+
 	function readCategoria(id) {
-		$(".enabledUpload").addClass('hidden');
-		disableUpload();
+		disablePhotoUpload();
+
+		changeButton($btn, 'read', 'Tancar');
 
 		$.ajax({
 			type: "GET",
@@ -153,8 +174,8 @@
 			url: "/api/categorias/" + id,
 			success: function(data) {
 				console.log(data);
-				$nom.val(data.nombre);
-				$text.val(data.texto);
+				$nombre.val(data.nombre);
+				$texto.val(data.texto);
 				setBackgroundImage('drop-zone', data.imagen);
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
@@ -164,12 +185,47 @@
 		$modal.modal('show');
 	}
 
-	// Util function
-	function setBackgroundImage(element, image) {
-		$("#" + element).css('background-image', 'url(img/uploads/' + image + ')');
-		$("#" + element).addClass('background-image-style');
+	function submitCategoria(id) {
+		// TODO Validation? Ask professor
+
+		$.ajax({
+			type: "POST",
+			datatype: "json",
+			url: "/api/categorias",
+			data: JSON.stringify($form.serializeObject()),
+			success: function(data) {
+				console.log(data);
+				table.row.add(data).draw();
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert("Error creating Categoria. Got:\n" + errorThrown); // DEBUG
+			}
+		});
+		closeModal();
 	}
 
+	function closeModal() {
+		resetForm($form);
+		$modal.modal('hide');
+	}
+
+	/*function validateForm() {
+		if ($nombre.val() == '') {
+			$alert.text('El nom és un camp obligatori.');
+		};
+
+		if ($texto.val() == '') {
+			$alert.text('El text és un camp obligatori.');
+		};
+
+		if ($form.find('[name=imagen]').val() == '') {
+			$alert.text('Es obligatori pujar una imatge.');
+		};	
+
+		if ($alert.hasClass('hidden')) {
+			$alert.removeClass('hidden');	
+		};
+	}*/
 </script>
 
 {{template "menu"}}

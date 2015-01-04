@@ -8,6 +8,11 @@ import (
 	"github.com/tovkal/go-json-rest/rest"
 )
 
+type FileResponse struct {
+	Status   string `json:"status"`
+	FileName string `json:"filename"`
+}
+
 func (api *Api) UploadHandler(w rest.ResponseWriter, r *rest.Request) {
 	// the FormFile function takes in the POST input id file
 	file, header, err := r.Request.FormFile("file")
@@ -19,7 +24,7 @@ func (api *Api) UploadHandler(w rest.ResponseWriter, r *rest.Request) {
 
 	defer file.Close()
 
-	out, err := os.Create("/files/images/" + header.Filename)
+	out, err := os.Create("./static/img/uploads/" + header.Filename)
 	if err != nil {
 		rest.Error(w, "Unable to create the file. Check your write permissions", http.StatusInternalServerError)
 		return
@@ -33,6 +38,9 @@ func (api *Api) UploadHandler(w rest.ResponseWriter, r *rest.Request) {
 		return
 	}
 
-	w.WriteJson("File uploaded successfully: " + header.Filename)
-	w.WriteHeader(http.StatusOK)
+	response := FileResponse{}
+	response.Status = "success"
+	response.FileName = header.Filename
+
+	w.WriteJson(response)
 }
