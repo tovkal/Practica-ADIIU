@@ -99,7 +99,7 @@
                     		<div class="col-sm-10">
                     			<div id="photoUpload">
 		                            <!-- Standar form -->
-		                            <div class="row">
+		                            <div class="row enabledUpload">
 		                            	<div class="col-sm-12">
 		                            		<div class="row">
 		                            			<div class="col-sm-8">
@@ -112,10 +112,10 @@
 		                                </div>
 		                            </div>
 		                            <!-- Drop zone -->
-		                            <span id="helpBlock" class="help-block">Arrosega i amolla una foto al recuadre per pujar-la</span>
-		                            <div class="upload-drop-zone" id="drop-zone"></div>
+		                            <span id="helpBlock" class="help-block enabledUpload">Arrosega i amolla una foto al recuadre per pujar-la</span>
+		                            <div id="drop-zone" class="upload-drop-zone"></div>
 		                            <!-- Progress bar -->
-		                            <div class="progress">
+		                            <div class="progress enabledUpload">
 		                                <div id="photoProgressBar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0;">
 		                                </div>
 		                            </div>
@@ -129,18 +129,24 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Tancar</button>
             </div>
         </div>
-    </div>
+    </div>    
 </div>
+
+<script src="js/uploadPhoto.js"></script>
 <script>
-	$(document).ready(function() {
-		// Reset photo upload progress bar
-		$("#photoProgressBar").width('0%');
-	});
 	var $modal = $('#categoriasModal');
 	var $nom = $('#nom');
 	var $text = $('#text');
 
+	$(document).ready(function() {
+		// Reset photo upload progress bar
+		$("#photoProgressBar").width('0%');
+	});
+
 	function readCategoria(id) {
+		$(".enabledUpload").addClass('hidden');
+		disableUpload();
+
 		$.ajax({
 			type: "GET",
 			datatype: "json",
@@ -161,10 +167,9 @@
 	// Util function
 	function setBackgroundImage(element, image) {
 		$("#" + element).css('background-image', 'url(img/uploads/' + image + ')');
-		$("#" + element).css('background-repeat', 'no-repeat');
-		$("#" + element).css('background-position', 'center center');
-		$("#" + element).css('background-size', '200px');
+		$("#" + element).addClass('background-image-style');
 	}
+
 </script>
 
 {{template "menu"}}

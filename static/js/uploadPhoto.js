@@ -1,15 +1,44 @@
 /**
  * Created by tovkal on 4/12/14.
  */
+
+var dropZone = document.getElementById('drop-zone');
+var progress = document.getElementById('photoProgressBar');
+
+function uploadOnDrop(e) {
+    e.preventDefault();
+    this.className = 'upload-drop-zone';
+
+    startUpload(e.dataTransfer.files)
+};
+
+function highlightUploadDropZone() {
+    this.className = 'upload-drop-zone drop';
+    return false;
+};
+
+function unhighlightUploadDropZone() {
+    this.className = 'upload-drop-zone';
+    return false;
+};
+
+function setupUpload() {
+    dropZone.ondrop = uploadOnDrop;
+    dropZone.ondragover = highlightUploadDropZone;
+    dropZone.ondragleave = unhighlightUploadDropZone;
+};
+
+function disableUpload() {
+    dropZone.ondrop = null;
+    dropZone.ondragover = null;
+    dropZone.ondragleave = null;
+};
+
 $(document).ready(function() {
     'use strict';
 
     // UPLOAD CLASS DEFINITION
     // ======================
-
-    var dropZone = document.getElementById('drop-zone');
-    var progress = document.getElementById('photoProgressBar');
-
     function startUpload(files) {
 
         if (files.length == 0) {
@@ -44,7 +73,7 @@ $(document).ready(function() {
             progress.style.width = Math.ceil(e.loaded/e.total) * 100 + '%';
         }, false);
 
-        request.open('POST', '/upload');
+        request.open('POST', '/api/upload');
         request.send(data);
     };
 
@@ -54,21 +83,5 @@ $(document).ready(function() {
         startUpload(uploadFiles)
     });
 
-
-    dropZone.ondrop = function(e) {
-        e.preventDefault();
-        this.className = 'upload-drop-zone';
-
-        startUpload(e.dataTransfer.files)
-    };
-
-    dropZone.ondragover = function() {
-        this.className = 'upload-drop-zone drop';
-        return false;
-    };
-
-    dropZone.ondragleave = function() {
-        this.className = 'upload-drop-zone';
-        return false;
-    }
+    setupUpload();
 });
