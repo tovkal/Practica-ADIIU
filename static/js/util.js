@@ -24,7 +24,7 @@ function resetForm($form) {
          .removeAttr('checked').removeAttr('selected');
 }
 
-function changeButton(element, action, text, functionName, arguments) {
+function changeButton(element, action, text, functionName, id, row) {
 	var btnClass = '';
 	var clickAction = '';
 	switch(action){
@@ -36,7 +36,9 @@ function changeButton(element, action, text, functionName, arguments) {
 			btnClass = 'btn btn-success';
 			clickAction = functionName + '()';
 			break;
-		case 'edit':
+		case 'update':
+			btnClass = 'btn btn-primary';
+			clickAction = functionName + '(' + id + ',' + row + ')';
 			break;
 		case 'delete':
 			break;

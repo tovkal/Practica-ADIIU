@@ -65,7 +65,7 @@
 							data: "id",
 							render: function(data, type, full, meta) {
 								var readBtn = '<button type="button" class="btn btn-default" value='+ data + ' onclick="readCategoria(this.value)"><span class="glyphicon glyphicon-eye-open"></span></button>';
-								var editBtn = '<button type="button" class="btn btn-primary" value='+ data + ' onclick="editCategoria(this.value)"><span class="glyphicon glyphicon-edit"></span></button>';
+								var editBtn = '<button type="button" class="btn btn-primary" value='+ data + ' onclick="updateCategoria(this.value,' + meta.row + ')"><span class="glyphicon glyphicon-edit"></span></button>';
 								var deleteBtn = '<button type="button" class="btn btn-danger" value='+ data + ' onclick="deleteCategoria(this.value)"><span class="glyphicon glyphicon-trash"></span></button>';
 								return '<div class="btn-group-vertical" role="group" aria-label="Action buttons" style="padding-left:10px;">'+ readBtn + editBtn + deleteBtn + '</div>'
 							}
@@ -145,6 +145,7 @@
 	var $form = $('#categoriaForm');
 	var $nombre = $('#nombre');
 	var $texto = $('#texto');
+	var $imagen = $('#imagen');
 	var $btn = $("#actionBtn");
 	var $alert = $("#modalAlert");
 
@@ -156,7 +157,6 @@
 	// Setup and show modal
 	function createCategoria() {
 		enablePhotoUpload();
-		removeBackgroundImage('drop-zone');
 
 		changeButton($btn, 'create', 'Crear', 'submitCategoria');
 
@@ -196,16 +196,57 @@
 			success: function(data) {
 				console.log(data);
 				table.row.add(data).draw();
+				closeModal();
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				alert("Error creating Categoria. Got:\n" + errorThrown); // DEBUG
 			}
 		});
-		closeModal();
+	}
+
+	function updateCategoria(id, row) {
+		enablePhotoUpload();
+
+		changeButton($btn, 'update', 'Modificar', 'submitUpdateCategoria', id, row);
+
+		$.ajax({
+			type: "GET",
+			datatype: "json",
+			url: "/api/categorias/" + id,
+			success: function(data) {
+				console.log(data);
+				$nombre.val(data.nombre);
+				$texto.val(data.texto);
+				$imagen.val(data.imagen);
+				setBackgroundImage('drop-zone', data.imagen);
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert("Error reading Categoria. Got:\n" + errorThrown); // DEBUG
+			}
+		});
+		$modal.modal('show');
+	}
+
+	function submitUpdateCategoria(id, row) {
+		$.ajax({
+			type: "PUT",
+			datatype: "json",
+			url: "/api/categorias/" + id,
+			data: JSON.stringify($form.serializeObject()),
+			success: function(data) {
+				console.log(data);
+				table.row(row).data(data).draw();
+				closeModal();
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert("Error creating Categoria. Got:\n" + errorThrown); // DEBUG
+			}
+		});
 	}
 
 	function closeModal() {
 		resetForm($form);
+		removeBackgroundImage('drop-zone');
 		$modal.modal('hide');
 	}
 
