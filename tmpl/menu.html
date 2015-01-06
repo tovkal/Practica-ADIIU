@@ -1,5 +1,37 @@
 {{define "menu"}}
 <div class="menu col-md-3">
-		Menu aquí
+    <div class="sidebar-nav">
+      <div class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span class="visible-xs navbar-brand">Sidebar menu</span>
+        </div>
+        <div class="navbar-collapse collapse sidebar-navbar-collapse">
+          <ul id="navbar" class="nav navbar-nav">
+          	<li class="active"><a href="/">Inici</a></li>
+            <li><a href="/categorias">Categorias</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+  </div>
 </div>
+<script>
+	$(document).ready(function() {
+		// Set as active whatever is in the url bar
+		var pageUrl = window.location.href.substring(window.location.href.lastIndexOf("/"));
+		$("#navbar").find("li").each(function() {
+			if ($(this).hasClass("active")) {
+				$(this).removeClass();
+			} else if ($(this).find("a").attr("href") === pageUrl) {
+				$(this).addClass("active");
+			}
+		});
+	});
+</script>
 {{end}}
