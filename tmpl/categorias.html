@@ -66,7 +66,7 @@
 							render: function(data, type, full, meta) {
 								var readBtn = '<button type="button" class="btn btn-default" value='+ data + ' onclick="readCategoria(this.value)"><span class="glyphicon glyphicon-eye-open"></span></button>';
 								var editBtn = '<button type="button" class="btn btn-primary" value='+ data + ' onclick="updateCategoria(this.value,' + meta.row + ')"><span class="glyphicon glyphicon-edit"></span></button>';
-								var deleteBtn = '<button type="button" class="btn btn-danger" value='+ data + ' onclick="deleteCategoria(this.value)"><span class="glyphicon glyphicon-trash"></span></button>';
+								var deleteBtn = '<button type="button" class="btn btn-danger" value='+ data + ' onclick="deleteCategoria(this.value,' + meta.row + ')"><span class="glyphicon glyphicon-trash"></span></button>';
 								return '<div class="btn-group-vertical" role="group" aria-label="Action buttons" style="padding-left:10px;">'+ readBtn + editBtn + deleteBtn + '</div>'
 							}
 						}
@@ -240,6 +240,20 @@
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				alert("Error creating Categoria. Got:\n" + errorThrown); // DEBUG
+			}
+		});
+	}
+
+	function deleteCategoria(id, row) {
+		$.ajax({
+			type: "DELETE",
+			datatype: "json",
+			url: "/api/categorias/" + id,
+			success: function(data) {
+				table.row(row).remove().draw();
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert("Error deleting Categoria. Got:\n" + errorThrown); // DEBUG
 			}
 		});
 	}

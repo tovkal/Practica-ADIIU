@@ -71,5 +71,5 @@ func (api *Api) DeleteCategoria(w rest.ResponseWriter, r *rest.Request) {
 		rest.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.WriteHeader(http.StatusOK)
+	w.WriteJson("{}")
 }
