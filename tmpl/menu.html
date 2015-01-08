@@ -13,8 +13,8 @@
         </div>
         <div class="navbar-collapse collapse sidebar-navbar-collapse">
           <ul id="navbar" class="nav navbar-nav">
-          	<li class="active"><a href="/">Inici</a></li>
-            <li><a href="/categorias">Categorias</a></li>
+          	<li class="active"><a href="/inici">Inici</a></li>
+          	<li><a href="/categorias">Categorias</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -23,15 +23,29 @@
 </div>
 <script>
 	$(document).ready(function() {
-		// Set as active whatever is in the url bar
-		var pageUrl = window.location.href.substring(window.location.href.lastIndexOf("/"));
-		$("#navbar").find("li").each(function() {
-			if ($(this).hasClass("active")) {
-				$(this).removeClass();
-			} else if ($(this).find("a").attr("href") === pageUrl) {
-				$(this).addClass("active");
-			}
+		var $activeView = $("#navbar").find("li[class=active]");
+
+		// Highlight selected menu option and load page on click
+		$("#navbar").find("li a").on('click', function(event) {
+			console.log($(this).parent());
+			$activeView.removeClass();
+			$activeView = $(this).parent();
+			$activeView.addClass('active');
+
+			event.preventDefault();
+
+			$("#content").load($(this).attr('href'));
+
+			return false;
 		});
+
+		$("#navbar").find("li")
+			.mouseenter(function() {
+				$(this).addClass("menu-hover");
+			})
+			.mouseleave(function() {
+				$(this).removeClass("menu-hover");
+			});
 	});
 </script>
 {{end}}
