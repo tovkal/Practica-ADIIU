@@ -150,6 +150,10 @@
 	$(document).ready(function() {
 		// Reset photo upload progress bar
 		$("#photoProgressBar").width('0%');
+
+		$modal.on('hide.bs.modal', function() {
+			tidyBeforeClosingModal();
+		});
 	});
 
 	// Setup and show modal
@@ -174,7 +178,9 @@
 				console.log(data);
 				$nombre.val(data.nombre);
 				$texto.val(data.texto);
-				setBackgroundImage('drop-zone', data.imagen);
+				if (data.imagen != "") {
+					setBackgroundImage('drop-zone', data.imagen);
+				};
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				alert("Error reading Categoria. Got:\n" + errorThrown); // DEBUG
@@ -256,9 +262,13 @@
 		});
 	}
 
-	function closeModal() {
+	function tidyBeforeClosingModal() {
 		resetForm($form);
 		removeBackgroundImage('drop-zone');
+	}
+
+	function closeModal() {
+		tidyBeforeClosingModal();
 		$modal.modal('hide');
 	}
 
