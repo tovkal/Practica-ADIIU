@@ -1,29 +1,35 @@
+// Enable photo upload in a modal
 function enablePhotoUpload() {
 	$(".enabledUpload").removeClass('hidden');
 	setupUploadDropZone();
 }
 
+// Disable photo upload in a modal
 function disablePhotoUpload() {
 	$(".enabledUpload").addClass('hidden');
 	disableUploadDropZone();
 }
 
+// Set the image as the background of the element
 function setBackgroundImage(element, image) {
 	$("#" + element).css('background-image', 'url("img/uploads/' + image + '")');
 	$("#" + element).addClass('background-image-style');
 }
 
+// Remove a background image from the element
 function removeBackgroundImage(element) {
 	$("#" + element).css('background-image', '');
 	$("#" + element).removeClass('background-image-style');
 }
 
+// Reset form fields
 function resetForm($form) {
-    $form.find('input:text, input:password, input:file, select, textarea').val('');
+    $form.find('input:text, input:password, input:file, select, textarea, :input[type=number]').val('');
     $form.find('input:radio, input:checkbox')
          .removeAttr('checked').removeAttr('selected');
 }
 
+// Setup the modal's action button for a specific operation
 function changeButton(element, action, text, functionName, id, row) {
 	var btnClass = '';
 	var clickAction = '';
@@ -40,13 +46,12 @@ function changeButton(element, action, text, functionName, id, row) {
 			btnClass = 'btn btn-primary';
 			clickAction = functionName + '(' + id + ',' + row + ')';
 			break;
-		case 'delete':
-			break;
 	}
 
 	element.attr('class', btnClass).text(text).attr('onclick', clickAction);
 }
 
+// jQuery function for form serialization
 $.fn.serializeObject = function()
 {
     var o = {};

@@ -1,0 +1,240 @@
+{{define "farmacias"}}
+<div>
+<table id="farmaciasTable" class="table table-hover">
+	<thead>
+		<tr>
+			<th class="col-md-3">Nick</th>
+			<th class="col-md-3">Pass</th>
+			<th class="col-md-4">Nivell</th>
+			<th class="col-md-1"><button id="createFarmaciaBtn" type="button" class="btn btn-success" onclick="createFarmacia()"><span class="glyphicon glyphicon-plus"></span></button></th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+</div>
+<script>
+	var table;
+
+	$(document).ready(function() {
+		setupTable();
+	});
+
+	function setupTable() {
+		table = $("#farmaciasTable").DataTable({
+			paging: false,
+			info: false,
+			searching: false,
+			ajax: {
+				type: "GET",
+				datatype: "json",
+				url: "/api/farmacias",
+				dataSrc: "",
+			},
+			order: [[1, "asc"]],
+			columnDefs: [
+				{
+					targets: 0,
+					orderable: false
+				},
+				{
+					targets: 2,
+					orderable: false
+				}
+			],
+			columns: [
+				{data: 'nik'},
+				{data: 'pass'},
+				{data: "nivel"},
+				{
+					data: "id",
+					render: function(data, type, full, meta) {
+						var readBtn = '<button type="button" class="btn btn-default" value='+ data + ' onclick="readFarmacia(this.value)"><span class="glyphicon glyphicon-eye-open"></span></button>';
+						var editBtn = '<button type="button" class="btn btn-primary" value='+ data + ' onclick="updateFarmacia(this.value,' + meta.row + ')"><span class="glyphicon glyphicon-edit"></span></button>';
+						var deleteBtn = '<button type="button" class="btn btn-danger" value='+ data + ' onclick="deleteFarmacia(this.value,' + meta.row + ')"><span class="glyphicon glyphicon-trash"></span></button>';
+						return '<div class="btn-group-vertical" role="group" aria-label="Action buttons" style="padding-left:10px;">'+ readBtn + editBtn + deleteBtn + '</div>'
+					}
+				}
+			]
+		});
+	}
+</script>
+
+<div class="modal fade" id="farmaciasModal" tabindex="-1" role="dialog" aria-labelledby="titolModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Tancar</span></button>
+                <h4 class="modal-title" id="titolModal">Farmacia</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                	<div id="modalAlert" class="alert alert-danger hidden" role="alert"></div>
+                    <form id="farmaciaForm" class="form-horizontal" role="form">
+                    	<div class="form-group">
+                    		<label for="nik" class="col-sm-2 control-label">Nick</label>
+                    		<div class="col-sm-10">
+                    			<input type="text" id="nik" name="nik" class="form-control" placeholder="Nick" />
+                    		</div>
+                    	</div>
+                    	<div class="form-group">
+                    		<label for="pass" class="col-sm-2 control-label">Pass</label>
+                    		<div class="col-sm-10">
+                    			<input type="text" id="pass" name="pass" class="form-control" placeholder="Contrasenya" />
+                    		</div>
+                    	</div>
+                    	<div class="form-group">
+                    		<label for="nivel" class="col-sm-2 control-label">Nivell</label>
+                    		<div class="col-sm-10">
+                    			<input type="number" min="0" max="255" id="nivel" name="nivel" class="form-control" placeholder="Nivell" />
+                    		</div>
+                    	</div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="actionBtn" type="button" class="btn btn-default">Tancar</button>
+            </div>
+        </div>
+    </div>    
+</div>
+
+<script>
+	var $modal = $('#farmaciasModal');
+	var $form = $('#farmaciaForm');
+	var $nik = $('#nik');
+	var $pass = $('#pass');
+	var $nivel = $('#nivel');
+	var $btn = $("#actionBtn");
+	var $alert = $("#modalAlert");
+
+	$(document).ready(function() {
+		$modal.on('hidden.bs.modal', function() {
+			tidyBeforeClosingModal();
+		});
+	});
+
+	// Setup and show modal
+	function createFarmacia() {
+
+		changeButton($btn, 'create', 'Crear', 'submitFarmacia');
+
+		$modal.modal('show');
+	}
+
+	function readFarmacia(id) {
+
+		changeButton($btn, 'read', 'Tancar');
+
+		$.ajax({
+			type: "GET",
+			datatype: "json",
+			url: "/api/farmacias/" + id,
+			success: function(data) {
+				$nik.val(data.nik);
+				$pass.val(data.pass);
+				$nivel.val(data.nivel);
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert("Error reading Farmacia. Got:\n" + errorThrown); // DEBUG
+			}
+		});
+		$modal.modal('show');
+	}
+
+	function submitFarmacia(id) {
+		// TODO Validation? Ask professor
+
+		$.ajax({
+			type: "POST",
+			datatype: "json",
+			url: "/api/farmacias",
+			data: JSON.stringify($form.serializeObject()),
+			success: function(data) {
+				table.row.add(data).draw();
+				closeModal();
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert("Error creating Farmacia. Got:\n" + errorThrown); // DEBUG
+			}
+		});
+	}
+
+	function updateFarmacia(id, row) {
+
+		changeButton($btn, 'update', 'Modificar', 'submitUpdateFarmacia', id, row);
+
+		$.ajax({
+			type: "GET",
+			datatype: "json",
+			url: "/api/farmacias/" + id,
+			success: function(data) {
+				$nik.val(data.nik);
+				$pass.val(data.pass);
+				$nivel.val(data.nivel);
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert("Error reading Farmacia. Got:\n" + errorThrown); // DEBUG
+			}
+		});
+		$modal.modal('show');
+	}
+
+	function submitUpdateFarmacia(id, row) {
+		$.ajax({
+			type: "PUT",
+			datatype: "json",
+			url: "/api/farmacias/" + id,
+			data: JSON.stringify($form.serializeObject()),
+			success: function(data) {
+				table.row(row).data(data).draw();
+				closeModal();
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert("Error creating Farmacia. Got:\n" + errorThrown); // DEBUG
+			}
+		});
+	}
+
+	function deleteFarmacia(id, row) {
+		$.ajax({
+			type: "DELETE",
+			datatype: "json",
+			url: "/api/farmacias/" + id,
+			success: function(data) {
+				table.row(row).remove().draw();
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert("Error deleting Farmacia. Got:\n" + errorThrown); // DEBUG
+			}
+		});
+	}
+
+	function tidyBeforeClosingModal() {
+		resetForm($form);
+	}
+
+	function closeModal() {
+		tidyBeforeClosingModal();
+		$modal.modal('hide');
+	}
+
+	/*function validateForm() {
+		if ($nik.val() == '') {
+			$alert.text('El nom és un camp obligatori.');
+		};
+
+		if ($pass.val() == '') {
+			$alert.text('El text és un camp obligatori.');
+		};
+
+		if ($form.find('[name=imagen]').val() == '') {
+			$alert.text('Es obligatori pujar una imatge.');
+		};	
+
+		if ($alert.hasClass('hidden')) {
+			$alert.removeClass('hidden');	
+		};
+	}*/
+</script>
+{{end}}

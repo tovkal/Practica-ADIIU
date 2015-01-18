@@ -22,7 +22,7 @@ type Farmacias struct {
 	Id    int64  `db:"id" json:"id"`
 	Nik   string `db:"nik" json:"nik"`
 	Pass  string `db:"pass" json:"pass"`
-	Nivel int64  `db:"nivel" json:"nivel"`
+	Nivel int64  `db:"nivel" json:"nivel,string"`
 }
 
 type Medicamentos struct {
