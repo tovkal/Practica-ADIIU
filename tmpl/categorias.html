@@ -21,56 +21,53 @@
 	});
 
 	function setupTable() {
-		$.ajax({
-			type: "GET",
-			datatype: "json",
-			url: "/api/categorias",
-			success: function(result) {
-				console.log(result);
-				table = $("#categoriasTable").DataTable({
-					paging: false,
-					info: false,
-					searching: false,
-					data: result,
-					order: [[1, "asc"]],
-					columnDefs: [
-						{
-							targets: 0,
-							orderable: false
-						},
-						{
-							targets: 2,
-							orderable: false
-						},
-						{
-							targets: 3,
-							orderable: false
+		table = $("#categoriasTable").DataTable({
+			paging: false,
+			info: false,
+			searching: false,
+			ajax: {
+				type: "GET",
+				datatype: "json",
+				url: "/api/categorias",
+				dataSrc: "",
+			},
+			order: [[1, "asc"]],
+			columnDefs: [
+				{
+					targets: 0,
+					orderable: false
+				},
+				{
+					targets: 2,
+					orderable: false
+				},
+				{
+					targets: 3,
+					orderable: false
+				}
+			],
+			columns: [
+				{
+					data: "imagen",
+					render: function (data, type, full, meta) {
+						if(data == "") {
+							return "";
 						}
-					],
-					columns: [
-						{
-							data: "imagen",
-							render: function (data, type, full, meta) {
-								if(data == "") {
-									return "";
-								}
-								return "<img src='/img/uploads/" + data + "' width='100' />";
-							}
-						},
-						{data: 'nombre'},
-						{data: "texto"},
-						{
-							data: "id",
-							render: function(data, type, full, meta) {
-								var readBtn = '<button type="button" class="btn btn-default" value='+ data + ' onclick="readCategoria(this.value)"><span class="glyphicon glyphicon-eye-open"></span></button>';
-								var editBtn = '<button type="button" class="btn btn-primary" value='+ data + ' onclick="updateCategoria(this.value,' + meta.row + ')"><span class="glyphicon glyphicon-edit"></span></button>';
-								var deleteBtn = '<button type="button" class="btn btn-danger" value='+ data + ' onclick="deleteCategoria(this.value,' + meta.row + ')"><span class="glyphicon glyphicon-trash"></span></button>';
-								return '<div class="btn-group-vertical" role="group" aria-label="Action buttons" style="padding-left:10px;">'+ readBtn + editBtn + deleteBtn + '</div>'
-							}
-						}
-					]
-				});
-			}
+						return "<img src='/img/uploads/" + data + "' width='100' />";
+					}
+				},
+				{data: 'nombre'},
+				{data: "texto"},
+				{
+					data: "id",
+					render: function(data, type, full, meta) {
+						var readBtn = '<button type="button" class="btn btn-default" value='+ data + ' onclick="readCategoria(this.value)"><span class="glyphicon glyphicon-eye-open"></span></button>';
+						var editBtn = '<button type="button" class="btn btn-primary" value='+ data + ' onclick="updateCategoria(this.value,' + meta.row + ')"><span class="glyphicon glyphicon-edit"></span></button>';
+						var deleteBtn = '<button type="button" class="btn btn-danger" value='+ data + ' onclick="deleteCategoria(this.value,' + meta.row + ')"><span class="glyphicon glyphicon-trash"></span></button>';
+						return '<div class="btn-group-vertical" role="group" aria-label="Action buttons" style="padding-left:10px;">'+ readBtn + editBtn + deleteBtn + '</div>'
+					}
+				}
+			]
 		});
 	}
 </script>
@@ -175,7 +172,6 @@
 			datatype: "json",
 			url: "/api/categorias/" + id,
 			success: function(data) {
-				console.log(data);
 				$nombre.val(data.nombre);
 				$texto.val(data.texto);
 				if (data.imagen != "") {
@@ -198,7 +194,6 @@
 			url: "/api/categorias",
 			data: JSON.stringify($form.serializeObject()),
 			success: function(data) {
-				console.log(data);
 				table.row.add(data).draw();
 				closeModal();
 			},
@@ -218,7 +213,6 @@
 			datatype: "json",
 			url: "/api/categorias/" + id,
 			success: function(data) {
-				console.log(data);
 				$nombre.val(data.nombre);
 				$texto.val(data.texto);
 				$imagen.val(data.imagen);
@@ -238,7 +232,6 @@
 			url: "/api/categorias/" + id,
 			data: JSON.stringify($form.serializeObject()),
 			success: function(data) {
-				console.log(data);
 				table.row(row).data(data).draw();
 				closeModal();
 			},

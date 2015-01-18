@@ -80,7 +80,7 @@
 				url : "/api/entradas",
 				type: "GET",
 				dataSrc: "",
-
+				datatype: "json"
 			},
 			paging: false,
 			info: false,
@@ -158,7 +158,7 @@
 			url: "/api/medicamentos",
 			success: function(data) {
 				$medicamentSelect.children("option").remove();
-				
+
 				$.each(data, function(key, value) {
 					$medicamentSelect.append(createMedicamentoOption(value.id, value.nombre));
 				});
