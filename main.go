@@ -20,6 +20,7 @@ var templates = template.Must(template.ParseFiles(
 	makePath("index"),
 	makePath("inici"),
 	makePath("categorias"),
+	makePath("entradas"),
 ))
 
 func main() {

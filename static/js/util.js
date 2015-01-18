@@ -9,7 +9,7 @@ function disablePhotoUpload() {
 }
 
 function setBackgroundImage(element, image) {
-	$("#" + element).css('background-image', 'url(img/uploads/' + image + ')');
+	$("#" + element).css('background-image', 'url("img/uploads/' + image + '")');
 	$("#" + element).addClass('background-image-style');
 }
 

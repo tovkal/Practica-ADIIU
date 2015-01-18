@@ -15,10 +15,8 @@ func init() {
 	if err != nil {
 		fmt.Println("Error %s", err)
 	}
-	originalEntrada.Fechahora = fechaHora
 
-	fechaHora, _ = time.Parse("2006-01-02 15:04:05", "2014-12-12 12:12:12")
-	testEntrada.Fechahora = fechaHora
+	originalEntrada.Fechahora = fechaHora
 }
 
 func TestGetAllEntradas(t *testing.T) {

@@ -13,8 +13,8 @@ type Categorias struct {
 
 type Entradas struct {
 	Id            int64     `db:"id" json:"id"`
-	Idmedicamento int64     `db:"idmedicamento" json:"idmedicamento"`
-	Cantidad      int64     `db:"cantidad" json:"cantidad"`
+	Idmedicamento int64     `db:"idmedicamento" json:"idmedicamento,string"`
+	Cantidad      int64     `db:"cantidad" json:"cantidad,string"`
 	Fechahora     time.Time `db:"fechahora" json:"fechahora"`
 }
 

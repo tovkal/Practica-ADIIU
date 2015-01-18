@@ -1,0 +1,200 @@
+{{define "entradas"}}
+<div>
+<div class="row">
+	<div class="col-md-8">
+		<span class="help-block">Cerca les entrades d'un rang de dates concret introduïnt les dates i pulsant el botó Aplicar.</span>
+		<div class="col-md-6">
+	        <div class="form-group">
+	            <label for="fromDate">Des de (inclòs)</label>
+	            <div class='input-group date'>
+	                <input type='text' id="fromDate" name="fromDate" class="form-control obligatori" data-date-format="YYYY-MM-DD" placeholder="aaaa-mm-dd" />
+				    <span class="input-group-addon">
+				        <span class="glyphicon glyphicon-calendar"></span>
+				    </span>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="col-md-6">
+	        <div class="form-group">
+	            <label for="toDate">Fins (inclòs)</label>
+	            <div class='input-group date'>
+	                <input type='text' id="toDate" name="toDate" class="form-control obligatori" data-date-format="YYYY-MM-DD" placeholder="aaaa-mm-dd" />
+				    <span class="input-group-addon">
+				        <span class="glyphicon glyphicon-calendar"></span>
+				    </span>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	<script type="application/javascript">
+        var $fromDate = $("#fromDate");
+        var $toDate = $("#toDate");
+        $(function () {
+            var settings = {pickTime: false, date: "glyphicon glyphicon-calendar"};
+            $fromDate.datetimepicker(settings);
+            $toDate.datetimepicker(settings);
+            $fromDate.on("dp.change",function (e) {
+                $toDate.data("DateTimePicker").setMinDate(e.date);
+            });
+            $toDate.on("dp.change",function (e) {
+                $fromDate.data("DateTimePicker").setMaxDate(e.date);
+            });
+        });
+    </script>
+    <div class="col-md-2 pull-down">
+	    <div class="btn-group-vertical" role="group">
+	    	<button type="button" class="btn btn-default" onclick="resetFilter();">Borrar filtre</button>
+	    	<button type="button" class="btn btn-primary" onclick="applyFilter();">Aplicar filtre</button>
+		</div>
+    </div>
+	<div class="col-md-2 pull-down">
+		<button id="createSeccioBtn" type="button" class="btn btn-success" onclick="createEntrada()">Afegir entrada</button>
+	</div>
+</div>
+<table id="categoriasTable" class="table table-hover">
+	<thead>
+		<tr>
+			<th class="col-md-2">ID Medicament</th>
+			<th class="col-md-3">Quantitat</th>
+			<th class="col-md-4">Data i hora de creació</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+</div>
+<script>
+	var table;
+
+	$(document).ready(function() {
+		setupTable();
+
+		$('.pull-down').each(function() {
+		    $(this).css('margin-top', $(this).parent().height()-$(this).height());
+		});
+	});
+
+	function setupTable() {
+		table = $("#categoriasTable").DataTable({
+			ajax : {
+				url : "/api/entradas",
+				type: "GET",
+				dataSrc: "",
+
+			},
+			paging: false,
+			info: false,
+			searching: false,
+			order: [[1, "asc"]],
+			columns: [
+				{data: "idmedicamento"},
+				{data: 'cantidad'},
+				{data: "fechahora"}
+			]
+		});
+	};
+
+	// Date filter
+	var fromDate = $("#fromDate");
+	var toDate = $("#toDate");
+
+	function applyFilter() {
+		table.ajax.url("/api/entradas/" + fromDate.val() + "/" + toDate.val() ).load();
+	};
+
+	function resetFilter() {
+		table.ajax.url("/api/entradas").load();
+		fromDate.val("");
+		toDate.val("");
+	};
+</script>
+
+<div class="modal fade" id="entradasModal" tabindex="-1" role="dialog" aria-labelledby="titolModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Tancar</span></button>
+                <h4 class="modal-title" id="titolModal">Entrada</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                	<div id="modalAlert" class="alert alert-danger hidden" role="alert"></div>
+                    <form id="entradaForm" class="form-horizontal" role="form">
+                    	<div class="form-group">
+                    		<label for="medicamentSelect" class="col-sm-2 control-label">ID Medicament</label>
+                    		<div class="col-sm-10">
+                    			<select id="medicamentSelect" name="idmedicamento" class="form-control">
+                    			</select>
+                    		</div>
+                    	</div>
+                    	<div class="form-group">
+                    		<label for="quantitat" class="col-sm-2 control-label">Quantitat</label>
+                    		<div class="col-sm-10">
+                    			<input type="number" id="quantitat" name="cantidad" class="form-control" placeholder="Quantitat" min="1"/>
+                    		</div>
+                    	</div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="actionBtn" type="button" class="btn btn-success" onclick="submitEntrada()">Crear</button>
+            </div>
+        </div>
+    </div>    
+</div>
+
+<script>
+	var $modal = $('#entradasModal');
+	var $form = $('#entradaForm');
+	var $medicamentSelect = $('#medicamentSelect');
+	var $quantitat = $('#quantitat');
+	var $alert = $("#modalAlert");
+
+	// Setup and show modal
+	function createEntrada() {
+		$.ajax({
+			type: "GET",
+			datatype: "json",
+			url: "/api/medicamentos",
+			success: function(data) {
+				$medicamentSelect.children("option").remove();
+				
+				$.each(data, function(key, value) {
+					$medicamentSelect.append(createMedicamentoOption(value.id, value.nombre));
+				});
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert("Error fetching medicamentos list. Got:\n" + errorThrown); // DEBUG
+			}
+		});
+
+		$modal.modal('show');
+	}
+
+	function createMedicamentoOption(id, name) {
+		return $("<option></option>").attr("value", id).text(id + " - " + name);
+	}
+
+	function submitEntrada() {
+		$.ajax({
+			type: "POST",
+			datatype: "json",
+			url: "/api/entradas",
+			data: JSON.stringify($form.serializeObject()),
+			success: function(data) {
+				table.row.add(data).draw();
+				closeModal();
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert("Error creating Entrada. Got:\n" + errorThrown); // DEBUG
+			}
+		});
+	}
+
+	function closeModal() {
+		resetForm($form);
+		removeBackgroundImage('drop-zone');
+		$modal.modal('hide');
+	}
+</script>
+{{end}}
