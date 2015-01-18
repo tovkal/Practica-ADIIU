@@ -63,3 +63,8 @@ $.fn.serializeObject = function()
     });
     return o;
 };
+
+// Create a option element given an id to be set as value and a name. The label will be "id - name"
+function createOption(id, name) {
+		return $("<option></option>").attr("value", id).text(id + " - " + name);
+}

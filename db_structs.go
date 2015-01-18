@@ -44,8 +44,8 @@ type Noticias struct {
 
 type Salidas struct {
 	Id            int64     `db:"id" json:"id"`
-	Idmedicamento int64     `db:"idmedicamento" json:"idmedicamento"`
+	Idmedicamento int64     `db:"idmedicamento" json:"idmedicamento,string"`
 	Fechahora     time.Time `db:"fechahora" json:"fechahora"`
-	Cantidad      int64     `db:"cantidad" json:"cantidad"`
-	Idfarmacia    int64     `db:"idfarmacia" json:"idfarmacia"`
+	Cantidad      int64     `db:"cantidad" json:"cantidad,string"`
+	Idfarmacia    int64     `db:"idfarmacia" json:"idfarmacia,string"`
 }

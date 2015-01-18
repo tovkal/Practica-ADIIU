@@ -1,4 +1,4 @@
-{{define "entradas"}}
+{{define "salidas"}}
 <div>
 <div class="row">
 	<div class="col-md-8">
@@ -48,15 +48,16 @@
 		</div>
     </div>
 	<div class="col-md-2 pull-down">
-		<button id="createSeccioBtn" type="button" class="btn btn-success" onclick="createEntrada()">Afegir entrada</button>
+		<button id="createSeccioBtn" type="button" class="btn btn-success" onclick="createEntrada()">Afegir sortida</button>
 	</div>
 </div>
 <table id="categoriasTable" class="table table-hover">
 	<thead>
 		<tr>
 			<th class="col-md-2">ID Medicament</th>
+			<th class="col-md-2">ID Farmacia</th>
 			<th class="col-md-3">Quantitat</th>
-			<th class="col-md-4">Data i hora d'entrada</th>
+			<th class="col-md-4">Data i hora de sortida</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -77,7 +78,7 @@
 	function setupTable() {
 		table = $("#categoriasTable").DataTable({
 			ajax : {
-				url : "/api/entradas",
+				url : "/api/salidas",
 				type: "GET",
 				dataSrc: "",
 				datatype: "json"
@@ -88,6 +89,7 @@
 			order: [[1, "asc"]],
 			columns: [
 				{data: "idmedicamento"},
+				{data: "idfarmacia"},
 				{data: 'cantidad'},
 				{data: "fechahora"}
 			]
@@ -99,11 +101,11 @@
 	var toDate = $("#toDate");
 
 	function applyFilter() {
-		table.ajax.url("/api/entradas/" + fromDate.val() + "/" + toDate.val() ).load();
+		table.ajax.url("/api/salidas/" + fromDate.val() + "/" + toDate.val() ).load();
 	};
 
 	function resetFilter() {
-		table.ajax.url("/api/entradas").load();
+		table.ajax.url("/api/salidas").load();
 		fromDate.val("");
 		toDate.val("");
 	};
@@ -114,7 +116,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Tancar</span></button>
-                <h4 class="modal-title" id="titolModal">Entrada</h4>
+                <h4 class="modal-title" id="titolModal">Sortida</h4>
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
@@ -124,6 +126,13 @@
                     		<label for="medicamentSelect" class="col-sm-2 control-label">ID - Nom Medicament</label>
                     		<div class="col-sm-10">
                     			<select id="medicamentSelect" name="idmedicamento" class="form-control">
+                    			</select>
+                    		</div>
+                    	</div>
+                    	<div class="form-group">
+                    		<label for="farmaciaSelect" class="col-sm-2 control-label">ID - Nom Farmacia</label>
+                    		<div class="col-sm-10">
+                    			<select id="farmaciaSelect" name="idfarmacia" class="form-control">
                     			</select>
                     		</div>
                     	</div>
@@ -147,6 +156,7 @@
 	var $modal = $('#entradasModal');
 	var $form = $('#entradaForm');
 	var $medicamentSelect = $('#medicamentSelect');
+	var $farmaciaSelect = $('#farmaciaSelect');
 	var $quantitat = $('#quantitat');
 	var $alert = $("#modalAlert");
 
@@ -167,6 +177,21 @@
 				alert("Error fetching medicamentos list. Got:\n" + errorThrown); // DEBUG
 			}
 		});
+		$.ajax({
+			type: "GET",
+			datatype: "json",
+			url: "/api/farmacias",
+			success: function(data) {
+				$farmaciaSelect.children("option").remove();
+
+				$.each(data, function(key, value) {
+					$farmaciaSelect.append(createOption(value.id, value.nik));
+				});
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert("Error fetching medicamentos list. Got:\n" + errorThrown); // DEBUG
+			}
+		});
 
 		$modal.modal('show');
 	}
@@ -175,7 +200,7 @@
 		$.ajax({
 			type: "POST",
 			datatype: "json",
-			url: "/api/entradas",
+			url: "/api/salidas",
 			data: JSON.stringify($form.serializeObject()),
 			success: function(data) {
 				table.row.add(data).draw();

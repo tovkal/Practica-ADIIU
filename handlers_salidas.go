@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/tovkal/go-json-rest/rest"
 )
@@ -16,7 +17,7 @@ func (api *Api) GetSalida(w rest.ResponseWriter, r *rest.Request) {
 	fromDate := r.PathParam("fromDate")
 	toDate := r.PathParam("toDate")
 	salidas := []Salidas{}
-	if api.DB.Where("fechahora >= ? AND fechahora <= ?", fromDate, toDate).Find(&salidas).Error != nil {
+	if api.DB.Where("(fechahora BETWEEN ? AND ?)", fromDate+" 00:00:00", toDate+" 23:59:59").Find(&salidas).Error != nil {
 		rest.NotFound(w, r)
 		return
 	}
@@ -29,6 +30,9 @@ func (api *Api) PostSalida(w rest.ResponseWriter, r *rest.Request) {
 		rest.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	salida.Fechahora = time.Now()
+
 	if err := api.DB.Save(&salida).Error; err != nil {
 		rest.Error(w, err.Error(), http.StatusInternalServerError)
 		return
