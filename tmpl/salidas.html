@@ -2,7 +2,7 @@
 <div>
 <div class="row">
 	<div class="col-md-8">
-		<span class="help-block">Cerca les entrades d'un rang de dates concret introduïnt les dates i pulsant el botó Aplicar.</span>
+		<span class="help-block">Cerca les sortides d'un rang de dates concret introduïnt les dates i pulsant el botó Aplicar.</span>
 		<div class="col-md-6">
 	        <div class="form-group">
 	            <label for="fromDate">Des de (inclòs)</label>
@@ -48,7 +48,7 @@
 		</div>
     </div>
 	<div class="col-md-2 pull-down">
-		<button id="createSeccioBtn" type="button" class="btn btn-success" onclick="createEntrada()">Afegir sortida</button>
+		<button id="createSeccioBtn" type="button" class="btn btn-success" onclick="createSalida()">Afegir sortida</button>
 	</div>
 </div>
 <table id="categoriasTable" class="table table-hover">
@@ -111,7 +111,7 @@
 	};
 </script>
 
-<div class="modal fade" id="entradasModal" tabindex="-1" role="dialog" aria-labelledby="titolModal" aria-hidden="true">
+<div class="modal fade" id="salidasModal" tabindex="-1" role="dialog" aria-labelledby="titolModal" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -121,7 +121,7 @@
             <div class="modal-body">
                 <div class="container-fluid">
                 	<div id="modalAlert" class="alert alert-danger hidden" role="alert"></div>
-                    <form id="entradaForm" class="form-horizontal" role="form">
+                    <form id="salidaForm" class="form-horizontal" role="form">
                     	<div class="form-group">
                     		<label for="medicamentSelect" class="col-sm-2 control-label">ID - Nom Medicament</label>
                     		<div class="col-sm-10">
@@ -146,22 +146,22 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="actionBtn" type="button" class="btn btn-success" onclick="submitEntrada()">Crear</button>
+                <button id="actionBtn" type="button" class="btn btn-success" onclick="submitSalida()">Crear</button>
             </div>
         </div>
     </div>    
 </div>
 
 <script>
-	var $modal = $('#entradasModal');
-	var $form = $('#entradaForm');
+	var $modal = $('#salidasModal');
+	var $form = $('#salidaForm');
 	var $medicamentSelect = $('#medicamentSelect');
 	var $farmaciaSelect = $('#farmaciaSelect');
 	var $quantitat = $('#quantitat');
 	var $alert = $("#modalAlert");
 
 	// Setup and show modal
-	function createEntrada() {
+	function createSalida() {
 		$.ajax({
 			type: "GET",
 			datatype: "json",
@@ -196,7 +196,7 @@
 		$modal.modal('show');
 	}
 
-	function submitEntrada() {
+	function submitSalida() {
 		$.ajax({
 			type: "POST",
 			datatype: "json",
@@ -207,7 +207,7 @@
 				closeModal();
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
-				alert("Error creating Entrada. Got:\n" + errorThrown); // DEBUG
+				alert("Error creating Salida. Got:\n" + errorThrown); // DEBUG
 			}
 		});
 	}
