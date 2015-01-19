@@ -200,7 +200,7 @@
 	}
 
 	function readMedicamento(id) {
-		enablePhotoUpload();
+		disablePhotoUpload();
 
 		changeButton($btn, 'read', 'Tancar');
 
@@ -230,6 +230,8 @@
 	}
 
 	function updateMedicamento(id, row) {
+		enablePhotoUpload();
+		
 		changeButton($btn, 'update', 'Modificar', 'submitUpdateMedicamento', id, row);
 
 		read("medicamentos", id, readSuccess);
