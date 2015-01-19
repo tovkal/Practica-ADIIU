@@ -162,53 +162,29 @@
 
 	// Setup and show modal
 	function createSalida() {
-		$.ajax({
-			type: "GET",
-			datatype: "json",
-			url: "/api/medicamentos",
-			success: function(data) {
-				$medicamentSelect.children("option").remove();
+		read("medicamentos", null, function(data) {
+			$medicamentSelect.children("option").remove();
 
-				$.each(data, function(key, value) {
-					$medicamentSelect.append(createOption(value.id, value.nombre));
-				});
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert("Error fetching medicamentos list. Got:\n" + errorThrown); // DEBUG
-			}
+			$.each(data, function(key, value) {
+				$medicamentSelect.append(createOption(value.id, value.nombre));
+			});
 		});
-		$.ajax({
-			type: "GET",
-			datatype: "json",
-			url: "/api/farmacias",
-			success: function(data) {
-				$farmaciaSelect.children("option").remove();
 
-				$.each(data, function(key, value) {
-					$farmaciaSelect.append(createOption(value.id, value.nik));
-				});
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert("Error fetching medicamentos list. Got:\n" + errorThrown); // DEBUG
-			}
+		read("farmacias", null, function(data) {
+			$farmaciaSelect.children("option").remove();
+
+			$.each(data, function(key, value) {
+				$farmaciaSelect.append(createOption(value.id, value.nik));
+			});
 		});
 
 		$modal.modal('show');
 	}
 
 	function submitSalida() {
-		$.ajax({
-			type: "POST",
-			datatype: "json",
-			url: "/api/salidas",
-			data: JSON.stringify($form.serializeObject()),
-			success: function(data) {
-				table.row.add(data).draw();
-				closeModal();
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert("Error creating Salida. Got:\n" + errorThrown); // DEBUG
-			}
+		create("salidas", function(data) {
+			table.row.add(data).draw();
+			closeModal();
 		});
 	}
 

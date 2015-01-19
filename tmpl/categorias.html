@@ -167,39 +167,24 @@
 
 		changeButton($btn, 'read', 'Tancar');
 
-		$.ajax({
-			type: "GET",
-			datatype: "json",
-			url: "/api/categorias/" + id,
-			success: function(data) {
-				$nombre.val(data.nombre);
-				$texto.val(data.texto);
-				if (data.imagen != "") {
-					setBackgroundImage('drop-zone', data.imagen);
-				};
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert("Error reading Categoria. Got:\n" + errorThrown); // DEBUG
-			}
-		});
+		read("categorias", id, readSuccess);
+
 		$modal.modal('show');
 	}
 
-	function submitCategoria(id) {
-		// TODO Validation? Ask professor
+	function readSuccess(data) {
+		$nombre.val(data.nombre);
+		$texto.val(data.texto);
+		$imagen.val(data.imagen);
+		if (data.imagen != "") {
+			setBackgroundImage('drop-zone', data.imagen);
+		};
+	}
 
-		$.ajax({
-			type: "POST",
-			datatype: "json",
-			url: "/api/categorias",
-			data: JSON.stringify($form.serializeObject()),
-			success: function(data) {
-				table.row.add(data).draw();
-				closeModal();
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert("Error creating Categoria. Got:\n" + errorThrown); // DEBUG
-			}
+	function submitCategoria() {
+		create("categorias", function(data) {
+			table.row.add(data).draw();
+			closeModal();
 		});
 	}
 
@@ -208,50 +193,21 @@
 
 		changeButton($btn, 'update', 'Modificar', 'submitUpdateCategoria', id, row);
 
-		$.ajax({
-			type: "GET",
-			datatype: "json",
-			url: "/api/categorias/" + id,
-			success: function(data) {
-				$nombre.val(data.nombre);
-				$texto.val(data.texto);
-				$imagen.val(data.imagen);
-				setBackgroundImage('drop-zone', data.imagen);
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert("Error reading Categoria. Got:\n" + errorThrown); // DEBUG
-			}
-		});
+		read("categorias", id, readSuccess);
+
 		$modal.modal('show');
 	}
 
 	function submitUpdateCategoria(id, row) {
-		$.ajax({
-			type: "PUT",
-			datatype: "json",
-			url: "/api/categorias/" + id,
-			data: JSON.stringify($form.serializeObject()),
-			success: function(data) {
-				table.row(row).data(data).draw();
-				closeModal();
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert("Error creating Categoria. Got:\n" + errorThrown); // DEBUG
-			}
+		update("categorias", id, function(data) {
+			table.row(row).data(data).draw();
+			closeModal();
 		});
 	}
 
 	function deleteCategoria(id, row) {
-		$.ajax({
-			type: "DELETE",
-			datatype: "json",
-			url: "/api/categorias/" + id,
-			success: function(data) {
-				table.row(row).remove().draw();
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert("Error deleting Categoria. Got:\n" + errorThrown); // DEBUG
-			}
+		deleteFn("categoria", id, function(data) {
+			table.row(row).remove().draw();
 		});
 	}
 
@@ -264,23 +220,5 @@
 		tidyBeforeClosingModal();
 		$modal.modal('hide');
 	}
-
-	/*function validateForm() {
-		if ($nombre.val() == '') {
-			$alert.text('El nom és un camp obligatori.');
-		};
-
-		if ($texto.val() == '') {
-			$alert.text('El text és un camp obligatori.');
-		};
-
-		if ($form.find('[name=imagen]').val() == '') {
-			$alert.text('Es obligatori pujar una imatge.');
-		};	
-
-		if ($alert.hasClass('hidden')) {
-			$alert.removeClass('hidden');	
-		};
-	}*/
 </script>
 {{end}}

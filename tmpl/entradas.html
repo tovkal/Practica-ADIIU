@@ -152,38 +152,21 @@
 
 	// Setup and show modal
 	function createEntrada() {
-		$.ajax({
-			type: "GET",
-			datatype: "json",
-			url: "/api/medicamentos",
-			success: function(data) {
-				$medicamentSelect.children("option").remove();
+		read("medicamentos", null, function(data) {
+			$medicamentSelect.children("option").remove();
 
-				$.each(data, function(key, value) {
-					$medicamentSelect.append(createOption(value.id, value.nombre));
-				});
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert("Error fetching medicamentos list. Got:\n" + errorThrown); // DEBUG
-			}
+			$.each(data, function(key, value) {
+				$medicamentSelect.append(createOption(value.id, value.nombre));
+			});
 		});
 
 		$modal.modal('show');
 	}
 
 	function submitEntrada() {
-		$.ajax({
-			type: "POST",
-			datatype: "json",
-			url: "/api/entradas",
-			data: JSON.stringify($form.serializeObject()),
-			success: function(data) {
-				table.row.add(data).draw();
-				closeModal();
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert("Error creating Entrada. Got:\n" + errorThrown); // DEBUG
-			}
+		create("entradas", function(data) {
+			table.row.add(data).draw();
+			closeModal();
 		});
 	}
 

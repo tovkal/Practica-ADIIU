@@ -73,3 +73,54 @@ $.fn.serializeObject = function()
 function createOption(id, name) {
 		return $("<option></option>").attr("value", id).text(id + " - " + name);
 }
+
+// Common ajax calls
+function read(operation, id, success_fn) {
+	$.ajax({
+		type: "GET",
+		datatype: "json",
+		url: "/api/" + operation + (id != null ? "/" + id : ""),
+		success: success_fn,
+		error: function(jqXHR, textStatus, errorThrown) {
+			alert("Error reading Categoria. Got:\n" + errorThrown); // DEBUG
+		}
+	});
+};
+
+function create(operation, success_fn) {
+	$.ajax({
+		type: "POST",
+		datatype: "json",
+		url: "/api/" + operation,
+		data: JSON.stringify($form.serializeObject()),
+		success: success_fn,
+		error: function(jqXHR, textStatus, errorThrown) {
+			alert("Error creating Categoria. Got:\n" + errorThrown); // DEBUG
+		}
+	});
+};
+
+function update(operation, id, success_fn) {
+	$.ajax({
+		type: "PUT",
+		datatype: "json",
+		url: "/api/" + operation + "/" + id,
+		data: JSON.stringify($form.serializeObject()),
+		success: success_fn,
+		error: function(jqXHR, textStatus, errorThrown) {
+			alert("Error creating Categoria. Got:\n" + errorThrown); // DEBUG
+		}
+	});
+};
+
+function deleteFn(operation, id, success_fn) {
+	$.ajax({
+		type: "DELETE",
+		datatype: "json",
+		url: "/api/" + operation + "/" + id,
+		success: success_fn,
+		error: function(jqXHR, textStatus, errorThrown) {
+			alert("Error deleting Categoria. Got:\n" + errorThrown); // DEBUG
+		}
+	});
+};
