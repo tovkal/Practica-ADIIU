@@ -1,0 +1,262 @@
+{{define "medicamentos"}}
+<div>
+<table id="medicamentosTable" class="table table-hover">
+	<thead>
+		<tr>
+			<th class="col-md-2">Categoria</th>
+			<th class="col-md-2">Imatge</th>
+			<th class="col-md-3">Nom</th>
+			<th class="col-md-3">Descripció</th>
+			<th class="col-md-1">Estoc</th>
+			<th class="col-md-1"><button type="button" class="btn btn-success" onclick="createMedicamento()"><span class="glyphicon glyphicon-plus"></span></button></th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+</div>
+<script>
+	var table;
+
+	$(document).ready(function() {
+		setupTable();
+	});
+
+	function setupTable() {
+		table = $("#medicamentosTable").DataTable({
+			paging: false,
+			info: false,
+			searching: false,
+			ajax: {
+				type: "GET",
+				datatype: "json",
+				url: "/api/medicamentos",
+				dataSrc: "",
+			},
+			order: [[2, "asc"]],
+			columnDefs: [
+				{
+					targets: 1,
+					orderable: false
+				},
+				{
+					targets: 3,
+					orderable: false
+				}
+			],
+			columns: [
+				{data: 'idcategoria'},
+				{
+					data: "imagen",
+					render: function (data, type, full, meta) {
+						if(data == "") {
+							return "";
+						}
+						return "<img src='/img/uploads/" + data + "' width='100' />";
+					}
+				},
+				{data: 'nombre'},
+				{data: "texto"},
+				{data: "enalmacen"},
+				{
+					data: "id",
+					render: function(data, type, full, meta) {
+						var readBtn = '<button type="button" class="btn btn-default" value='+ data + ' onclick="readMedicamento(this.value)"><span class="glyphicon glyphicon-eye-open"></span></button>';
+						var editBtn = '<button type="button" class="btn btn-primary" value='+ data + ' onclick="updateMedicamento(this.value,' + meta.row + ')"><span class="glyphicon glyphicon-edit"></span></button>';
+						var deleteBtn = '<button type="button" class="btn btn-danger" value='+ data + ' onclick="deleteMedicamento(this.value,' + meta.row + ')"><span class="glyphicon glyphicon-trash"></span></button>';
+						return '<div class="btn-group-vertical" role="group" aria-label="Action buttons" style="padding-left:10px;">'+ readBtn + editBtn + deleteBtn + '</div>'
+					}
+				}
+			]
+		});
+	}
+</script>
+
+<div class="modal fade" id="medicamentosModal" tabindex="-1" role="dialog" aria-labelledby="titolModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Tancar</span></button>
+                <h4 class="modal-title" id="titolModal">Medicamento</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                	<div id="modalAlert" class="alert alert-danger hidden" role="alert"></div>
+                    <form id="medicamentoForm" class="form-horizontal" role="form">
+                    	<div class="form-group">
+                    		<label for="categoriasSelect" class="col-sm-2 control-label">Categoria</label>
+                    		<div class="col-sm-10">
+                    			<select id="categoriasSelect" name="idcategoria" class="form-control">
+                    			</select>
+                    		</div>
+                    	</div>
+                    	<div class="form-group">
+                    		<label for="nombre" class="col-sm-2 control-label">Nom</label>
+                    		<div class="col-sm-10">
+                    			<input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nom" />
+                    		</div>
+                    	</div>
+                    	<div class="form-group">
+                    		<label for="texto" class="col-sm-2 control-label">Descripció</label>
+                    		<div class="col-sm-10">
+                    			<textarea id="texto" name="texto" rows="3" class="form-control" placeholder="Descripció"></textarea>
+                    		</div>
+                    	</div>
+                    	<div class="form-group">
+                    		<label for="enalmacen" class="col-sm-2 control-label">Estoc</label>
+                    		<div class="col-sm-10">
+                    			<input type="number" min="0" id="enalmacen" name="enalmacen" class="form-control" placeholder="Estoc" />
+                    		</div>
+                    	</div>
+                    	<div class="form-group">
+                    		<label for="codigo" class="col-sm-2 control-label">Codi</label>
+                    		<div class="col-sm-10">
+                    			<input type="text" id="codigo" name="codigo" class="form-control" placeholder="Codi" />
+                    		</div>
+                    	</div>
+                    	<div class="form-group">
+                    		<label for="imagen" class="col-sm-2 control-label">Imatge</label>
+                    		<input type="hidden" id="imagen" name="imagen" value="">
+                    		<div class="col-sm-10">
+                    			<div id="photoUpload">
+		                            <!-- Standar form -->
+		                            <div class="row enabledUpload">
+		                            	<div class="col-sm-12">
+		                            		<div class="row">
+		                            			<div class="col-sm-8">
+				                                    <input type="file" name="photoFile" id="js-upload-files" />
+				                                </div>
+				                                <div class="col-sm-4">
+				                                	<button type="button" class="btn btn-sm btn-primary pull-right" id="js-upload-submit">Pujar foto</button>
+			                                	</div>
+		                            		</div>
+		                                </div>
+		                            </div>
+		                            <!-- Drop zone -->
+		                            <span id="helpBlock" class="help-block enabledUpload">Arrosega i amolla una foto al recuadre per pujar-la</span>
+		                            <div id="drop-zone" class="upload-drop-zone"></div>
+		                            <!-- Progress bar -->
+		                            <div class="progress enabledUpload">
+		                                <div id="photoProgressBar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0;">
+		                                </div>
+		                            </div>
+		                        </div>
+                    		</div>
+                    	</div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="actionBtn" type="button" class="btn btn-default">Tancar</button>
+            </div>
+        </div>
+    </div>    
+</div>
+
+<script src="static/js/uploadPhoto.js"></script>
+<script>
+	var $modal = $('#medicamentosModal');
+	var $form = $('#medicamentoForm');
+	var $nombre = $('#nombre');
+	var $texto = $('#texto');
+	var $enalmacen = $('#enalmacen');
+	var $codigo = $('#codigo');
+	var $imagen = $('#imagen');
+	var $btn = $("#actionBtn");
+	var $alert = $("#modalAlert");
+	var $categoriasSelect = $("#categoriasSelect");
+
+	$(document).ready(function() {
+		$modal.on('hidden.bs.modal', function() {
+			tidyBeforeClosingModal();
+		});
+	});
+
+	function getCategorias(id) {
+		read("categorias", null, function(data) {
+			$categoriasSelect.children("option").remove();
+
+			$.each(data, function(key, value) {
+				var $option = createOption(value.id, value.nombre);
+
+				if (id != null && id == value.id) {
+					$option.attr('selected', true);
+				};
+
+				$categoriasSelect.append($option);
+			});
+		});
+	}
+
+	// Setup and show modal
+	function createMedicamento() {
+		getCategorias();
+
+		enablePhotoUpload();
+
+		changeButton($btn, 'create', 'Crear', 'submitMedicamento');
+
+		$modal.modal('show');
+	}
+
+	function readMedicamento(id) {
+		enablePhotoUpload();
+
+		changeButton($btn, 'read', 'Tancar');
+
+		read("medicamentos", id, readSuccess);
+
+		$modal.modal('show');
+	}
+
+	function readSuccess(data) {
+		$nombre.val(data.nombre);
+		$enalmacen.val(data.enalmacen);
+		$texto.val(data.texto);
+		$codigo.val(data.codigo);
+		$imagen.val(data.imagen);
+		if (data.imagen != "") {
+			setBackgroundImage('drop-zone', data.imagen);
+		};
+
+		getCategorias(data.idcategoria);
+	}
+
+	function submitMedicamento() {
+		create("medicamentos", function(data) {
+			table.row.add(data).draw();
+			closeModal();
+		});
+	}
+
+	function updateMedicamento(id, row) {
+		changeButton($btn, 'update', 'Modificar', 'submitUpdateMedicamento', id, row);
+
+		read("medicamentos", id, readSuccess);
+
+		$modal.modal('show');
+	}
+
+	function submitUpdateMedicamento(id, row) {
+		update("medicamentos", id, function(data) {
+			table.row(row).data(data).draw();
+			closeModal();
+		});
+	}
+
+	function deleteMedicamento(id, row) {
+		deleteFn("medicamentos", id, function(data) {
+			table.row(row).remove().draw();
+		});
+	}
+
+	function tidyBeforeClosingModal() {
+		resetForm($form);
+	}
+
+	function closeModal() {
+		tidyBeforeClosingModal();
+		$modal.modal('hide');
+	}
+</script>
+{{end}}
