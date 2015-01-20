@@ -129,3 +129,8 @@ function deleteFn(operation, id, success_fn) {
 function getDateFromISO(date) {
 	return date.substring(0, 10);
 }
+
+// 2014-11-25T00:00:00Z -> 2014-11-25 00:00:00
+function getDateTimeFromISO(date) {
+	return date.replace("T", " ").substring(0, 19);
+}

@@ -89,7 +89,12 @@
 			columns: [
 				{data: "idmedicamento"},
 				{data: 'cantidad'},
-				{data: "fechahora"}
+				{
+					data: "fechahora",
+					render: function(data, type, full, meta) {
+						return getDateTimeFromISO(data);
+					}
+				}
 			]
 		});
 	};

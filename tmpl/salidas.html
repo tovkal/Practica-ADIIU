@@ -91,7 +91,12 @@
 				{data: "idmedicamento"},
 				{data: "idfarmacia"},
 				{data: 'cantidad'},
-				{data: "fechahora"}
+				{
+					data: "fechahora",
+					render: function(data, type, full, meta) {
+						return getDateTimeFromISO(data);
+					}
+				}
 			]
 		});
 	};
