@@ -1,10 +1,12 @@
 {{define "index"}}
 {{template "head"}}
 {{template "header"}}
-<div id="content" class="content col-md-9">
-{{template "inici"}}
-</div>
+<div class="row override-row-margins">
+	<div id="content" class="content col-md-9 sameHeigth">
+	{{template "inici"}}
+	</div>
 
-{{template "menu"}}
+	{{template "menu"}}
+</div>
 {{template "footer"}}
 {{end}}
