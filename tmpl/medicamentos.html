@@ -167,6 +167,9 @@
 	var $categoriasSelect = $("#categoriasSelect");
 
 	$(document).ready(function() {
+		// Reset photo upload progress bar
+		$("#photoProgressBar").width('0%');
+		
 		$modal.on('hidden.bs.modal', function() {
 			tidyBeforeClosingModal();
 		});
@@ -231,7 +234,7 @@
 
 	function updateMedicamento(id, row) {
 		enablePhotoUpload();
-		
+
 		changeButton($btn, 'update', 'Modificar', 'submitUpdateMedicamento', id, row);
 
 		read("medicamentos", id, readSuccess);

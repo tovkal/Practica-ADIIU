@@ -124,3 +124,8 @@ function deleteFn(operation, id, success_fn) {
 		}
 	});
 };
+
+// 2014-11-25T00:00:00Z -> 2014-11-25
+function getDateFromISO(date) {
+	return date.substring(0, 10);
+}

@@ -14,7 +14,7 @@ func (api *Api) GetAllNoticias(w rest.ResponseWriter, r *rest.Request) {
 
 func (api *Api) GetNoticia(w rest.ResponseWriter, r *rest.Request) {
 	id := r.PathParam("id")
-	noticias := []Noticias{}
+	noticias := Noticias{}
 	if api.DB.Find(&noticias, id).Error != nil {
 		rest.NotFound(w, r)
 		return
@@ -63,7 +63,7 @@ func (api *Api) PutNoticia(w rest.ResponseWriter, r *rest.Request) {
 func (api *Api) GetNoticiasFromDate(w rest.ResponseWriter, r *rest.Request) {
 	date := r.PathParam("date")
 	noticias := []Noticias{}
-	if api.DB.Where("inicio <= ? and fin >=", date, date).First(&noticias).Error != nil {
+	if api.DB.Where("inicio <= ? and fin >= ?", date+" 00:00:00", date+" 23:59:59").First(&noticias).Error != nil {
 		rest.NotFound(w, r)
 		return
 	}

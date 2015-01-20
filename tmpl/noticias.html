@@ -1,0 +1,205 @@
+{{define "noticias"}}
+<div>
+<table id="noticiasTable" class="table table-hover">
+	<thead>
+		<tr>
+			<th class="col-md-5">Texto</th>
+			<th class="col-md-3">Des de</th>
+			<th class="col-md-3">Fins</th>
+			<th class="col-md-1"><button type="button" class="btn btn-success" onclick="createNoticia()"><span class="glyphicon glyphicon-plus"></span></button></th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+</div>
+<script>
+	var table;
+
+	$(document).ready(function() {
+		setupTable();
+	});
+
+	function setupTable() {
+		table = $("#noticiasTable").DataTable({
+			paging: false,
+			info: false,
+			searching: false,
+			ajax: {
+				type: "GET",
+				datatype: "json",
+				url: "/api/noticias",
+				dataSrc: "",
+			},
+			order: [[1, "asc"]],
+			columnDefs: [
+				{
+					targets: 0,
+					orderable: false
+				}
+			],
+			columns: [
+				{data: 'texto'},
+				{
+					data: 'inicio',
+					render: function(data, type, full, meta) {
+						return getDateFromISO(data);
+					}
+				},
+				{
+					data: "fin",
+					render: function(data, type, full, meta) {
+						return getDateFromISO(data);
+					}
+				},
+				{
+					data: "id",
+					render: function(data, type, full, meta) {
+						var readBtn = '<button type="button" class="btn btn-default" value='+ data + ' onclick="readNoticia(this.value)"><span class="glyphicon glyphicon-eye-open"></span></button>';
+						var editBtn = '<button type="button" class="btn btn-primary" value='+ data + ' onclick="updateNoticia(this.value,' + meta.row + ')"><span class="glyphicon glyphicon-edit"></span></button>';
+						return '<div class="btn-group-vertical" role="group" aria-label="Action buttons" style="padding-left:10px;">'+ readBtn + editBtn + '</div>'
+					}
+				}
+			]
+		});
+	}
+</script>
+
+<div class="modal fade" id="noticiasModal" tabindex="-1" role="dialog" aria-labelledby="titolModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Tancar</span></button>
+                <h4 class="modal-title" id="titolModal">Noticia</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                	<div id="modalAlert" class="alert alert-danger hidden" role="alert"></div>
+                    <form id="noticiaForm" class="form-horizontal" role="form">
+                    	<div class="form-group">
+                    		<label for="texto" class="col-sm-2 control-label">Text</label>
+                    		<div class="col-sm-10">
+                    			<textarea id="texto" name="texto" rows="5" class="form-control" placeholder="Text"></textarea>
+                    		</div>
+                    	</div>
+                    	<div class="form-group">
+					        <div class="col-sm-4 col-sm-offset-2">
+					            <label for="fromDate">Des de (inclòs)</label>
+					            <div class='input-group date'>
+					            	<input type="hidden" id="inicio" name="inicio" />
+					                <input type='text' id="fromDate" class="form-control obligatori" data-date-format="YYYY-MM-DD" placeholder="aaaa-mm-dd" />
+								    <span class="input-group-addon">
+								        <span class="glyphicon glyphicon-calendar"></span>
+								    </span>
+					            </div>
+					        </div>
+					    	<div class="col-sm-4">
+					            <label for="toDate">Fins (inclòs)</label>
+					            <div class='input-group date'>
+					            	<input type="hidden" id="fin" name="fin" />
+					                <input type='text' id="toDate" class="form-control obligatori" data-date-format="YYYY-MM-DD" placeholder="aaaa-mm-dd" />
+								    <span class="input-group-addon">
+								        <span class="glyphicon glyphicon-calendar"></span>
+								    </span>
+					        	</div>
+				        	</div>
+					    </div>
+					    <script type="application/javascript">
+					        var $fromDate = $("#fromDate");
+					        var $toDate = $("#toDate");
+					        $(function () {
+					            var settings = {pickTime: false, date: "glyphicon glyphicon-calendar"};
+					            $fromDate.datetimepicker(settings);
+					            $toDate.datetimepicker(settings);
+					            $fromDate.on("dp.change",function (e) {
+					                $toDate.data("DateTimePicker").setMinDate(e.date);
+					            });
+					            $toDate.on("dp.change",function (e) {
+					                $fromDate.data("DateTimePicker").setMaxDate(e.date);
+					            });
+					        });
+					    </script>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="actionBtn" type="button" class="btn btn-default">Tancar</button>
+            </div>
+        </div>
+    </div>    
+</div>
+
+<script>
+	var $modal = $('#noticiasModal');
+	var $form = $('#noticiaForm');
+	var $texto = $('#texto');
+	var $fromDate = $("#fromDate");
+	var $toDate = $("#toDate");
+	var $btn = $("#actionBtn");
+	var $alert = $("#modalAlert");
+
+	$(document).ready(function() {
+		$modal.on('hidden.bs.modal', function() {
+			tidyBeforeClosingModal();
+		});
+	});
+
+	// Setup and show modal
+	function createNoticia() {
+		changeButton($btn, 'create', 'Crear', 'submitNoticia');
+
+		$modal.modal('show');
+	}
+
+	function readNoticia(id) {
+		changeButton($btn, 'read', 'Tancar');
+
+		read("noticias", id, readSuccess);
+
+		$modal.modal('show');
+	}
+
+	function readSuccess(data) {
+		$texto.val(data.texto);
+		$fromDate.val(getDateFromISO(data.inicio));
+		$toDate.val(getDateFromISO(data.fin));
+	}
+
+	function submitNoticia() {
+		$("#inicio").val($fromDate.val() + "T00:00:00Z");
+		$("#fin").val($toDate.val() + "T00:00:00Z");
+
+		create("noticias", function(data) {
+			table.row.add(data).draw();
+			closeModal();
+		});
+	}
+
+	function updateNoticia(id, row) {		
+		changeButton($btn, 'update', 'Modificar', 'submitUpdateNoticia', id, row);
+
+		read("noticias", id, readSuccess);
+
+		$modal.modal('show');
+	}
+
+	function submitUpdateNoticia(id, row) {
+		$("#inicio").val($fromDate.val() + "T00:00:00Z");
+		$("#fin").val($toDate.val() + "T00:00:00Z");
+
+		update("noticias", id, function(data) {
+			table.row(row).data(data).draw();
+			closeModal();
+		});
+	}
+
+	function tidyBeforeClosingModal() {
+		resetForm($form);
+	}
+
+	function closeModal() {
+		tidyBeforeClosingModal();
+		$modal.modal('hide');
+	}
+</script>
+{{end}}

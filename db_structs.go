@@ -27,7 +27,7 @@ type Farmacias struct {
 
 type Medicamentos struct {
 	Id          int64  `db:"id" json:"id"`
-	Idcategoria int64  `db:"idcategoria" json:"idcategoria"`
+	Idcategoria int64  `db:"idcategoria" json:"idcategoria,string"`
 	Texto       string `db:"texto" json:"texto"`
 	Imagen      string `db:"imagen" json:"imagen"`
 	Nombre      string `db:"nombre" json:"nombre"`
