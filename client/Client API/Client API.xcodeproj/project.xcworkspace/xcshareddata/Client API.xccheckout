@@ -10,6 +10,8 @@
 	<string>Client API</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>67620B5EFA902936DF04070AF595B76AB0333747</key>
+		<string>https://github.com/Alamofire/Alamofire.git</string>
 		<key>A81B1EEFE3879D2EDC91840740E2C2A66244DCAE</key>
 		<string>https://github.com/Tovkal/go.git</string>
 		<key>E533B1676CAAC00E53BBEDF62FF53E5581EDD26E</key>
@@ -19,6 +21,8 @@
 	<string>client/Client API/Client API.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>67620B5EFA902936DF04070AF595B76AB0333747</key>
+		<string>../../../../client/Client%20API/Alamofire/</string>
 		<key>A81B1EEFE3879D2EDC91840740E2C2A66244DCAE</key>
 		<string>../../../../..</string>
 		<key>E533B1676CAAC00E53BBEDF62FF53E5581EDD26E</key>
@@ -39,6 +43,14 @@
 			<string>A81B1EEFE3879D2EDC91840740E2C2A66244DCAE</string>
 			<key>IDESourceControlWCCName</key>
 			<string></string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>67620B5EFA902936DF04070AF595B76AB0333747</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Alamofire</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>

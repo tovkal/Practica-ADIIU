@@ -11,9 +11,7 @@ import UIKit
 class OperationTVC: UITableViewController {
     
     // API operations
-    let operations = ["Categorias", "Entradas", "Salidas", "Medicamentos", "Noticias", "Farmacias"]
-
-    //TODO  let operations = {"Categorias": "/categorias", "Entradas", "Salidas", "Medicamentos", "Noticias", "Farmacias"}
+    var operations = ["Categorias": "/categorias", "Entradas": "/entradas", "Salidas": "/salidas", "Medicamentos": "/medicamentos", "Noticias": "/noticias", "Farmacias": "/farmacias"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,8 +33,8 @@ class OperationTVC: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as UITableViewCell
-        
-        cell.textLabel?.text = operations[indexPath.row]
+
+        cell.textLabel?.text = Array(operations.keys)[indexPath.row]
         
         return cell
     }
@@ -50,7 +48,8 @@ class OperationTVC: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let tvc = segue.destinationViewController as? ListTVC {
             if let index = sender as? NSIndexPath {
-                tvc.operationTitle = operations[index.row]
+                tvc.operationTitle = Array(operations.keys)[index.row]
+                tvc.method = operations[tvc.operationTitle!]
             }
         }
     }
