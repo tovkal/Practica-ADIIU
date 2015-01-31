@@ -34,8 +34,8 @@ const port = ":8080"
 
 func main() {
 
-	api := Api{}
-	api.InitDB()
+	api := api{}
+	api.initDB()
 
 	handler := rest.ResourceHandler{
 		EnableRelaxedContentType: true,
@@ -45,46 +45,46 @@ func main() {
 	// API routes
 	err := handler.SetRoutes(
 		// Categorias
-		&rest.Route{"GET", "/categorias", api.GetAllCategorias},
-		&rest.Route{"GET", "/categorias/:id", api.GetCategoria},
-		&rest.Route{"POST", "/categorias", api.PostCategoria},
-		&rest.Route{"PUT", "/categorias/:id", api.PutCategoria},
-		&rest.Route{"DELETE", "/categorias/:id", api.DeleteCategoria},
+		&rest.Route{"GET", "/categorias", api.getAllCategorias},
+		&rest.Route{"GET", "/categorias/:id", api.getCategoria},
+		&rest.Route{"POST", "/categorias", api.postCategoria},
+		&rest.Route{"PUT", "/categorias/:id", api.putCategoria},
+		&rest.Route{"DELETE", "/categorias/:id", api.deleteCategoria},
 
 		// Entradas
-		&rest.Route{"GET", "/entradas", api.GetAllEntradas},
-		&rest.Route{"GET", "/entradas/:fromDate/:toDate", api.GetEntrada},
-		&rest.Route{"POST", "/entradas", api.PostEntrada},
+		&rest.Route{"GET", "/entradas", api.getAllEntradas},
+		&rest.Route{"GET", "/entradas/:fromDate/:toDate", api.getEntrada},
+		&rest.Route{"POST", "/entradas", api.postEntrada},
 
 		// Salidas
-		&rest.Route{"GET", "/salidas", api.GetAllSalidas},
-		&rest.Route{"GET", "/salidas/:fromDate/:toDate", api.GetSalida},
-		&rest.Route{"POST", "/salidas", api.PostSalida},
+		&rest.Route{"GET", "/salidas", api.getAllSalidas},
+		&rest.Route{"GET", "/salidas/:fromDate/:toDate", api.getSalida},
+		&rest.Route{"POST", "/salidas", api.postSalida},
 
 		// Farmacias
-		&rest.Route{"GET", "/farmacias", api.GetAllFarmacias},
-		&rest.Route{"GET", "/farmacias/:nik", api.GetFarmacia},
-		&rest.Route{"POST", "/farmacias", api.PostFarmacia},
-		&rest.Route{"PUT", "/farmacias/:nik", api.PutFarmacia},
-		&rest.Route{"DELETE", "/farmacias/:nik", api.DeleteFarmacia},
+		&rest.Route{"GET", "/farmacias", api.getAllFarmacias},
+		&rest.Route{"GET", "/farmacias/:nik", api.getFarmacia},
+		&rest.Route{"POST", "/farmacias", api.postFarmacia},
+		&rest.Route{"PUT", "/farmacias/:nik", api.putFarmacia},
+		&rest.Route{"DELETE", "/farmacias/:nik", api.deleteFarmacia},
 
 		// Medicamentos
-		&rest.Route{"GET", "/medicamentos", api.GetAllMedicamentos},
-		&rest.Route{"GET", "/medicamentos/:id", api.GetMedicamento},
-		&rest.Route{"POST", "/medicamentos", api.PostMedicamento},
-		&rest.Route{"PUT", "/medicamentos/:id", api.PutMedicamento},
-		&rest.Route{"DELETE", "/medicamentos/:id", api.DeleteMedicamento},
-		&rest.Route{"PUT", "/medicamentos/:id/stock/:quantity", api.SumaEnAlmancen},
+		&rest.Route{"GET", "/medicamentos", api.getAllMedicamentos},
+		&rest.Route{"GET", "/medicamentos/:id", api.getMedicamento},
+		&rest.Route{"POST", "/medicamentos", api.postMedicamento},
+		&rest.Route{"PUT", "/medicamentos/:id", api.putMedicamento},
+		&rest.Route{"DELETE", "/medicamentos/:id", api.deleteMedicamento},
+		&rest.Route{"PUT", "/medicamentos/:id/stock/:quantity", api.sumaEnAlmancen},
 
 		// Noticias
-		&rest.Route{"GET", "/noticias", api.GetAllNoticias},
-		&rest.Route{"GET", "/noticias/:id", api.GetNoticia},
-		&rest.Route{"GET", "/noticias/date/:date", api.GetNoticiasFromDate},
-		&rest.Route{"POST", "/noticias", api.PostNoticia},
-		&rest.Route{"PUT", "/noticias/:id", api.PutNoticia},
+		&rest.Route{"GET", "/noticias", api.getAllNoticias},
+		&rest.Route{"GET", "/noticias/:id", api.getNoticia},
+		&rest.Route{"GET", "/noticias/date/:date", api.getNoticiasFromDate},
+		&rest.Route{"POST", "/noticias", api.postNoticia},
+		&rest.Route{"PUT", "/noticias/:id", api.putNoticia},
 
 		//File upload
-		&rest.Route{"POST", "/upload", api.UploadHandler},
+		&rest.Route{"POST", "/upload", api.uploadHandler},
 
 		// Status
 		&rest.Route{"GET", "/.status",
@@ -102,8 +102,6 @@ func main() {
 
 	// Web pages
 	http.HandleFunc("/", renderTemplate)
-	//http.Handle("/img/uploads/", http.FileServer(http.Dir("static/")))
-	//http.Handle("/static/", http.StripPrefix("/static", http.FileServer(http.Dir("static/"))))
 
 	log.Printf("Ready to serve on %s!\n", port)
 	log.Fatal(http.ListenAndServe(port, nil))

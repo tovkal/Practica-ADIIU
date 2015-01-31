@@ -6,13 +6,13 @@ import (
 	"github.com/tovkal/go-json-rest/rest"
 )
 
-func (api *Api) GetAllCategorias(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) getAllCategorias(w rest.ResponseWriter, r *rest.Request) {
 	categorias := []Categorias{}
 	api.DB.Find(&categorias)
 	w.WriteJson(&categorias)
 }
 
-func (api *Api) GetCategoria(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) getCategoria(w rest.ResponseWriter, r *rest.Request) {
 	id := r.PathParam("id")
 	categoria := Categorias{}
 	if api.DB.First(&categoria, id).Error != nil {
@@ -22,7 +22,7 @@ func (api *Api) GetCategoria(w rest.ResponseWriter, r *rest.Request) {
 	w.WriteJson(&categoria)
 }
 
-func (api *Api) PostCategoria(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) postCategoria(w rest.ResponseWriter, r *rest.Request) {
 	categoria := Categorias{}
 	if err := r.DecodeJsonPayload(&categoria); err != nil {
 		rest.Error(w, err.Error(), http.StatusInternalServerError)
@@ -35,7 +35,7 @@ func (api *Api) PostCategoria(w rest.ResponseWriter, r *rest.Request) {
 	w.WriteJson(&categoria)
 }
 
-func (api *Api) PutCategoria(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) putCategoria(w rest.ResponseWriter, r *rest.Request) {
 	id := r.PathParam("id")
 	categoria := Categorias{}
 	if api.DB.First(&categoria, id).Error != nil {
@@ -60,7 +60,7 @@ func (api *Api) PutCategoria(w rest.ResponseWriter, r *rest.Request) {
 	w.WriteJson(&categoria)
 }
 
-func (api *Api) DeleteCategoria(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) deleteCategoria(w rest.ResponseWriter, r *rest.Request) {
 	id := r.PathParam("id")
 	categoria := Categorias{}
 	if api.DB.First(&categoria, id).Error != nil {

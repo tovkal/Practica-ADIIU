@@ -7,13 +7,13 @@ import (
 	"github.com/tovkal/go-json-rest/rest"
 )
 
-func (api *Api) GetAllMedicamentos(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) getAllMedicamentos(w rest.ResponseWriter, r *rest.Request) {
 	medicamentos := []Medicamentos{}
 	api.DB.Find(&medicamentos)
 	w.WriteJson(&medicamentos)
 }
 
-func (api *Api) GetMedicamento(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) getMedicamento(w rest.ResponseWriter, r *rest.Request) {
 	id := r.PathParam("id")
 	medicamento := Medicamentos{}
 	if api.DB.First(&medicamento, id).Error != nil {
@@ -23,7 +23,7 @@ func (api *Api) GetMedicamento(w rest.ResponseWriter, r *rest.Request) {
 	w.WriteJson(&medicamento)
 }
 
-func (api *Api) PostMedicamento(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) postMedicamento(w rest.ResponseWriter, r *rest.Request) {
 	medicamento := Medicamentos{}
 	if err := r.DecodeJsonPayload(&medicamento); err != nil {
 		rest.Error(w, err.Error(), http.StatusInternalServerError)
@@ -36,7 +36,7 @@ func (api *Api) PostMedicamento(w rest.ResponseWriter, r *rest.Request) {
 	w.WriteJson(&medicamento)
 }
 
-func (api *Api) PutMedicamento(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) putMedicamento(w rest.ResponseWriter, r *rest.Request) {
 	id := r.PathParam("id")
 	medicamento := Medicamentos{}
 	if api.DB.First(&medicamento, id).Error != nil {
@@ -64,7 +64,7 @@ func (api *Api) PutMedicamento(w rest.ResponseWriter, r *rest.Request) {
 	w.WriteJson(&medicamento)
 }
 
-func (api *Api) DeleteMedicamento(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) deleteMedicamento(w rest.ResponseWriter, r *rest.Request) {
 	id := r.PathParam("id")
 	medicamento := Medicamentos{}
 	if api.DB.First(&medicamento, id).Error != nil {
@@ -78,7 +78,7 @@ func (api *Api) DeleteMedicamento(w rest.ResponseWriter, r *rest.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func (api *Api) SumaEnAlmancen(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) sumaEnAlmancen(w rest.ResponseWriter, r *rest.Request) {
 	id := r.PathParam("id")
 	quantity := r.PathParam("quantity")
 

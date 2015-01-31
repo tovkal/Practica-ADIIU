@@ -6,13 +6,13 @@ import (
 	"github.com/tovkal/go-json-rest/rest"
 )
 
-func (api *Api) GetAllFarmacias(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) getAllFarmacias(w rest.ResponseWriter, r *rest.Request) {
 	farmacias := []Farmacias{}
 	api.DB.Find(&farmacias)
 	w.WriteJson(&farmacias)
 }
 
-func (api *Api) GetFarmacia(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) getFarmacia(w rest.ResponseWriter, r *rest.Request) {
 	nik := r.PathParam("nik")
 	farmacia := Farmacias{}
 	if api.DB.First(&farmacia, nik).Error != nil {
@@ -22,7 +22,7 @@ func (api *Api) GetFarmacia(w rest.ResponseWriter, r *rest.Request) {
 	w.WriteJson(&farmacia)
 }
 
-func (api *Api) PostFarmacia(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) postFarmacia(w rest.ResponseWriter, r *rest.Request) {
 	farmacia := Farmacias{}
 	if err := r.DecodeJsonPayload(&farmacia); err != nil {
 		rest.Error(w, err.Error(), http.StatusInternalServerError)
@@ -35,7 +35,7 @@ func (api *Api) PostFarmacia(w rest.ResponseWriter, r *rest.Request) {
 	w.WriteJson(&farmacia)
 }
 
-func (api *Api) PutFarmacia(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) putFarmacia(w rest.ResponseWriter, r *rest.Request) {
 	nik := r.PathParam("nik")
 	farmacia := Farmacias{}
 	if api.DB.First(&farmacia, nik).Error != nil {
@@ -60,7 +60,7 @@ func (api *Api) PutFarmacia(w rest.ResponseWriter, r *rest.Request) {
 	w.WriteJson(&farmacia)
 }
 
-func (api *Api) DeleteFarmacia(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) deleteFarmacia(w rest.ResponseWriter, r *rest.Request) {
 	nik := r.PathParam("nik")
 	farmacia := Farmacias{}
 	if api.DB.First(&farmacia, nik).Error != nil {

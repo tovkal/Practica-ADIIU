@@ -7,12 +7,12 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type Api struct {
+type api struct {
 	DB gorm.DB
 }
 
 // Init the database
-func (api *Api) InitDB() {
+func (api *api) initDB() {
 	var err error
 	api.DB, err = gorm.Open("mysql", "wsfarmacia:wsfarmacia@/wsfarmacia?charset=utf8&parseTime=True")
 	if err != nil {

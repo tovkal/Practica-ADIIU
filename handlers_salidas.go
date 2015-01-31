@@ -7,13 +7,13 @@ import (
 	"github.com/tovkal/go-json-rest/rest"
 )
 
-func (api *Api) GetAllSalidas(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) getAllSalidas(w rest.ResponseWriter, r *rest.Request) {
 	salidas := []Salidas{}
 	api.DB.Find(&salidas)
 	w.WriteJson(&salidas)
 }
 
-func (api *Api) GetSalida(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) getSalida(w rest.ResponseWriter, r *rest.Request) {
 	fromDate := r.PathParam("fromDate")
 	toDate := r.PathParam("toDate")
 	salidas := []Salidas{}
@@ -24,7 +24,7 @@ func (api *Api) GetSalida(w rest.ResponseWriter, r *rest.Request) {
 	w.WriteJson(&salidas)
 }
 
-func (api *Api) PostSalida(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) postSalida(w rest.ResponseWriter, r *rest.Request) {
 	salida := Salidas{}
 	if err := r.DecodeJsonPayload(&salida); err != nil {
 		rest.Error(w, err.Error(), http.StatusInternalServerError)

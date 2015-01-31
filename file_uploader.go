@@ -8,12 +8,12 @@ import (
 	"github.com/tovkal/go-json-rest/rest"
 )
 
-type FileResponse struct {
+type fileResponse struct {
 	Status   string `json:"status"`
 	FileName string `json:"filename"`
 }
 
-func (api *Api) UploadHandler(w rest.ResponseWriter, r *rest.Request) {
+func (api *api) uploadHandler(w rest.ResponseWriter, r *rest.Request) {
 	// the FormFile function takes in the POST input id file
 	file, header, err := r.Request.FormFile("file")
 
@@ -38,7 +38,7 @@ func (api *Api) UploadHandler(w rest.ResponseWriter, r *rest.Request) {
 		return
 	}
 
-	response := FileResponse{}
+	response := fileResponse{}
 	response.Status = "success"
 	response.FileName = header.Filename
 
