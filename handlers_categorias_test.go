@@ -7,7 +7,7 @@ import (
 )
 
 var originalCategoria = Categorias{Id: 1, Nombre: "Pediatría", Texto: "Productos para niños de 0 a 3 años", Imagen: "pediatria.png"}
-var categoriasList = [2]Categorias{originalCategoria, Categorias{Id: 2, Nombre: "Higiene", Texto: "Productos para la igiene corporal", Imagen: "higiene.png"}}
+var categoriasList = [2]Categorias{originalCategoria, Categorias{Id: 2, Nombre: "Higiene", Texto: "Productos para la higiene corporal.", Imagen: "higiene.png"}}
 var testCategoria = Categorias{Nombre: "Nombre", Texto: "Descripción", Imagen: "image.png"}
 
 func TestGetAllCategorias(t *testing.T) {
