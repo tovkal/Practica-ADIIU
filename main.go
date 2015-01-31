@@ -27,6 +27,11 @@ var templates = template.Must(template.ParseFiles(
 	makePath("noticias"),
 ))
 
+// TODO walk tmpl directory amb build caches from what's found... but order...
+
+const staticPath = "http://staticadiiu.tovkal.com"
+const port = ":8080"
+
 func main() {
 
 	api := Api{}
@@ -97,11 +102,11 @@ func main() {
 
 	// Web pages
 	http.HandleFunc("/", renderTemplate)
-	http.Handle("/img/uploads/", http.FileServer(http.Dir("static/")))
-	http.Handle("/static/", http.StripPrefix("/static", http.FileServer(http.Dir("static/"))))
+	//http.Handle("/img/uploads/", http.FileServer(http.Dir("static/")))
+	//http.Handle("/static/", http.StripPrefix("/static", http.FileServer(http.Dir("static/"))))
 
-	log.Print("Ready to serve!")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Printf("Ready to serve on %s!\n", port)
+	log.Fatal(http.ListenAndServe(port, nil))
 }
 
 func renderTemplate(w http.ResponseWriter, r *http.Request) {
@@ -113,7 +118,7 @@ func renderTemplate(w http.ResponseWriter, r *http.Request) {
 		url = "index"
 	}
 
-	if err := templates.ExecuteTemplate(w, url, nil); err != nil {
+	if err := templates.ExecuteTemplate(w, url, staticPath); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
