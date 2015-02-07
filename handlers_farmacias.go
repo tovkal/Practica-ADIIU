@@ -3,49 +3,49 @@ package main
 import (
 	"net/http"
 
-	"github.com/tovkal/go-json-rest/rest"
+	"github.com/gorilla/mux"
 )
 
-func (api *api) getAllFarmacias(w rest.ResponseWriter, r *rest.Request) {
+func getAllFarmacias(w http.ResponseWriter, r *http.Request) {
 	farmacias := []Farmacias{}
 	api.DB.Find(&farmacias)
-	w.WriteJson(&farmacias)
+	WriteJson(w, &farmacias)
 }
 
-func (api *api) getFarmacia(w rest.ResponseWriter, r *rest.Request) {
-	nik := r.PathParam("nik")
+func getFarmacia(w http.ResponseWriter, r *http.Request) {
+	nik := mux.Vars(r)["nik"]
 	farmacia := Farmacias{}
 	if api.DB.First(&farmacia, nik).Error != nil {
-		rest.NotFound(w, r)
+		ResourceNotFound(w)
 		return
 	}
-	w.WriteJson(&farmacia)
+	WriteJson(w, &farmacia)
 }
 
-func (api *api) postFarmacia(w rest.ResponseWriter, r *rest.Request) {
+func postFarmacia(w http.ResponseWriter, r *http.Request) {
 	farmacia := Farmacias{}
-	if err := r.DecodeJsonPayload(&farmacia); err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+	if err := DecodeJson(r, &farmacia); err != nil {
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	if err := api.DB.Save(&farmacia).Error; err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.WriteJson(&farmacia)
+	WriteJson(w, &farmacia)
 }
 
-func (api *api) putFarmacia(w rest.ResponseWriter, r *rest.Request) {
-	nik := r.PathParam("nik")
+func putFarmacia(w http.ResponseWriter, r *http.Request) {
+	nik := mux.Vars(r)["nik"]
 	farmacia := Farmacias{}
 	if api.DB.First(&farmacia, nik).Error != nil {
-		rest.NotFound(w, r)
+		ResourceNotFound(w)
 		return
 	}
 
 	updated := Farmacias{}
-	if err := r.DecodeJsonPayload(&updated); err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+	if err := DecodeJson(r, &updated); err != nil {
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -54,22 +54,22 @@ func (api *api) putFarmacia(w rest.ResponseWriter, r *rest.Request) {
 	farmacia.Nivel = updated.Nivel
 
 	if err := api.DB.Save(&farmacia).Error; err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.WriteJson(&farmacia)
+	WriteJson(w, &farmacia)
 }
 
-func (api *api) deleteFarmacia(w rest.ResponseWriter, r *rest.Request) {
-	nik := r.PathParam("nik")
+func deleteFarmacia(w http.ResponseWriter, r *http.Request) {
+	nik := mux.Vars(r)["nik"]
 	farmacia := Farmacias{}
 	if api.DB.First(&farmacia, nik).Error != nil {
-		rest.NotFound(w, r)
+		ResourceNotFound(w)
 		return
 	}
 	if err := api.DB.Delete(&farmacia).Error; err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.WriteHeader(http.StatusOK)
+	WriteJson(w, "")
 }

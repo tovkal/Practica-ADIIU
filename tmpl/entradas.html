@@ -169,7 +169,7 @@
 	}
 
 	function submitEntrada() {
-		create("entradas", function(data) {
+		create("entradas", $form, function(data) {
 			table.row.add(data).draw();
 			closeModal();
 		});

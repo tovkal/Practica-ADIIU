@@ -1,0 +1,108 @@
+{{define "login"}}
+<div class="header header-size col-md-3">
+	<p id="welcomeMessage" class="hidden" style="position: absolute; bottom: 15px;"></p>
+	<button id="loginButton" class="btn btn-primary" style="position: absolute; bottom: 15px; right: 15px;" onclick="login()">Login</button>
+</div>
+
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Login</h4>
+      </div>
+      <div class="modal-body">
+      	<div id="modalAlert" class="alert alert-danger hidden" role="alert"></div>
+        <form id="loginForm" class="form-horizontal">
+		  <div class="form-group">
+		    <label for="inputEmail" class="col-sm-2 control-label">Usuari</label>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" id="inputEmail" name="nik" placeholder="Usuari">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputPassword" class="col-sm-2 control-label">Password</label>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" id="inputPassword" name="pass" placeholder="Password">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <div class="col-sm-offset-2 col-sm-10">
+		      <button type="button" class="btn btn-primary" onclick="submitLogin()">Login</button>
+		    </div>
+		  </div>
+		</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+	var $loginForm = $("#loginForm");
+	var $loginModal = $("#loginModal");
+	var $welcomeMessage = $("#welcomeMessage");
+	var $loginButton = $("#loginButton");
+	var $modalAlert = $("#modalAlert");
+
+	$(document).ready(function() {
+		$.ajax({
+			url: "/api/rememberLogin",
+			type: "POST",
+			success: function(response) {
+				if (response["remember"]) {
+					showLoggedIn(response["user"]["nik"]);
+				}
+			}
+		});
+
+		$loginModal.on('hidden.bs.modal', function() {
+			cleanupModal();
+		});
+	});
+
+	function login() {
+		$loginModal.modal('show');
+	};
+
+	function submitLogin() {
+		var success_fn = function(response) {
+			$loginModal.modal('hide');
+			showLoggedIn(response["user"]["nik"]);
+		};
+		var error_fn = function(jqXHR, textStatus, errorThrown) {
+			var response = JSON.parse(jqXHR.responseText);
+			$modalAlert.removeClass("hidden");
+			$modalAlert.text(response["error"])
+		}; 
+		create("login", $loginForm, success_fn, error_fn);
+	};
+
+	function showLoggedIn(user) {
+		$welcomeMessage.text("Benvingut, " + user + ".").removeClass("hidden");
+		$loginButton.text("Logout").attr('onclick', 'logout()');
+	};
+
+	function logout() {
+		$welcomeMessage.addClass('hidden');
+		$loginButton.text("Login").attr('onclick', 'login()');
+		$.ajax({
+			url: "/api/logout",
+			type: "POST",
+			success: function(response) {
+				$loginModal.modal('hide');
+			}
+		});
+	};
+
+	function cleanupModal() {
+		resetForm($loginForm);
+		if (!$modalAlert.hasClass("hidden")) {
+			$modalAlert.addClass("hidden");
+		};
+		$loginModal.modal('hide');
+		
+	}
+</script>
+{{end}}

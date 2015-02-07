@@ -230,7 +230,7 @@
 	}
 
 	function submitMedicamento() {
-		create("medicamentos", function(data) {
+		create("medicamentos", $form, function(data) {
 			table.row.add(data).draw();
 			closeModal();
 		});
@@ -247,7 +247,7 @@
 	}
 
 	function submitUpdateMedicamento(id, row) {
-		update("medicamentos", id, function(data) {
+		update("medicamentos", id, $form, function(data) {
 			table.row(row).data(data).draw();
 			closeModal();
 		});

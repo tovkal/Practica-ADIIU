@@ -4,8 +4,6 @@ import (
 	"io"
 	"net/http"
 	"os"
-
-	"github.com/tovkal/go-json-rest/rest"
 )
 
 type fileResponse struct {
@@ -13,12 +11,12 @@ type fileResponse struct {
 	FileName string `json:"filename"`
 }
 
-func (api *api) uploadHandler(w rest.ResponseWriter, r *rest.Request) {
+func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	// the FormFile function takes in the POST input id file
-	file, header, err := r.Request.FormFile("file")
+	file, header, err := r.FormFile("file")
 
 	if err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -26,7 +24,7 @@ func (api *api) uploadHandler(w rest.ResponseWriter, r *rest.Request) {
 
 	out, err := os.Create("./static/img/uploads/" + header.Filename)
 	if err != nil {
-		rest.Error(w, "Unable to create the file. Check your write permissions", http.StatusInternalServerError)
+		Error(w, "Unable to create the file. Check your write permissions", http.StatusInternalServerError)
 		return
 	}
 
@@ -34,7 +32,7 @@ func (api *api) uploadHandler(w rest.ResponseWriter, r *rest.Request) {
 
 	// write the content from POST to the file
 	if _, err = io.Copy(out, file); err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -42,5 +40,5 @@ func (api *api) uploadHandler(w rest.ResponseWriter, r *rest.Request) {
 	response.Status = "success"
 	response.FileName = header.Filename
 
-	w.WriteJson(response)
+	WriteJson(w, response)
 }

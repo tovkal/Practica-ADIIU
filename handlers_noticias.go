@@ -3,49 +3,49 @@ package main
 import (
 	"net/http"
 
-	"github.com/tovkal/go-json-rest/rest"
+	"github.com/gorilla/mux"
 )
 
-func (api *api) getAllNoticias(w rest.ResponseWriter, r *rest.Request) {
+func getAllNoticias(w http.ResponseWriter, r *http.Request) {
 	noticias := []Noticias{}
 	api.DB.Find(&noticias)
-	w.WriteJson(&noticias)
+	WriteJson(w, &noticias)
 }
 
-func (api *api) getNoticia(w rest.ResponseWriter, r *rest.Request) {
-	id := r.PathParam("id")
+func getNoticia(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
 	noticias := Noticias{}
 	if api.DB.Find(&noticias, id).Error != nil {
-		rest.NotFound(w, r)
+		ResourceNotFound(w)
 		return
 	}
-	w.WriteJson(&noticias)
+	WriteJson(w, &noticias)
 }
 
-func (api *api) postNoticia(w rest.ResponseWriter, r *rest.Request) {
+func postNoticia(w http.ResponseWriter, r *http.Request) {
 	noticia := Noticias{}
-	if err := r.DecodeJsonPayload(&noticia); err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+	if err := DecodeJson(r, &noticia); err != nil {
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	if err := api.DB.Save(&noticia).Error; err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.WriteJson(&noticia)
+	WriteJson(w, &noticia)
 }
 
-func (api *api) putNoticia(w rest.ResponseWriter, r *rest.Request) {
-	id := r.PathParam("id")
+func putNoticia(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
 	noticia := Noticias{}
 	if api.DB.First(&noticia, id).Error != nil {
-		rest.NotFound(w, r)
+		ResourceNotFound(w)
 		return
 	}
 
 	updated := Noticias{}
-	if err := r.DecodeJsonPayload(&updated); err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+	if err := DecodeJson(r, &updated); err != nil {
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -54,18 +54,18 @@ func (api *api) putNoticia(w rest.ResponseWriter, r *rest.Request) {
 	noticia.Fin = updated.Fin
 
 	if err := api.DB.Save(&noticia).Error; err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.WriteJson(&noticia)
+	WriteJson(w, &noticia)
 }
 
-func (api *api) getNoticiasFromDate(w rest.ResponseWriter, r *rest.Request) {
-	date := r.PathParam("date")
+func getNoticiasFromDate(w http.ResponseWriter, r *http.Request) {
+	date := mux.Vars(r)["date"]
 	noticias := []Noticias{}
 	if api.DB.Where("inicio <= ? and fin >= ?", date+" 00:00:00", date+" 23:59:59").First(&noticias).Error != nil {
-		rest.NotFound(w, r)
+		ResourceNotFound(w)
 		return
 	}
-	w.WriteJson(&noticias)
+	WriteJson(w, &noticias)
 }

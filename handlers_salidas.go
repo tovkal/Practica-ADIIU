@@ -4,38 +4,39 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/tovkal/go-json-rest/rest"
+	"github.com/gorilla/mux"
 )
 
-func (api *api) getAllSalidas(w rest.ResponseWriter, r *rest.Request) {
+func getAllSalidas(w http.ResponseWriter, r *http.Request) {
 	salidas := []Salidas{}
 	api.DB.Find(&salidas)
-	w.WriteJson(&salidas)
+	WriteJson(w, &salidas)
 }
 
-func (api *api) getSalida(w rest.ResponseWriter, r *rest.Request) {
-	fromDate := r.PathParam("fromDate")
-	toDate := r.PathParam("toDate")
+func getSalidas(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	fromDate := vars["fromDate"]
+	toDate := vars["toDate"]
 	salidas := []Salidas{}
 	if api.DB.Where("(fechahora BETWEEN ? AND ?)", fromDate+" 00:00:00", toDate+" 23:59:59").Find(&salidas).Error != nil {
-		rest.NotFound(w, r)
+		ResourceNotFound(w)
 		return
 	}
-	w.WriteJson(&salidas)
+	WriteJson(w, &salidas)
 }
 
-func (api *api) postSalida(w rest.ResponseWriter, r *rest.Request) {
+func postSalida(w http.ResponseWriter, r *http.Request) {
 	salida := Salidas{}
-	if err := r.DecodeJsonPayload(&salida); err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+	if err := DecodeJson(r, &salida); err != nil {
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	salida.Fechahora = time.Now()
 
 	if err := api.DB.Save(&salida).Error; err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.WriteJson(&salida)
+	WriteJson(w, &salida)
 }

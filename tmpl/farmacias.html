@@ -140,7 +140,7 @@
 	}
 
 	function submitFarmacia() {
-		create("farmacias", function(data) {
+		create("farmacias", $form, function(data) {
 			table.row.add(data).draw();
 			closeModal();
 		});
@@ -155,7 +155,7 @@
 	}
 
 	function submitUpdateFarmacia(id, row) {
-		update("farmacias", id, function(data) {
+		update("farmacias", id, $form, function(data) {
 			table.row(row).data(data).draw();
 			closeModal();
 		});

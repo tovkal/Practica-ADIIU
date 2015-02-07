@@ -30,6 +30,7 @@
 				datatype: "json",
 				url: "/api/categorias",
 				dataSrc: "",
+				async: false
 			},
 			order: [[1, "asc"]],
 			columnDefs: [
@@ -56,15 +57,15 @@
 						return "<img src='{{.}}/img/uploads/" + data + "' width='100' />";
 					}
 				},
-				{data: 'nombre'},
+				{data: "nombre"},
 				{data: "texto"},
 				{
 					data: "id",
 					render: function(data, type, full, meta) {
-						var readBtn = '<button type="button" class="btn btn-default" value='+ data + ' onclick="readCategoria(this.value)"><span class="glyphicon glyphicon-eye-open"></span></button>';
-						var editBtn = '<button type="button" class="btn btn-primary" value='+ data + ' onclick="updateCategoria(this.value,' + meta.row + ')"><span class="glyphicon glyphicon-edit"></span></button>';
-						var deleteBtn = '<button type="button" class="btn btn-danger" value='+ data + ' onclick="deleteCategoria(this.value,' + meta.row + ')"><span class="glyphicon glyphicon-trash"></span></button>';
-						return '<div class="btn-group-vertical" role="group" aria-label="Action buttons" style="padding-left:10px;">'+ readBtn + editBtn + deleteBtn + '</div>'
+						var readBtn = "<button type='button' class='btn btn-default' value=" + data + " onclick='readCategoria(this.value)'><span class='glyphicon glyphicon-eye-open'></span></button>";
+						var editBtn = "<button type='button' class='btn btn-primary' value=" + data + " onclick='updateCategoria(this.value," + meta.row + ")'><span class='glyphicon glyphicon-edit'></span></button>";
+						var deleteBtn = "<button type='button' class='btn btn-danger' value="+ data + " onclick='deleteCategoria(this.value," + meta.row + ")'><span class='glyphicon glyphicon-trash'></span></button>";
+						return "<div class='btn-group-vertical' role='group' aria-label='Action buttons' style='padding-left:10px;'>"+ readBtn + editBtn + deleteBtn + "</div>"
 					}
 				}
 			]
@@ -182,10 +183,11 @@
 	}
 
 	function submitCategoria() {
-		create("categorias", function(data) {
+		var success_fn = function(data) {
 			table.row.add(data).draw();
 			closeModal();
-		});
+		};
+		create("categorias", $form, success_fn);
 	}
 
 	function updateCategoria(id, row) {
@@ -199,7 +201,7 @@
 	}
 
 	function submitUpdateCategoria(id, row) {
-		update("categorias", id, function(data) {
+		update("categorias", id, $form, function(data) {
 			table.row(row).data(data).draw();
 			closeModal();
 		});

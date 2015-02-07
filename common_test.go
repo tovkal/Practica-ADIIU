@@ -12,7 +12,7 @@ import (
 // Send request to API, given the operation (one of the routes), the method (PUT, GET, etc.)
 // and a json string
 func sendTest(operation string, method string, json string) (response *http.Response) {
-	url := "http://localhost:8080/api/" + operation
+	url := "http://localhost:3000/api/" + operation
 	fmt.Printf("Method: %s, URL: %s\n", method, url)
 
 	var jsonStr = []byte(json)

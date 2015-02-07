@@ -187,7 +187,7 @@
 	}
 
 	function submitSalida() {
-		create("salidas", function(data) {
+		create("salidas", $form, function(data) {
 			table.row.add(data).draw();
 			closeModal();
 		});

@@ -75,53 +75,53 @@ function createOption(id, name) {
 }
 
 // Common ajax calls
-function read(operation, id, success_fn) {
+function read(operation, id, success_fn, error_fn) {
 	$.ajax({
 		type: "GET",
 		datatype: "json",
 		url: "/api/" + operation + (id != null ? "/" + id : ""),
 		success: success_fn,
-		error: function(jqXHR, textStatus, errorThrown) {
-			alert("Error reading Categoria. Got:\n" + errorThrown); // DEBUG
-		}
+		error: error_fn == null ? function(jqXHR, textStatus, errorThrown) {
+			alert("Error deleting Categoria. Got:\n" + errorThrown); // DEBUG
+		} : error_fn
 	});
 };
 
-function create(operation, success_fn) {
+function create(operation, element, success_fn, error_fn) {
 	$.ajax({
 		type: "POST",
 		datatype: "json",
 		url: "/api/" + operation,
-		data: JSON.stringify($form.serializeObject()),
+		data: JSON.stringify(element.serializeObject()),
 		success: success_fn,
-		error: function(jqXHR, textStatus, errorThrown) {
+		error: error_fn == null ? function(jqXHR, textStatus, errorThrown) {
 			alert("Error creating Categoria. Got:\n" + errorThrown); // DEBUG
-		}
+		} : error_fn
 	});
 };
 
-function update(operation, id, success_fn) {
+function update(operation, id, element, success_fn, error_fn) {
 	$.ajax({
 		type: "PUT",
 		datatype: "json",
 		url: "/api/" + operation + "/" + id,
-		data: JSON.stringify($form.serializeObject()),
+		data: JSON.stringify(element.serializeObject()),
 		success: success_fn,
-		error: function(jqXHR, textStatus, errorThrown) {
-			alert("Error creating Categoria. Got:\n" + errorThrown); // DEBUG
-		}
+		error: error_fn == null ? function(jqXHR, textStatus, errorThrown) {
+			alert("Error deleting Categoria. Got:\n" + errorThrown); // DEBUG
+		} : error_fn
 	});
 };
 
-function deleteFn(operation, id, success_fn) {
+function deleteFn(operation, id, success_fn, error_fn) {
 	$.ajax({
 		type: "DELETE",
 		datatype: "json",
 		url: "/api/" + operation + "/" + id,
 		success: success_fn,
-		error: function(jqXHR, textStatus, errorThrown) {
+		error: error_fn == null ? function(jqXHR, textStatus, errorThrown) {
 			alert("Error deleting Categoria. Got:\n" + errorThrown); // DEBUG
-		}
+		} : error_fn
 	});
 };
 

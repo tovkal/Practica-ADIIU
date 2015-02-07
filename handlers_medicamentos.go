@@ -4,49 +4,49 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/tovkal/go-json-rest/rest"
+	"github.com/gorilla/mux"
 )
 
-func (api *api) getAllMedicamentos(w rest.ResponseWriter, r *rest.Request) {
+func getAllMedicamentos(w http.ResponseWriter, r *http.Request) {
 	medicamentos := []Medicamentos{}
 	api.DB.Find(&medicamentos)
-	w.WriteJson(&medicamentos)
+	WriteJson(w, &medicamentos)
 }
 
-func (api *api) getMedicamento(w rest.ResponseWriter, r *rest.Request) {
-	id := r.PathParam("id")
+func getMedicamento(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
 	medicamento := Medicamentos{}
 	if api.DB.First(&medicamento, id).Error != nil {
-		rest.NotFound(w, r)
+		ResourceNotFound(w)
 		return
 	}
-	w.WriteJson(&medicamento)
+	WriteJson(w, &medicamento)
 }
 
-func (api *api) postMedicamento(w rest.ResponseWriter, r *rest.Request) {
+func postMedicamento(w http.ResponseWriter, r *http.Request) {
 	medicamento := Medicamentos{}
-	if err := r.DecodeJsonPayload(&medicamento); err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+	if err := DecodeJson(r, &medicamento); err != nil {
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	if err := api.DB.Save(&medicamento).Error; err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.WriteJson(&medicamento)
+	WriteJson(w, &medicamento)
 }
 
-func (api *api) putMedicamento(w rest.ResponseWriter, r *rest.Request) {
-	id := r.PathParam("id")
+func putMedicamento(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
 	medicamento := Medicamentos{}
 	if api.DB.First(&medicamento, id).Error != nil {
-		rest.NotFound(w, r)
+		ResourceNotFound(w)
 		return
 	}
 
 	updated := Medicamentos{}
-	if err := r.DecodeJsonPayload(&updated); err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+	if err := DecodeJson(r, &updated); err != nil {
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -58,47 +58,48 @@ func (api *api) putMedicamento(w rest.ResponseWriter, r *rest.Request) {
 	medicamento.Enalmacen = updated.Enalmacen
 
 	if err := api.DB.Save(&medicamento).Error; err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.WriteJson(&medicamento)
+	WriteJson(w, &medicamento)
 }
 
-func (api *api) deleteMedicamento(w rest.ResponseWriter, r *rest.Request) {
-	id := r.PathParam("id")
+func deleteMedicamento(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
 	medicamento := Medicamentos{}
 	if api.DB.First(&medicamento, id).Error != nil {
-		rest.NotFound(w, r)
+		ResourceNotFound(w)
 		return
 	}
 	if err := api.DB.Delete(&medicamento).Error; err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.WriteHeader(http.StatusOK)
+	WriteJson(w, "")
 }
 
-func (api *api) sumaEnAlmancen(w rest.ResponseWriter, r *rest.Request) {
-	id := r.PathParam("id")
-	quantity := r.PathParam("quantity")
+func sumaEnAlmancen(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	quantity := vars["quantity"]
 
 	enAlmacen, err := strconv.ParseInt(quantity, 10, 64)
 	if err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	medicamento := Medicamentos{}
 	if api.DB.First(&medicamento, id).Error != nil {
-		rest.NotFound(w, r)
+		ResourceNotFound(w)
 		return
 	}
 
 	medicamento.Enalmacen = medicamento.Enalmacen + enAlmacen
 
 	if err := api.DB.Save(&medicamento).Error; err != nil {
-		rest.Error(w, err.Error(), http.StatusInternalServerError)
+		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.WriteJson(&medicamento)
+	WriteJson(w, &medicamento)
 }

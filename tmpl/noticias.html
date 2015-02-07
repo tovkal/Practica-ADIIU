@@ -173,7 +173,7 @@
 		$("#inicio").val($fromDate.val() + "T00:00:00Z");
 		$("#fin").val($toDate.val() + "T00:00:00Z");
 
-		create("noticias", function(data) {
+		create("noticias", $form, function(data) {
 			table.row.add(data).draw();
 			closeModal();
 		});
@@ -191,7 +191,7 @@
 		$("#inicio").val($fromDate.val() + "T00:00:00Z");
 		$("#fin").val($toDate.val() + "T00:00:00Z");
 
-		update("noticias", id, function(data) {
+		update("noticias", id, $form, function(data) {
 			table.row(row).data(data).draw();
 			closeModal();
 		});
