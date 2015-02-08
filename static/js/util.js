@@ -134,3 +134,20 @@ function getDateFromISO(date) {
 function getDateTimeFromISO(date) {
 	return date.replace("T", " ").substring(0, 19);
 }
+
+Date.prototype.formattedDate = function() {
+	var yyyy = this.getFullYear().toString();
+	var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+	var dd  = this.getDate().toString();
+return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]); // padding
+};
+
+function getJSONLength(json) {
+	var key, count = 0;
+	for(key in json) {
+		if(json.hasOwnProperty(key)) {
+			count++;
+		}
+	}
+	return count;
+}

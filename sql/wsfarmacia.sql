@@ -19,6 +19,7 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `wsfarmacia`
 --
+DROP DATABASE IF EXISTS `wsfarmacia`;
 CREATE DATABASE IF NOT EXISTS `wsfarmacia` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `wsfarmacia`;
 
@@ -42,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `categorias` (
 
 INSERT INTO `categorias` (`id`, `nombre`, `texto`, `imagen`) VALUES
 (1, 'Pediatría', 'Productos para niños de 0 a 3 años', 'pediatria.png'),
-(2, 'Higiene', 'Productos para la igiene corporal', 'higiene.png');
+(2, 'Higiene', 'Productos para la higiene corporal.', 'higiene.png');
 
 -- --------------------------------------------------------
 
@@ -133,7 +134,13 @@ CREATE TABLE IF NOT EXISTS `noticias` (
 
 INSERT INTO `noticias` (`id`, `texto`, `inicio`, `fin`) VALUES
 (1, 'Soy una noticia que va del 16 al 25', '2014-11-16 00:00:00', '2014-11-25 00:00:00'),
-(2, 'Soy una noticia que va del 23 al 29', '2014-11-23 00:00:00', '2014-11-29 00:00:00');
+(2, 'Soy una noticia que va del 23 al 29', '2014-11-23 00:00:00', '2014-11-29 00:00:00'),
+(3, 'Soy una noticia que va del 8 al 25', '2015-02-08 00:00:00', '2015-02-25 00:00:00'),
+(4, 'Soy una noticia que va del 8 al 25', '2015-02-08 00:00:00', '2015-02-25 00:00:00'),
+(5, 'Soy una noticia que va del 8 al 25', '2015-02-08 00:00:00', '2015-02-25 00:00:00'),
+(6, 'Soy una noticia que va del 8 al 25', '2015-02-08 00:00:00', '2015-02-25 00:00:00'),
+(7, 'Soy una noticia que va del 8 al 25', '2015-02-08 00:00:00', '2015-02-25 00:00:00'),
+(8, 'Soy una noticia que va del 8 al 25', '2015-02-08 00:00:00', '2015-02-25 00:00:00');
 
 -- --------------------------------------------------------
 

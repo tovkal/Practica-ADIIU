@@ -63,7 +63,7 @@ func putNoticia(w http.ResponseWriter, r *http.Request) {
 func getNoticiasFromDate(w http.ResponseWriter, r *http.Request) {
 	date := mux.Vars(r)["date"]
 	noticias := []Noticias{}
-	if api.DB.Where("inicio <= ? and fin >= ?", date+" 00:00:00", date+" 23:59:59").First(&noticias).Error != nil {
+	if api.DB.Where("inicio <= ? and fin >= ?", date+" 00:00:00", date+" 23:59:59").Find(&noticias).Error != nil {
 		ResourceNotFound(w)
 		return
 	}

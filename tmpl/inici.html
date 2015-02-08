@@ -1,3 +1,53 @@
 {{define "inici"}}
-Hey
+<div id="news">
+</div>
+
+<script>
+	$(document).ready(function() {
+		getNoticias();
+	});
+
+	function getNoticias() {
+		$.ajax({
+			type: "GET",
+			datatype: "json",
+			url: "/api/noticias/date/" + new Date().formattedDate(),
+			success: function(result) {
+				$("#news").append(createNewsList(result));
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.log("No noticias found for today")
+			}
+		});
+	}
+
+	function createNewsList(noticias) {
+		var $list = $("<div class='news-list'></div>");
+		console.log("Noticias length: " + noticias.length);
+		for (var i = 0; i < noticias.length; i = i + 4) {
+			console.log("Noticias index: " + i);
+			var $row = $("<div class='news-row'></div>").append(createNoticiaCell(i, noticias[i]));
+			if (i + 1 < noticias.length) {
+				$row.append(createNoticiaCell(i + 1, noticias[i + 1]));
+			};
+			if (i + 2 < noticias.length) {
+				$row.append(createNoticiaCell(i + 2, noticias[i + 2]));
+			};
+			if (i + 3 < noticias.length) {
+				$row.append(createNoticiaCell(i + 3, noticias[i + 3]));
+			};
+
+			$list.append($row);
+		}
+		return $list;
+	}
+
+	function createNoticiaCell(id, noticia) {
+		return "<div id='noticia_"+ id +"' class='news-cell'>"+ createNoticia(noticia) +"</div>";
+	}
+
+	function createNoticia(noticia) {
+		return "<p class='news-text'>" + noticia["texto"] + "</p>";
+	}
+</script>
 {{end}}

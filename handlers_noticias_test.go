@@ -24,13 +24,13 @@ func init() {
 	}
 	originalNoticia.Fin = fechaHora
 
-	fechaHora, err = time.Parse("2006-01-02 15:04:05", "2014-11-25 00:00:00")
+	fechaHora, err = time.Parse("2006-01-02 15:04:05", "2015-02-08 00:00:00")
 	if err != nil {
 		fmt.Println("Error %s", err)
 	}
 	testNoticia.Inicio = fechaHora
 
-	fechaHora, err = time.Parse("2006-01-02 15:04:05", "2014-11-25 00:00:00")
+	fechaHora, err = time.Parse("2006-01-02 15:04:05", "2015-03-02 00:00:00")
 	if err != nil {
 		fmt.Println("Error %s", err)
 	}
