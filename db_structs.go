@@ -1,9 +1,5 @@
 package main
 
-import (
-	"time"
-)
-
 type Categorias struct {
 	Id     int64  `db:"id" json:"id"`
 	Nombre string `db:"nombre" json:"nombre"`
@@ -12,10 +8,10 @@ type Categorias struct {
 }
 
 type Entradas struct {
-	Id            int64     `db:"id" json:"id"`
-	Idmedicamento int64     `db:"idmedicamento" json:"idmedicamento,string"`
-	Cantidad      int64     `db:"cantidad" json:"cantidad,string"`
-	Fechahora     time.Time `db:"fechahora" json:"fechahora"`
+	Id            int64  `db:"id" json:"id"`
+	Idmedicamento int64  `db:"idmedicamento" json:"idmedicamento,string"`
+	Cantidad      int64  `db:"cantidad" json:"cantidad,string"`
+	Fechahora     string `db:"fechahora" json:"fechahora"`
 }
 
 type Farmacias struct {
@@ -36,16 +32,16 @@ type Medicamentos struct {
 }
 
 type Noticias struct {
-	Id     int64     `db:"id" json:"id"`
-	Texto  string    `db:"texto" json:"texto"`
-	Inicio time.Time `db:"inicio" json:"inicio"`
-	Fin    time.Time `db:"fin" json:"fin"`
+	Id     int64  `db:"id" json:"id"`
+	Texto  string `db:"texto" json:"texto"`
+	Inicio string `db:"inicio" json:"inicio"`
+	Fin    string `db:"fin" json:"fin"`
 }
 
 type Salidas struct {
-	Id            int64     `db:"id" json:"id"`
-	Idmedicamento int64     `db:"idmedicamento" json:"idmedicamento,string"`
-	Fechahora     time.Time `db:"fechahora" json:"fechahora"`
-	Cantidad      int64     `db:"cantidad" json:"cantidad,string"`
-	Idfarmacia    int64     `db:"idfarmacia" json:"idfarmacia,string"`
+	Id            int64  `db:"id" json:"id"`
+	Idmedicamento int64  `db:"idmedicamento" json:"idmedicamento,string"`
+	Fechahora     string `db:"fechahora" json:"fechahora"`
+	Cantidad      int64  `db:"cantidad" json:"cantidad,string"`
+	Idfarmacia    int64  `db:"idfarmacia" json:"idfarmacia,string"`
 }

@@ -32,7 +32,7 @@ func postSalida(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	salida.Fechahora = time.Now()
+	salida.Fechahora = time.Now().Format("2006-01-02 15:04:05")
 
 	if err := api.DB.Save(&salida).Error; err != nil {
 		Error(w, err.Error(), http.StatusInternalServerError)

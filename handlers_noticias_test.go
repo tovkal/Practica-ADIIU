@@ -2,40 +2,12 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"strconv"
 	"testing"
-	"time"
 )
 
-var originalNoticia = Noticias{Id: 1, Texto: "Soy una noticia que va del 16 al 25"}
-var testNoticia = Noticias{Texto: "Test"}
-
-func init() {
-	fechaHora, err := time.Parse("2006-01-02 15:04:05", "2014-11-16 00:00:00")
-	if err != nil {
-		fmt.Println("Error %s", err)
-	}
-	originalNoticia.Inicio = fechaHora
-
-	fechaHora, err = time.Parse("2006-01-02 15:04:05", "2014-11-25 00:00:00")
-	if err != nil {
-		fmt.Println("Error %s", err)
-	}
-	originalNoticia.Fin = fechaHora
-
-	fechaHora, err = time.Parse("2006-01-02 15:04:05", "2015-02-08 00:00:00")
-	if err != nil {
-		fmt.Println("Error %s", err)
-	}
-	testNoticia.Inicio = fechaHora
-
-	fechaHora, err = time.Parse("2006-01-02 15:04:05", "2015-03-02 00:00:00")
-	if err != nil {
-		fmt.Println("Error %s", err)
-	}
-	testNoticia.Fin = fechaHora
-}
+var originalNoticia = Noticias{Id: 1, Texto: "Soy una noticia que va del 16 al 25", Inicio: "2014-11-16", Fin: "2014-11-25"}
+var testNoticia = Noticias{Texto: "Test", Inicio: "2015-02-08", Fin: "2015-03-02"}
 
 func TestGetAllNoticias(t *testing.T) {
 	resp := sendTest("noticias", "GET", "")

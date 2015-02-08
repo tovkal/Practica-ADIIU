@@ -125,16 +125,6 @@ function deleteFn(operation, id, success_fn, error_fn) {
 	});
 };
 
-// 2014-11-25T00:00:00Z -> 2014-11-25
-function getDateFromISO(date) {
-	return date.substring(0, 10);
-}
-
-// 2014-11-25T00:00:00Z -> 2014-11-25 00:00:00
-function getDateTimeFromISO(date) {
-	return date.replace("T", " ").substring(0, 19);
-}
-
 Date.prototype.formattedDate = function() {
 	var yyyy = this.getFullYear().toString();
 	var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
@@ -209,7 +199,6 @@ $(document).ready(function() {
 });
 
 function applyNivel() {
-	console.log("apply nivel");
 	if (readCookie("nivel") == 255) {
 		$(".loggedoff").showBootstrap();
 		$(".responsable-magatzem").showBootstrap();

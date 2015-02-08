@@ -2,22 +2,11 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"testing"
-	"time"
 )
 
-var originalSalida = Salidas{Id: 3, Idmedicamento: 1, Cantidad: 5, Idfarmacia: 1}
+var originalSalida = Salidas{Id: 3, Idmedicamento: 1, Cantidad: 5, Idfarmacia: 1, Fechahora: "2014-11-29 14:10:04"}
 var testSalida = Salidas{Idmedicamento: 1, Cantidad: 666, Idfarmacia: 1}
-
-func init() {
-	fechaHora, err := time.Parse("2006-01-02 15:04:05", "2014-11-29 14:10:04")
-	if err != nil {
-		fmt.Println("Error %s", err)
-	}
-
-	originalSalida.Fechahora = fechaHora
-}
 
 func TestGetAllSalidas(t *testing.T) {
 	resp := sendTest("salidas", "GET", "")

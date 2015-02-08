@@ -44,18 +44,8 @@
 			],
 			columns: [
 				{data: 'texto'},
-				{
-					data: 'inicio',
-					render: function(data, type, full, meta) {
-						return getDateFromISO(data);
-					}
-				},
-				{
-					data: "fin",
-					render: function(data, type, full, meta) {
-						return getDateFromISO(data);
-					}
-				},
+				{data: 'inicio'},
+				{data: "fin"},
 				{
 					data: "id",
 					render: function(data, type, full, meta) {
@@ -165,13 +155,13 @@
 
 	function readSuccess(data) {
 		$texto.val(data.texto);
-		$fromDate.val(getDateFromISO(data.inicio));
-		$toDate.val(getDateFromISO(data.fin));
+		$fromDate.val(data.inicio);
+		$toDate.val(data.fin);
 	}
 
 	function submitNoticia() {
-		$("#inicio").val($fromDate.val() + "T00:00:00Z");
-		$("#fin").val($toDate.val() + "T00:00:00Z");
+		$("#inicio").val($fromDate.val());
+		$("#fin").val($toDate.val());
 
 		create("noticias", $form, function(data) {
 			table.row.add(data).draw();
@@ -188,8 +178,8 @@
 	}
 
 	function submitUpdateNoticia(id, row) {
-		$("#inicio").val($fromDate.val() + "T00:00:00Z");
-		$("#fin").val($toDate.val() + "T00:00:00Z");
+		$("#inicio").val($fromDate.val());
+		$("#fin").val($toDate.val());
 
 		update("noticias", id, $form, function(data) {
 			table.row(row).data(data).draw();

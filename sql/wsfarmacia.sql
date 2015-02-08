@@ -123,8 +123,8 @@ INSERT INTO `medicamentos` (`id`, `idcategoria`, `texto`, `imagen`, `nombre`, `c
 CREATE TABLE IF NOT EXISTS `noticias` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `texto` varchar(256) NOT NULL,
-  `inicio` datetime NOT NULL,
-  `fin` datetime NOT NULL,
+  `inicio` date NOT NULL,
+  `fin` date NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
@@ -133,14 +133,14 @@ CREATE TABLE IF NOT EXISTS `noticias` (
 --
 
 INSERT INTO `noticias` (`id`, `texto`, `inicio`, `fin`) VALUES
-(1, 'Soy una noticia que va del 16 al 25', '2014-11-16 00:00:00', '2014-11-25 00:00:00'),
-(2, 'Soy una noticia que va del 23 al 29', '2014-11-23 00:00:00', '2014-11-29 00:00:00'),
-(3, 'Soy una noticia que va del 8 al 25', '2015-02-08 00:00:00', '2015-02-25 00:00:00'),
-(4, 'Soy una noticia que va del 8 al 25', '2015-02-08 00:00:00', '2015-02-25 00:00:00'),
-(5, 'Soy una noticia que va del 8 al 25', '2015-02-08 00:00:00', '2015-02-25 00:00:00'),
-(6, 'Soy una noticia que va del 8 al 25', '2015-02-08 00:00:00', '2015-02-25 00:00:00'),
-(7, 'Soy una noticia que va del 8 al 25', '2015-02-08 00:00:00', '2015-02-25 00:00:00'),
-(8, 'Soy una noticia que va del 8 al 25', '2015-02-08 00:00:00', '2015-02-25 00:00:00');
+(1, 'Soy una noticia que va del 16 al 25', '2014-11-16', '2014-11-25'),
+(2, 'Soy una noticia que va del 23 al 29', '2014-11-23', '2014-11-29'),
+(3, 'Soy una noticia que va del 8 al 25', '2015-02-08', '2015-02-25'),
+(4, 'Soy una noticia que va del 8 al 25', '2015-02-08', '2015-02-25'),
+(5, 'Soy una noticia que va del 8 al 25', '2015-02-08', '2015-02-25'),
+(6, 'Soy una noticia que va del 8 al 25', '2015-02-08', '2015-02-25'),
+(7, 'Soy una noticia que va del 8 al 25', '2015-02-08', '2015-02-25'),
+(8, 'Soy una noticia que va del 8 al 25', '2015-02-08', '2015-02-25');
 
 -- --------------------------------------------------------
 
