@@ -15,9 +15,9 @@ class ListTVC: UITableViewController, UITableViewDataSource {
     var operationTitle: String?
     var method: String?
     
-    var tableData: JSON = JSON.nullJSON
+    private var tableData: JSON = JSON.nullJSON
     
-    @IBOutlet weak var list: UITableView!
+    @IBOutlet private weak var list: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,7 +98,7 @@ class ListTVC: UITableViewController, UITableViewDataSource {
     
     // MARK: - API Client
     
-    func fetchData() {
+    private func fetchData() {
         var url: String = GlobalConstants.api + method!
         
         Alamofire.request(.GET, url, parameters: nil)
