@@ -51,25 +51,31 @@
 			url: "/api/rememberLogin",
 			type: "POST",
 			success: function(response) {
-				if (response["remember"]) {
-					showLoggedIn(response["user"]["nik"]);
+				if (response["remember"] && readCookie("nivel") != null) {
+					showLoggedIn(response["user"]);
 				}
 			}
 		});
 
-		$loginModal.on('hidden.bs.modal', function() {
+		$loginModal.on("hidden.bs.modal", function() {
 			cleanupModal();
+		});
+
+		$('input').keypress(function (e) {
+			if (e.which == 13) {
+				submitLogin();
+			}
 		});
 	});
 
 	function login() {
-		$loginModal.modal('show');
+		$loginModal.modal("show");
 	};
 
 	function submitLogin() {
 		var success_fn = function(response) {
 			$loginModal.modal('hide');
-			showLoggedIn(response["user"]["nik"]);
+			showLoggedIn(response["user"]);
 		};
 		var error_fn = function(jqXHR, textStatus, errorThrown) {
 			var response = JSON.parse(jqXHR.responseText);
@@ -80,18 +86,25 @@
 	};
 
 	function showLoggedIn(user) {
-		$welcomeMessage.text("Benvingut, " + user + ".").removeClass("hidden");
-		$loginButton.text("Logout").attr('onclick', 'logout()');
+		$welcomeMessage.text("Benvingut, " + user["nik"] + ".").removeClass("hidden");
+		$loginButton.text("Logout").attr("onclick", "logout()");
+
+		createCookie("nivel", user["nivel"], 100);
+
+		applyNivel();
 	};
 
 	function logout() {
-		$welcomeMessage.addClass('hidden');
-		$loginButton.text("Login").attr('onclick', 'login()');
+		$welcomeMessage.addClass("hidden");
+		$loginButton.text("Login").attr("onclick", "login()");
 		$.ajax({
 			url: "/api/logout",
 			type: "POST",
 			success: function(response) {
-				$loginModal.modal('hide');
+				$loginModal.modal("hide");
+				eraseCookie("nivel"); 
+				window.location = "/";
+				applyNivel();
 			}
 		});
 	};
@@ -101,7 +114,7 @@
 		if (!$modalAlert.hasClass("hidden")) {
 			$modalAlert.addClass("hidden");
 		};
-		$loginModal.modal('hide');
+		$loginModal.modal("hide");
 		
 	}
 </script>

@@ -23,9 +23,8 @@
 
 	function createNewsList(noticias) {
 		var $list = $("<div class='news-list'></div>");
-		console.log("Noticias length: " + noticias.length);
+
 		for (var i = 0; i < noticias.length; i = i + 4) {
-			console.log("Noticias index: " + i);
 			var $row = $("<div class='news-row'></div>").append(createNoticiaCell(i, noticias[i]));
 			if (i + 1 < noticias.length) {
 				$row.append(createNoticiaCell(i + 1, noticias[i + 1]));

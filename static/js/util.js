@@ -151,3 +151,76 @@ function getJSONLength(json) {
 	}
 	return count;
 }
+
+function createCookie(name, value, days) {
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+		var expires = "; expires=" + date.toGMTString();
+	} else {
+		var expires = "";
+	}		
+
+	document.cookie = name + "=" + value + expires + "; path=/";
+}
+
+function readCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for (var i = 0; i < ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == ' ') { 
+			c = c.substring(1, c.length);
+		}
+
+		if (c.indexOf(nameEQ) == 0) { 
+			return c.substring(nameEQ.length, c.length); 
+		}
+	}
+	return null;
+}
+
+function eraseCookie(name) {
+	createCookie(name, "", -1);
+}
+
+// Custom jQuery functions
+(function($) {
+    $.fn.hideBootstrap = function() {
+        if (!this.hasClass("hidden")) {
+            this.addClass("hidden");
+        }
+    };
+    $.fn.showBootstrap = function() {
+        if (this.hasClass("hidden")) {
+            this.removeClass("hidden");
+        }
+    };
+    $.fn.isEmpty = function() {
+        return this.val().length == 0;
+    };
+    $.fn.isVisible = function() {
+        return !this.hasClass('hidden');
+    };
+})(jQuery);
+
+$(document).ready(function() {
+	applyNivel();
+});
+
+function applyNivel() {
+	console.log("apply nivel");
+	if (readCookie("nivel") == 255) {
+		$(".loggedoff").showBootstrap();
+		$(".responsable-magatzem").showBootstrap();
+		$(".responsable-farmacia").hideBootstrap();
+	} else if (readCookie("nivel") == 0) {
+		$(".loggedoff").showBootstrap();
+		$(".responsable-magatzem").hideBootstrap();
+		$(".responsable-farmacia").showBootstrap();
+	} else {
+		$(".responsable-magatzem").hideBootstrap();
+		$(".responsable-farmacia").hideBootstrap();
+		$(".loggedoff").hideBootstrap();
+	}
+}
