@@ -7,7 +7,7 @@
 //
 
 struct GlobalConstants {
-    static let host = "http://localhost:8080"
+    static let host = "http://localhost:3000"
     static let api = host + "/api"
     static let imgDirectory = host + "/static/img/uploads/"
 }

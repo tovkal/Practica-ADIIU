@@ -8,9 +8,10 @@
 
 import UIKit
 
-class Categoria: UIView {
+class MedicamentView: UIView {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var stock: UILabel!
     @IBOutlet weak var textDescription: UITextView!
         
     func setImage(imageName: String) {
@@ -39,19 +40,13 @@ class Categoria: UIView {
     
     func setTitle(title: String){
         self.title.text = title
-        print(title)
+    }
+    
+    func setStock(stock: String) {
+        self.stock.text = stock;
     }
     
     func setTextDescription(text: String) {
         self.textDescription.text = text
-    }
-}
-
-extension UIView {
-    class func loadFromNibNamed(nibNamed: String, bundle : NSBundle? = nil) -> UIView? {
-        return UINib(
-            nibName: nibNamed,
-            bundle: bundle
-            ).instantiateWithOwner(nil, options: nil)[0] as? UIView
     }
 }

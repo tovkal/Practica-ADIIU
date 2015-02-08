@@ -7,13 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9533AE821A87D5410095AF6B /* EntradaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9533AE811A87D5410095AF6B /* EntradaView.xib */; };
+		9533AE8B1A87D6910095AF6B /* EntradaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9533AE8A1A87D6910095AF6B /* EntradaView.swift */; };
+		954C1C561A87E44100AE8AF3 /* UIView+NibLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954C1C551A87E44100AE8AF3 /* UIView+NibLoad.swift */; };
+		954C1C601A87E47500AE8AF3 /* NoticiaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954C1C5E1A87E47500AE8AF3 /* NoticiaView.swift */; };
+		954C1C611A87E47500AE8AF3 /* NoticiaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 954C1C5F1A87E47500AE8AF3 /* NoticiaView.xib */; };
+		954C1C641A87E90500AE8AF3 /* FarmaciaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954C1C621A87E90500AE8AF3 /* FarmaciaView.swift */; };
+		954C1C651A87E90500AE8AF3 /* FarmaciaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 954C1C631A87E90500AE8AF3 /* FarmaciaView.xib */; };
 		95AA5E081A70108C0067EFFD /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AA5DF41A7010740067EFFD /* Alamofire.framework */; };
 		95AA5E091A7010910067EFFD /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AA5E011A70107B0067EFFD /* SwiftyJSON.framework */; };
 		95AA5E0B1A7010BE0067EFFD /* SwiftyJSON.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 95AA5E011A70107B0067EFFD /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		95AA5E0C1A7010C30067EFFD /* Alamofire.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 95AA5DF41A7010740067EFFD /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		95AA5E141A702B750067EFFD /* CategoriaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95AA5E131A702B750067EFFD /* CategoriaView.xib */; };
 		95AA5E161A702E370067EFFD /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AA5E151A702E370067EFFD /* DetailVC.swift */; };
-		95AA5E181A702E7E0067EFFD /* Categoria.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AA5E171A702E7E0067EFFD /* Categoria.swift */; };
+		95AA5E181A702E7E0067EFFD /* CategoriaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AA5E171A702E7E0067EFFD /* CategoriaView.swift */; };
 		95AA5E1A1A703EAF0067EFFD /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AA5E191A703EAF0067EFFD /* Constants.swift */; };
 		95B6A54F1A6EDD29007FD2B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B6A54E1A6EDD29007FD2B8 /* AppDelegate.swift */; };
 		95B6A5541A6EDD29007FD2B8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95B6A5521A6EDD29007FD2B8 /* Main.storyboard */; };
@@ -22,6 +29,10 @@
 		95B6A5651A6EDD29007FD2B8 /* Client_APITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B6A5641A6EDD29007FD2B8 /* Client_APITests.swift */; };
 		95B6A56F1A6EE6EA007FD2B8 /* OperationTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B6A56E1A6EE6EA007FD2B8 /* OperationTVC.swift */; };
 		95B6A5711A6EF03D007FD2B8 /* ListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B6A5701A6EF03D007FD2B8 /* ListTVC.swift */; };
+		95E7B0881A87D915000B47AF /* SalidaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95E7B0871A87D915000B47AF /* SalidaView.xib */; };
+		95E7B0911A87D948000B47AF /* SalidaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E7B0901A87D948000B47AF /* SalidaView.swift */; };
+		95E7B0941A87DE43000B47AF /* MedicamentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E7B0921A87DE43000B47AF /* MedicamentView.swift */; };
+		95E7B0951A87DE43000B47AF /* MedicamentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95E7B0931A87DE43000B47AF /* MedicamentView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,11 +110,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9533AE811A87D5410095AF6B /* EntradaView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EntradaView.xib; sourceTree = "<group>"; };
+		9533AE8A1A87D6910095AF6B /* EntradaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntradaView.swift; sourceTree = "<group>"; };
+		954C1C551A87E44100AE8AF3 /* UIView+NibLoad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+NibLoad.swift"; sourceTree = "<group>"; };
+		954C1C5E1A87E47500AE8AF3 /* NoticiaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoticiaView.swift; sourceTree = "<group>"; };
+		954C1C5F1A87E47500AE8AF3 /* NoticiaView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoticiaView.xib; sourceTree = "<group>"; };
+		954C1C621A87E90500AE8AF3 /* FarmaciaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FarmaciaView.swift; sourceTree = "<group>"; };
+		954C1C631A87E90500AE8AF3 /* FarmaciaView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FarmaciaView.xib; sourceTree = "<group>"; };
 		95AA5DED1A7010740067EFFD /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
 		95AA5DF91A70107B0067EFFD /* SwiftyJSON.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftyJSON.xcodeproj; path = SwiftyJSON/SwiftyJSON.xcodeproj; sourceTree = "<group>"; };
 		95AA5E131A702B750067EFFD /* CategoriaView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CategoriaView.xib; sourceTree = "<group>"; };
 		95AA5E151A702E370067EFFD /* DetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
-		95AA5E171A702E7E0067EFFD /* Categoria.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Categoria.swift; sourceTree = "<group>"; };
+		95AA5E171A702E7E0067EFFD /* CategoriaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoriaView.swift; sourceTree = "<group>"; };
 		95AA5E191A703EAF0067EFFD /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		95B6A5491A6EDD29007FD2B8 /* Client API.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Client API.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		95B6A54D1A6EDD29007FD2B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -116,6 +134,10 @@
 		95B6A5641A6EDD29007FD2B8 /* Client_APITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client_APITests.swift; sourceTree = "<group>"; };
 		95B6A56E1A6EE6EA007FD2B8 /* OperationTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationTVC.swift; sourceTree = "<group>"; };
 		95B6A5701A6EF03D007FD2B8 /* ListTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTVC.swift; sourceTree = "<group>"; };
+		95E7B0871A87D915000B47AF /* SalidaView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SalidaView.xib; sourceTree = "<group>"; };
+		95E7B0901A87D948000B47AF /* SalidaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SalidaView.swift; sourceTree = "<group>"; };
+		95E7B0921A87DE43000B47AF /* MedicamentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MedicamentView.swift; sourceTree = "<group>"; };
+		95E7B0931A87DE43000B47AF /* MedicamentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MedicamentView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +160,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		954C1C541A87E44100AE8AF3 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				954C1C551A87E44100AE8AF3 /* UIView+NibLoad.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		95AA5DEE1A7010740067EFFD /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -163,7 +193,17 @@
 			isa = PBXGroup;
 			children = (
 				95AA5E131A702B750067EFFD /* CategoriaView.xib */,
-				95AA5E171A702E7E0067EFFD /* Categoria.swift */,
+				95AA5E171A702E7E0067EFFD /* CategoriaView.swift */,
+				9533AE811A87D5410095AF6B /* EntradaView.xib */,
+				9533AE8A1A87D6910095AF6B /* EntradaView.swift */,
+				95E7B0871A87D915000B47AF /* SalidaView.xib */,
+				95E7B0901A87D948000B47AF /* SalidaView.swift */,
+				95E7B0931A87DE43000B47AF /* MedicamentView.xib */,
+				95E7B0921A87DE43000B47AF /* MedicamentView.swift */,
+				954C1C5F1A87E47500AE8AF3 /* NoticiaView.xib */,
+				954C1C5E1A87E47500AE8AF3 /* NoticiaView.swift */,
+				954C1C631A87E90500AE8AF3 /* FarmaciaView.xib */,
+				954C1C621A87E90500AE8AF3 /* FarmaciaView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -191,6 +231,7 @@
 		95B6A54B1A6EDD29007FD2B8 /* Client API */ = {
 			isa = PBXGroup;
 			children = (
+				954C1C541A87E44100AE8AF3 /* Extensions */,
 				95AA5E121A702B600067EFFD /* Views */,
 				95B6A54E1A6EDD29007FD2B8 /* AppDelegate.swift */,
 				95B6A5521A6EDD29007FD2B8 /* Main.storyboard */,
@@ -373,10 +414,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				95E7B0881A87D915000B47AF /* SalidaView.xib in Resources */,
+				9533AE821A87D5410095AF6B /* EntradaView.xib in Resources */,
 				95AA5E141A702B750067EFFD /* CategoriaView.xib in Resources */,
 				95B6A5541A6EDD29007FD2B8 /* Main.storyboard in Resources */,
 				95B6A5591A6EDD29007FD2B8 /* LaunchScreen.xib in Resources */,
 				95B6A5561A6EDD29007FD2B8 /* Images.xcassets in Resources */,
+				954C1C651A87E90500AE8AF3 /* FarmaciaView.xib in Resources */,
+				954C1C611A87E47500AE8AF3 /* NoticiaView.xib in Resources */,
+				95E7B0951A87DE43000B47AF /* MedicamentView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,12 +440,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				954C1C561A87E44100AE8AF3 /* UIView+NibLoad.swift in Sources */,
+				954C1C601A87E47500AE8AF3 /* NoticiaView.swift in Sources */,
 				95B6A5711A6EF03D007FD2B8 /* ListTVC.swift in Sources */,
 				95AA5E161A702E370067EFFD /* DetailVC.swift in Sources */,
 				95B6A56F1A6EE6EA007FD2B8 /* OperationTVC.swift in Sources */,
+				9533AE8B1A87D6910095AF6B /* EntradaView.swift in Sources */,
+				95E7B0911A87D948000B47AF /* SalidaView.swift in Sources */,
 				95B6A54F1A6EDD29007FD2B8 /* AppDelegate.swift in Sources */,
-				95AA5E181A702E7E0067EFFD /* Categoria.swift in Sources */,
+				954C1C641A87E90500AE8AF3 /* FarmaciaView.swift in Sources */,
+				95AA5E181A702E7E0067EFFD /* CategoriaView.swift in Sources */,
 				95AA5E1A1A703EAF0067EFFD /* Constants.swift in Sources */,
+				95E7B0941A87DE43000B47AF /* MedicamentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
