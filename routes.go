@@ -22,31 +22,31 @@ var apiRoutes = ApiRoutes{
 	[]HandlerFuncRoute{
 		// Categorias
 		HandlerFuncRoute{
-			"GetAllCategorias",
+			"getAllCategorias",
 			"GET",
 			"/categorias",
 			getAllCategorias,
 		},
 		HandlerFuncRoute{
-			"GetCategoriaById",
+			"getCategoria",
 			"GET",
 			"/categorias/{id}",
 			getCategoria,
 		},
 		HandlerFuncRoute{
-			"PostCategoria",
+			"postCategoria",
 			"POST",
 			"/categorias",
 			postCategoria,
 		},
 		HandlerFuncRoute{
-			"PutCategoria",
+			"putCategoria",
 			"PUT",
 			"/categorias/{id}",
 			putCategoria,
 		},
 		HandlerFuncRoute{
-			"DeleteCategoria",
+			"deleteCategoria",
 			"DELETE",
 			"/categorias/{id}",
 			deleteCategoria,
@@ -54,19 +54,19 @@ var apiRoutes = ApiRoutes{
 
 		// Entradas
 		HandlerFuncRoute{
-			"GetAllEntradas",
+			"getAllEntradas",
 			"GET",
 			"/entradas",
 			getAllEntradas,
 		},
 		HandlerFuncRoute{
-			"GetEntradasBetweenDates",
+			"getEntradas",
 			"GET",
 			"/entradas/{fromDate}/{toDate}",
 			getEntradas,
 		},
 		HandlerFuncRoute{
-			"PostEntrada",
+			"postEntrada",
 			"POST",
 			"/entradas",
 			postEntrada,
@@ -74,19 +74,19 @@ var apiRoutes = ApiRoutes{
 
 		// Salidas
 		HandlerFuncRoute{
-			"GetAllSalidas",
+			"getAllSalidas",
 			"GET",
 			"/salidas",
 			getAllSalidas,
 		},
 		HandlerFuncRoute{
-			"GetSalidasBetweenDates",
+			"getSalidas",
 			"GET",
 			"/salidas/{fromDate}/{toDate}",
 			getSalidas,
 		},
 		HandlerFuncRoute{
-			"PostSalida",
+			"postSalida",
 			"POST",
 			"/salidas",
 			postSalida,
@@ -94,31 +94,31 @@ var apiRoutes = ApiRoutes{
 
 		// Farmacias
 		HandlerFuncRoute{
-			"GetAllFarmacias",
+			"getAllFarmacias",
 			"GET",
 			"/farmacias",
 			getAllFarmacias,
 		},
 		HandlerFuncRoute{
-			"GetFarmaciaById",
+			"getFarmacia",
 			"GET",
 			"/farmacias/{nik}",
 			getFarmacia,
 		},
 		HandlerFuncRoute{
-			"PostFarmacia",
+			"postFarmacia",
 			"POST",
 			"/farmacias",
 			postFarmacia,
 		},
 		HandlerFuncRoute{
-			"PutFarmacia",
+			"putFarmacia",
 			"PUT",
 			"/farmacias/{nik}",
 			putFarmacia,
 		},
 		HandlerFuncRoute{
-			"DeleteFarmacia",
+			"deleteFarmacia",
 			"DELETE",
 			"/farmacias/{nik}",
 			deleteFarmacia,
@@ -126,37 +126,37 @@ var apiRoutes = ApiRoutes{
 
 		// Medicamentos
 		HandlerFuncRoute{
-			"GetAllMedicamentos",
+			"getAllMedicamentos",
 			"GET",
 			"/medicamentos",
 			getAllMedicamentos,
 		},
 		HandlerFuncRoute{
-			"GetMedicamentoById",
+			"getMedicamento",
 			"GET",
 			"/medicamentos/{id}",
 			getMedicamento,
 		},
 		HandlerFuncRoute{
-			"PostMedicamento",
+			"postMedicamento",
 			"POST",
 			"/medicamentos",
 			postMedicamento,
 		},
 		HandlerFuncRoute{
-			"PutMedicamento",
+			"putMedicamento",
 			"PUT",
 			"/medicamentos/{id}",
 			putMedicamento,
 		},
 		HandlerFuncRoute{
-			"DeleteMedicamento",
+			"deleteMedicamento",
 			"DELETE",
 			"/medicamentos/{id}",
 			deleteMedicamento,
 		},
 		HandlerFuncRoute{
-			"AddStock",
+			"sumaEnAlmancen",
 			"PUT",
 			"/medicamentos/{id}/stock/{quantity}",
 			sumaEnAlmancen,
@@ -164,31 +164,31 @@ var apiRoutes = ApiRoutes{
 
 		// Noticias
 		HandlerFuncRoute{
-			"GetAllNoticias",
+			"getAllNoticias",
 			"GET",
 			"/noticias",
 			getAllNoticias,
 		},
 		HandlerFuncRoute{
-			"GetNoticiaById",
+			"getNoticia",
 			"GET",
 			"/noticias/{id}",
 			getNoticia,
 		},
 		HandlerFuncRoute{
-			"GetNoticiasForDate",
+			"getNoticiasFromDate",
 			"GET",
 			"/noticias/date/{date}",
 			getNoticiasFromDate,
 		},
 		HandlerFuncRoute{
-			"PostNoticia",
+			"postNoticia",
 			"POST",
 			"/noticias",
 			postNoticia,
 		},
 		HandlerFuncRoute{
-			"PutNoticia",
+			"putNoticia",
 			"PUT",
 			"/noticias/{id}",
 			putNoticia,
@@ -196,7 +196,7 @@ var apiRoutes = ApiRoutes{
 
 		// File upload
 		HandlerFuncRoute{
-			"FileUpload",
+			"uploadHandler",
 			"POST",
 			"/upload",
 			uploadHandler,
@@ -204,19 +204,19 @@ var apiRoutes = ApiRoutes{
 
 		// Login
 		HandlerFuncRoute{
-			"RememberMe",
+			"rememberMeHandler",
 			"POST",
 			"/rememberLogin",
 			rememberMeHandler,
 		},
 		HandlerFuncRoute{
-			"Login",
+			"loginHandler",
 			"POST",
 			"/login",
 			loginHandler,
 		},
 		HandlerFuncRoute{
-			"Logout",
+			"logoutHandler",
 			"POST",
 			"/logout",
 			logoutHandler,

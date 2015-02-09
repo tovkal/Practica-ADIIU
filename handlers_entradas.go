@@ -8,8 +8,8 @@ import (
 )
 
 func getAllEntradas(w http.ResponseWriter, r *http.Request) {
-	entradas := []Entradas{}
-	api.DB.Find(&entradas)
+	entradas := []EntradasJoin{}
+	api.DB.Table("entradas").Select("entradas.id, entradas.idmedicamento, medicamentos.nombre as nombremedicamento, entradas.cantidad, entradas.fechahora").Joins("INNER JOIN medicamentos ON entradas.idmedicamento = medicamentos.id").Scan(&entradas)
 	WriteJson(w, &entradas)
 }
 
@@ -17,8 +17,8 @@ func getEntradas(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	fromDate := vars["fromDate"]
 	toDate := vars["toDate"]
-	entradas := []Entradas{}
-	if api.DB.Where("(fechahora BETWEEN ? AND ?)", fromDate+" 00:00:00", toDate+" 23:59:59").Find(&entradas).Error != nil {
+	entradas := []EntradasJoin{}
+	if api.DB.Table("entradas").Select("entradas.id, entradas.idmedicamento, medicamentos.nombre as nombremedicamento, entradas.cantidad, entradas.fechahora").Joins("INNER JOIN medicamentos ON entradas.idmedicamento = medicamentos.id").Where("(fechahora BETWEEN ? AND ?)", fromDate+" 00:00:00", toDate+" 23:59:59").Scan(&entradas).Error != nil {
 		ResourceNotFound(w)
 		return
 	}
@@ -38,5 +38,11 @@ func postEntrada(w http.ResponseWriter, r *http.Request) {
 		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	WriteJson(w, &entrada)
+
+	entradaOutput, err := getEntradaById(entrada.Id)
+	if err != nil {
+		ResourceNotFound(w)
+	}
+
+	WriteJson(w, &entradaOutput)
 }

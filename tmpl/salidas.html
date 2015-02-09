@@ -54,8 +54,8 @@
 <table id="categoriasTable" class="table table-hover">
 	<thead>
 		<tr>
-			<th class="col-md-2">ID Medicament</th>
-			<th class="col-md-2">ID Farmacia</th>
+			<th class="col-md-2">Medicament</th>
+			<th class="col-md-2">Farmacia</th>
 			<th class="col-md-3">Quantitat</th>
 			<th class="col-md-4">Data i hora de sortida</th>
 		</tr>
@@ -90,8 +90,8 @@
 			searching: false,
 			order: [[1, "asc"]],
 			columns: [
-				{data: "idmedicamento"},
-				{data: "idfarmacia"},
+				{data: "nombremedicamento"},
+				{data: "nombrefarmacia"},
 				{data: 'cantidad'},
 				{data: "fechahora"}
 			]
@@ -125,14 +125,14 @@
                 	<div id="modalAlert" class="alert alert-danger hidden" role="alert"></div>
                     <form id="salidaForm" class="form-horizontal" role="form">
                     	<div class="form-group">
-                    		<label for="medicamentSelect" class="col-sm-2 control-label">ID - Nom Medicament</label>
+                    		<label for="medicamentSelect" class="col-sm-2 control-label">Nom Medicament</label>
                     		<div class="col-sm-10">
                     			<select id="medicamentSelect" name="idmedicamento" class="form-control">
                     			</select>
                     		</div>
                     	</div>
                     	<div class="form-group">
-                    		<label for="farmaciaSelect" class="col-sm-2 control-label">ID - Nom Farmacia</label>
+                    		<label for="farmaciaSelect" class="col-sm-2 control-label">Nom Farmacia</label>
                     		<div class="col-sm-10">
                     			<select id="farmaciaSelect" name="idfarmacia" class="form-control">
                     			</select>
@@ -172,12 +172,13 @@
 			});
 		});
 
-		read("farmacias", null, function(data) {
+		read("farmacias", readCookie("nik"), function(data) {
 			$farmaciaSelect.children("option").remove();
-
-			$.each(data, function(key, value) {
+			$farmaciaSelect.append(createOption(data.id, data.nik));
+			// Should there be more than one, remove redCookie("nik") and use the for-each bellow.
+			/*$.each(data, function(key, value) {
 				$farmaciaSelect.append(createOption(value.id, value.nik));
-			});
+			});*/
 		});
 
 		$modal.modal('show');

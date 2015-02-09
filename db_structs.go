@@ -14,6 +14,14 @@ type Entradas struct {
 	Fechahora     string `db:"fechahora" json:"fechahora"`
 }
 
+type EntradasJoin struct {
+	Id                int64  `db:"id" json:"id"`
+	Idmedicamento     int64  `db:"idmedicamento" json:"idmedicamento,string"`
+	Nombremedicamento string `db:"nombremedicamento" json:"nombremedicamento"`
+	Cantidad          int64  `db:"cantidad" json:"cantidad,string"`
+	Fechahora         string `db:"fechahora" json:"fechahora"`
+}
+
 type Farmacias struct {
 	Id    int64  `db:"id" json:"id"`
 	Nik   string `db:"nik" json:"nik"`
@@ -44,4 +52,14 @@ type Salidas struct {
 	Fechahora     string `db:"fechahora" json:"fechahora"`
 	Cantidad      int64  `db:"cantidad" json:"cantidad,string"`
 	Idfarmacia    int64  `db:"idfarmacia" json:"idfarmacia,string"`
+}
+
+type SalidasJoin struct {
+	Id                int64  `db:"id" json:"id"`
+	Idmedicamento     int64  `db:"idmedicamento" json:"idmedicamento,string"`
+	Nombremedicamento string `db:"nombremedicamento" json:"nombremedicamento"`
+	Fechahora         string `db:"fechahora" json:"fechahora"`
+	Cantidad          int64  `db:"cantidad" json:"cantidad,string"`
+	Idfarmacia        int64  `db:"idfarmacia" json:"idfarmacia,string"`
+	Nombrefarmacia    string `db:"nombrefarmacia" json:"nombrefarmacia"`
 }

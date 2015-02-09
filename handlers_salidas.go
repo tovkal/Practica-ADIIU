@@ -8,8 +8,8 @@ import (
 )
 
 func getAllSalidas(w http.ResponseWriter, r *http.Request) {
-	salidas := []Salidas{}
-	api.DB.Find(&salidas)
+	salidas := []SalidasJoin{}
+	api.DB.Table("salidas").Select("salidas.id, salidas.idmedicamento, medicamentos.nombre as nombremedicamento, salidas.fechahora, salidas.cantidad, salidas.idfarmacia, farmacias.nik as nombrefarmacia").Joins("INNER JOIN medicamentos ON salidas.idmedicamento = medicamentos.id INNER JOIN farmacias ON salidas.idfarmacia = farmacias.id").Scan(&salidas)
 	WriteJson(w, &salidas)
 }
 
@@ -17,8 +17,8 @@ func getSalidas(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	fromDate := vars["fromDate"]
 	toDate := vars["toDate"]
-	salidas := []Salidas{}
-	if api.DB.Where("(fechahora BETWEEN ? AND ?)", fromDate+" 00:00:00", toDate+" 23:59:59").Find(&salidas).Error != nil {
+	salidas := []SalidasJoin{}
+	if api.DB.Table("salidas").Select("salidas.id, salidas.idmedicamento, medicamentos.nombre as nombremedicamento, salidas.fechahora, salidas.cantidad, salidas.idfarmacia, farmacias.nik as nombrefarmacia").Joins("INNER JOIN medicamentos ON salidas.idmedicamento = medicamentos.id INNER JOIN farmacias ON salidas.idfarmacia = farmacias.id").Where("(fechahora BETWEEN ? AND ?)", fromDate+" 00:00:00", toDate+" 23:59:59").Scan(&salidas).Error != nil {
 		ResourceNotFound(w)
 		return
 	}
@@ -38,5 +38,11 @@ func postSalida(w http.ResponseWriter, r *http.Request) {
 		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	WriteJson(w, &salida)
+
+	salidaOutput, err := getSalidaById(salida.Id)
+	if err != nil {
+		ResourceNotFound(w)
+	}
+
+	WriteJson(w, &salidaOutput)
 }

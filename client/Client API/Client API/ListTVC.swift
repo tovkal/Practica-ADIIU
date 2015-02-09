@@ -52,12 +52,12 @@ class ListTVC: UITableViewController, UITableViewDataSource {
             cell.detailTextLabel?.text = self.tableData[indexPath.row]["texto"].string!
             break;
         case "Entradas":
-            cell.textLabel?.text = "Medicament: " + self.tableData[indexPath.row]["idmedicamento"].string! + " | Quantitat: " + self.tableData[indexPath.row]["cantidad"].string!
-            cell.detailTextLabel?.text = self.tableData[indexPath.row]["fechahora"].string!
+            cell.textLabel?.text = self.tableData[indexPath.row]["fechahora"].string!
+            cell.detailTextLabel?.text = self.tableData[indexPath.row]["nombremedicamento"].string! + " | Quantitat: " + self.tableData[indexPath.row]["cantidad"].string!
             break;
         case "Salidas":
-            cell.textLabel?.text = "Medicament: " + self.tableData[indexPath.row]["idmedicamento"].string! + " | Quantitat: " + self.tableData[indexPath.row]["cantidad"].string!
-            cell.detailTextLabel?.text = "Farmacia: " + self.tableData[indexPath.row]["idfarmacia"].string! + " | Data: " + self.tableData[indexPath.row]["fechahora"].string!
+            cell.textLabel?.text = self.tableData[indexPath.row]["nombrefarmacia"].string! + " | " + self.tableData[indexPath.row]["fechahora"].string!
+            cell.detailTextLabel?.text = self.tableData[indexPath.row]["nombremedicamento"].string! + " | Quantitat: " + self.tableData[indexPath.row]["cantidad"].string!
             break;
         case "Medicamentos":
             cell.textLabel?.text = self.tableData[indexPath.row]["nombre"].string!
@@ -90,8 +90,6 @@ class ListTVC: UITableViewController, UITableViewDataSource {
             if let index = sender as? NSIndexPath {
                 dvc.operation = self.operationTitle
                 dvc.data = self.tableData[index.row]
-                // Pasar dades
-                // Pasar tipus dades
             }
         }
     }

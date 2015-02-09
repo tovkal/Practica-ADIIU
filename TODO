@@ -3,3 +3,5 @@ TODO
 * walk tmpl directory amb build caches from what's found...
 
 * Change GORM logger to use the global one
+
+* Move all DAO code out from the handlers and into the proper dao

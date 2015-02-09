@@ -34,14 +34,14 @@ class DetailVC: UIViewController {
             break;
         case "Entradas":
             var view = EntradaView.loadFromNibNamed("EntradaView") as EntradaView
-            view.setTitle(data["idmedicamento"].string!)
+            view.setTitle(data["nombremedicamento"].string!)
             view.setQuantity(data["cantidad"].string!)
             view.setDate(data["fechahora"].string!)
             self.view = view
             break;
         case "Salidas":
             var view = SalidaView.loadFromNibNamed("SalidaView") as SalidaView
-            view.setTitle(data["idmedicamento"].string!)
+            view.setTitle(data["nombremedicamento"].string!)
             view.setQuantity(data["cantidad"].string!)
             view.setDate(data["fechahora"].string!)
             self.view = view

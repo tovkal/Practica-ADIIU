@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-var originalSalida = Salidas{Id: 3, Idmedicamento: 1, Cantidad: 5, Idfarmacia: 1, Fechahora: "2014-11-29 14:10:04"}
+var originalSalida = SalidasJoin{Id: 3, Idmedicamento: 1, Cantidad: 5, Idfarmacia: 1, Fechahora: "2014-11-29 14:10:04", Nombremedicamento: "Allegra ® pediátrico", Nombrefarmacia: "Milano"}
 var testSalida = Salidas{Idmedicamento: 1, Cantidad: 666, Idfarmacia: 1}
 
 func TestGetAllSalidas(t *testing.T) {
@@ -21,7 +21,7 @@ func TestGetSalida(t *testing.T) {
 	CodeIs(resp, 200, t)
 	ContentTypeIsJson(resp, t)
 
-	isResponseExpected(resp, [1]Salidas{originalSalida}, t)
+	isResponseExpected(resp, [1]SalidasJoin{originalSalida}, t)
 }
 
 func TestPostSalida(t *testing.T) {

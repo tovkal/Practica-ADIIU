@@ -14,8 +14,9 @@ func getAllFarmacias(w http.ResponseWriter, r *http.Request) {
 
 func getFarmacia(w http.ResponseWriter, r *http.Request) {
 	nik := mux.Vars(r)["nik"]
-	farmacia := Farmacias{}
-	if api.DB.First(&farmacia, nik).Error != nil {
+	farmacia, err := getFarmaciaByNik(nik)
+	if err != nil {
+		log.Error(err.Error())
 		ResourceNotFound(w)
 		return
 	}
