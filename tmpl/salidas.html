@@ -141,7 +141,7 @@
                     	<div class="form-group">
                     		<label for="quantitat" class="col-sm-2 control-label">Quantitat</label>
                     		<div class="col-sm-10">
-                    			<input type="number" id="quantitat" name="cantidad" class="form-control" placeholder="Quantitat" min="1"/>
+                    			<input type="number" id="quantitat" name="cantidad" class="form-control" placeholder="Quantitat" min="0"/>
                     		</div>
                     	</div>
                     </form>
@@ -162,6 +162,23 @@
 	var $quantitat = $('#quantitat');
 	var $alert = $("#modalAlert");
 
+	$(document).ready(function() {
+		$medicamentSelect.on('change', function (){
+			console.log("changed");
+			// Get id of selected medicamento
+			var idMedicamento = $(this).find("option:selected").val();
+			setMaxQuantity(idMedicamento);
+		});
+	});
+
+	function setMaxQuantity(idMedicamento) {
+		// Fetch medicamento's stock, and set as maximum in the quantity field
+		read("medicamentos", idMedicamento, function(data) {
+			console.log(data);
+			$quantitat.attr("max", data["enalmacen"]);
+		});
+	}
+
 	// Setup and show modal
 	function createSalida() {
 		read("medicamentos", null, function(data) {
@@ -170,6 +187,8 @@
 			$.each(data, function(key, value) {
 				$medicamentSelect.append(createOption(value.id, value.nombre));
 			});
+
+			setMaxQuantity(data[0]["id"]);
 		});
 
 		read("farmacias", readCookie("nik"), function(data) {
@@ -187,13 +206,27 @@
 	function submitSalida() {
 		create("salidas", $form, function(data) {
 			table.row.add(data).draw();
-			closeModal();
+			substractStock(data);
+		});
+	}
+
+	function substractStock(salida) {
+		$.ajax({
+			url: "/api/medicamentos/" + salida["idmedicamento"] + "/stock/-" + salida["cantidad"],
+			type: "PUT",
+			success: function(result) {
+				closeModal();
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert("Error adding stock");
+			}
 		});
 	}
 
 	function closeModal() {
 		resetForm($form);
 		$modal.modal('hide');
+		$quantitat.removeAttr("max");
 	}
 </script>
 {{end}}

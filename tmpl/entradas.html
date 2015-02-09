@@ -166,7 +166,20 @@
 	function submitEntrada() {
 		create("entradas", $form, function(data) {
 			table.row.add(data).draw();
-			closeModal();
+			addStock(data);
+		});
+	}
+
+	function addStock(entrada) {
+		$.ajax({
+			url: "/api/medicamentos/" + entrada["idmedicamento"] + "/stock/" + entrada["cantidad"],
+			type: "PUT",
+			success: function(result) {
+				closeModal();
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert("Error adding stock");
+			}
 		});
 	}
 
