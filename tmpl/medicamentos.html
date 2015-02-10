@@ -8,7 +8,7 @@
 			<th class="col-md-3">Nom</th>
 			<th class="col-md-3">Descripció</th>
 			<th class="col-md-1">Estoc</th>
-			<th class="col-md-1"><button type="button" class="btn btn-success" onclick="createMedicamento()"><span class="glyphicon glyphicon-plus"></span></button></th>
+			<th class="col-md-1"><button type="button" class="btn btn-success responsable-magatzem" onclick="createMedicamento()"><span class="glyphicon glyphicon-plus"></span></button></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -20,6 +20,8 @@
 
 	$(document).ready(function() {
 		setupTable();
+
+		applyNivel();
 	});
 
 	function setupTable() {
@@ -31,7 +33,7 @@
 				type: "GET",
 				datatype: "json",
 				url: "/api/medicamentos",
-				dataSrc: "",
+				dataSrc: ""
 			},
 			order: [[2, "asc"]],
 			columnDefs: [
@@ -113,7 +115,7 @@
                     	<div class="form-group">
                     		<label for="enalmacen" class="col-sm-2 control-label">Estoc</label>
                     		<div class="col-sm-10">
-                    			<input type="number" min="0" id="enalmacen" name="enalmacen" class="form-control" placeholder="Estoc" />
+                    			<input type="number" min="0" id="enalmacen" name="enalmacen" class="form-control" placeholder="Estoc" value="0" />
                     		</div>
                     	</div>
                     	<div class="form-group">
@@ -173,6 +175,7 @@
 	var $btn = $("#actionBtn");
 	var $alert = $("#modalAlert");
 	var $categoriasSelect = $("#categoriasSelect");
+	var validator;
 
 	$(document).ready(function() {
 		// Reset photo upload progress bar
@@ -180,6 +183,33 @@
 		
 		$modal.on('hidden.bs.modal', function() {
 			tidyBeforeClosingModal();
+		});
+
+		validator = $form.validate({
+			rules: {
+				idcategoria: {
+					required: true
+				},
+				nombre: {
+					required: true
+				},
+				enalmacen: {
+					required: true,
+					min: 0,
+					number: true
+				},
+				codigo: {
+					required: true,
+					min: 0,
+					number: true
+				}
+			},
+		    highlight: function(element) {
+		        $(element).closest('.form-group').addClass('has-error');
+		    },
+		    unhighlight: function(element) {
+		        $(element).closest('.form-group').removeClass('has-error');
+		    }
 		});
 	});
 
@@ -234,10 +264,12 @@
 	}
 
 	function submitMedicamento() {
-		create("medicamentos", $form, function(data) {
-			table.row.add(data).draw();
-			closeModal();
-		});
+		if (validator.form()) {
+			create("medicamentos", $form, function(data) {
+				table.row.add(data).draw();
+				closeModal();
+			});
+		};
 	}
 
 	function updateMedicamento(id, row) {
@@ -251,10 +283,12 @@
 	}
 
 	function submitUpdateMedicamento(id, row) {
-		update("medicamentos", id, $form, function(data) {
-			table.row(row).data(data).draw();
-			closeModal();
-		});
+		if (validator.form()) {
+			update("medicamentos", id, $form, function(data) {
+				table.row(row).data(data).draw();
+				closeModal();
+			});
+		};
 	}
 
 	function deleteMedicamento(id, row) {

@@ -177,14 +177,10 @@ function eraseCookie(name) {
 // Custom jQuery functions
 (function($) {
     $.fn.hideBootstrap = function() {
-        if (!this.hasClass("hidden")) {
-            this.addClass("hidden");
-        }
+		this.addClass("hidden");
     };
     $.fn.showBootstrap = function() {
-        if (this.hasClass("hidden")) {
-            this.removeClass("hidden");
-        }
+        this.removeClass("hidden");
     };
     $.fn.isEmpty = function() {
         return this.val().length == 0;
@@ -200,16 +196,16 @@ $(document).ready(function() {
 
 function applyNivel() {
 	if (readCookie("nivel") == 255) {
-		$(".loggedoff").showBootstrap();
+		$(".loggedon").showBootstrap();
 		$(".responsable-magatzem").showBootstrap();
 		$(".responsable-farmacia").hideBootstrap();
 	} else if (readCookie("nivel") == 0) {
-		$(".loggedoff").showBootstrap();
+		$(".loggedon").showBootstrap();
 		$(".responsable-magatzem").hideBootstrap();
 		$(".responsable-farmacia").showBootstrap();
 	} else {
 		$(".responsable-magatzem").hideBootstrap();
 		$(".responsable-farmacia").hideBootstrap();
-		$(".loggedoff").hideBootstrap();
+		$(".loggedon").hideBootstrap();
 	}
 }

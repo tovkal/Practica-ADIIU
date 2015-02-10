@@ -15,7 +15,8 @@ func getAllCategorias(w http.ResponseWriter, r *http.Request) {
 func getCategoria(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 	categoria := Categorias{}
-	if api.DB.First(&categoria, id).Error != nil {
+	if err := api.DB.First(&categoria, id).Error; err != nil {
+		log.Error(err.Error())
 		ResourceNotFound(w)
 		return
 	}

@@ -111,10 +111,36 @@
 	var $nivel = $('#nivel');
 	var $btn = $("#actionBtn");
 	var $alert = $("#modalAlert");
+	var validator;
 
 	$(document).ready(function() {
 		$modal.on('hidden.bs.modal', function() {
 			tidyBeforeClosingModal();
+		});
+
+		validator = $form.validate({
+			rules: {
+				nik: {
+					required: true,
+					minlength: 2
+				},
+				pass: {
+					required: true,
+					minlength: 1
+				},
+				nivel: {
+					required: true,
+					min: 0,
+					max: 255,
+					number: true
+				}
+			},
+		    highlight: function(element) {
+		        $(element).closest('.form-group').addClass('has-error');
+		    },
+		    unhighlight: function(element) {
+		        $(element).closest('.form-group').removeClass('has-error');
+		    }
 		});
 	});
 
@@ -128,22 +154,25 @@
 	function readFarmacia(id) {
 		changeButton($btn, 'read', 'Tancar');
 
-		read("farmacias", id, readSuccess);
-
-		$modal.modal('show');
+		read("farmacias", id, readSuccess, function() {
+			alert("No s'ha trobat l'usuari");
+		});
 	}
 
 	function readSuccess(data) {
 		$nik.val(data.nik);
 		$pass.val(data.pass);
 		$nivel.val(data.nivel);
+		$modal.modal('show');
 	}
 
 	function submitFarmacia() {
-		create("farmacias", $form, function(data) {
-			table.row.add(data).draw();
-			closeModal();
-		});
+		if (validator.form()) {
+			create("farmacias", $form, function(data) {
+				table.row.add(data).draw();
+				closeModal();
+			});
+		};
 	}
 
 	function updateFarmacia(id, row) {
@@ -155,10 +184,12 @@
 	}
 
 	function submitUpdateFarmacia(id, row) {
-		update("farmacias", id, $form, function(data) {
-			table.row(row).data(data).draw();
-			closeModal();
-		});
+		if (validator.form()) {
+			update("farmacias", id, $form, function(data) {
+				table.row(row).data(data).draw();
+				closeModal();
+			});
+		};
 	}
 
 	function deleteFarmacia(id, row) {

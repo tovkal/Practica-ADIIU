@@ -6,7 +6,7 @@
 			<th class="col-md-2">Imatge</th>
 			<th class="col-md-3">Nom</th>
 			<th class="col-md-4">Text</th>
-			<th class="col-md-1"><button id="createSeccioBtn" type="button" class="btn btn-success" onclick="createCategoria()"><span class="glyphicon glyphicon-plus"></span></button></th>
+			<th class="col-md-1"><button id="createSeccioBtn" type="button" class="btn btn-success responsable-magatzem" onclick="createCategoria()"><span class="glyphicon glyphicon-plus"></span></button></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -18,6 +18,8 @@
 
 	$(document).ready(function() {
 		setupTable();
+
+		applyNivel();
 	});
 
 	function setupTable() {
@@ -148,6 +150,7 @@
 	var $imagen = $('#imagen');
 	var $btn = $("#actionBtn");
 	var $alert = $("#modalAlert");
+	var validator;
 
 	$(document).ready(function() {
 		// Reset photo upload progress bar
@@ -155,6 +158,21 @@
 
 		$modal.on('hidden.bs.modal', function() {
 			tidyBeforeClosingModal();
+		});
+
+		validator = $form.validate({
+			rules: {
+				nombre: {
+					required: true,
+					minlength: 1
+				}
+			},
+		    highlight: function(element) {
+		        $(element).closest('.form-group').addClass('has-error');
+		    },
+		    unhighlight: function(element) {
+		        $(element).closest('.form-group').removeClass('has-error');
+		    }
 		});
 	});
 
@@ -187,11 +205,13 @@
 	}
 
 	function submitCategoria() {
-		var success_fn = function(data) {
-			table.row.add(data).draw();
-			closeModal();
-		};
-		create("categorias", $form, success_fn);
+		if (validator.form()) {
+			var success_fn = function(data) {
+				table.row.add(data).draw();
+				closeModal();
+			};
+			create("categorias", $form, success_fn);
+		}
 	}
 
 	function updateCategoria(id, row) {
@@ -205,14 +225,16 @@
 	}
 
 	function submitUpdateCategoria(id, row) {
-		update("categorias", id, $form, function(data) {
-			table.row(row).data(data).draw();
-			closeModal();
-		});
+		if (validator.form()) {
+			update("categorias", id, $form, function(data) {
+				table.row(row).data(data).draw();
+				closeModal();
+			});
+		};
 	}
 
 	function deleteCategoria(id, row) {
-		deleteFn("categoria", id, function(data) {
+		deleteFn("categorias", id, function(data) {
 			table.row(row).remove().draw();
 		});
 	}

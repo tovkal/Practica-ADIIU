@@ -149,6 +149,24 @@
 	var $medicamentSelect = $('#medicamentSelect');
 	var $quantitat = $('#quantitat');
 	var $alert = $("#modalAlert");
+	var validator;
+
+	validator = $form.validate({
+		rules: {
+			cantidad: {
+				required: true,
+				minlength: 1,
+				min: 1,
+				digits: true
+			}
+		},
+	    highlight: function(element) {
+	        $(element).closest('.form-group').addClass('has-error');
+	    },
+	    unhighlight: function(element) {
+	        $(element).closest('.form-group').removeClass('has-error');
+	    }
+	});
 
 	// Setup and show modal
 	function createEntrada() {
@@ -164,10 +182,12 @@
 	}
 
 	function submitEntrada() {
-		create("entradas", $form, function(data) {
-			table.row.add(data).draw();
-			addStock(data);
-		});
+		if (validator.form()) {
+			create("entradas", $form, function(data) {
+				table.row.add(data).draw();
+				addStock(data);
+			});
+		};
 	}
 
 	function addStock(entrada) {

@@ -102,7 +102,7 @@ var apiRoutes = ApiRoutes{
 		HandlerFuncRoute{
 			"getFarmacia",
 			"GET",
-			"/farmacias/{nik}",
+			"/farmacias/{id}",
 			getFarmacia,
 		},
 		HandlerFuncRoute{
@@ -114,13 +114,13 @@ var apiRoutes = ApiRoutes{
 		HandlerFuncRoute{
 			"putFarmacia",
 			"PUT",
-			"/farmacias/{nik}",
+			"/farmacias/{id}",
 			putFarmacia,
 		},
 		HandlerFuncRoute{
 			"deleteFarmacia",
 			"DELETE",
-			"/farmacias/{nik}",
+			"/farmacias/{id}",
 			deleteFarmacia,
 		},
 

@@ -13,8 +13,8 @@ func getAllFarmacias(w http.ResponseWriter, r *http.Request) {
 }
 
 func getFarmacia(w http.ResponseWriter, r *http.Request) {
-	nik := mux.Vars(r)["nik"]
-	farmacia, err := getFarmaciaByNik(nik)
+	id := mux.Vars(r)["id"]
+	farmacia, err := getFarmaciaById(id)
 	if err != nil {
 		log.Error(err.Error())
 		ResourceNotFound(w)
@@ -37,9 +37,9 @@ func postFarmacia(w http.ResponseWriter, r *http.Request) {
 }
 
 func putFarmacia(w http.ResponseWriter, r *http.Request) {
-	nik := mux.Vars(r)["nik"]
+	id := mux.Vars(r)["id"]
 	farmacia := Farmacias{}
-	if api.DB.First(&farmacia, nik).Error != nil {
+	if api.DB.First(&farmacia, id).Error != nil {
 		ResourceNotFound(w)
 		return
 	}
@@ -62,9 +62,9 @@ func putFarmacia(w http.ResponseWriter, r *http.Request) {
 }
 
 func deleteFarmacia(w http.ResponseWriter, r *http.Request) {
-	nik := mux.Vars(r)["nik"]
+	id := mux.Vars(r)["id"]
 	farmacia := Farmacias{}
-	if api.DB.First(&farmacia, nik).Error != nil {
+	if api.DB.First(&farmacia, id).Error != nil {
 		ResourceNotFound(w)
 		return
 	}

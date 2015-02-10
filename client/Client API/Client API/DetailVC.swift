@@ -50,7 +50,7 @@ class DetailVC: UIViewController {
             var view = MedicamentView.loadFromNibNamed("MedicamentView") as MedicamentView
             view.setImage(data["imagen"].string!)
             view.setTitle(data["nombre"].string!)
-            view.setStock((data["enalmacen"].number!).stringValue)
+            view.setStock(data["enalmacen"].string!)
             view.setTextDescription(data["texto"].string!)
             self.view = view
             break;

@@ -134,8 +134,13 @@ tbody {
 	float: left;
 }
 
-.news-text {
+.news-wrapper {
 	padding: 5px;
 	width: 100%;
-	height: 100%; 
+	height: 100%;
+	position: relative;
+}
+
+.news-dates {
+	position: absolute;
 }

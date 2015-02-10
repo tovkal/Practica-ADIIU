@@ -80,22 +80,22 @@
 					        <div class="col-sm-4 col-sm-offset-2">
 					            <label for="fromDate">Des de (inclòs)</label>
 					            <div class='input-group date'>
-					            	<input type="hidden" id="inicio" name="inicio" />
 					                <input type='text' id="fromDate" class="form-control obligatori" data-date-format="YYYY-MM-DD" placeholder="aaaa-mm-dd" />
 								    <span class="input-group-addon">
 								        <span class="glyphicon glyphicon-calendar"></span>
 								    </span>
 					            </div>
+					            <input type="hidden" id="inicio" name="inicio" />
 					        </div>
 					    	<div class="col-sm-4">
 					            <label for="toDate">Fins (inclòs)</label>
 					            <div class='input-group date'>
-					            	<input type="hidden" id="fin" name="fin" />
 					                <input type='text' id="toDate" class="form-control obligatori" data-date-format="YYYY-MM-DD" placeholder="aaaa-mm-dd" />
 								    <span class="input-group-addon">
 								        <span class="glyphicon glyphicon-calendar"></span>
 								    </span>
 					        	</div>
+					        	<input type="hidden" id="fin" name="fin" />
 				        	</div>
 					    </div>
 					    <script type="application/javascript">
@@ -131,10 +131,32 @@
 	var $toDate = $("#toDate");
 	var $btn = $("#actionBtn");
 	var $alert = $("#modalAlert");
+	var validator;
 
 	$(document).ready(function() {
 		$modal.on('hidden.bs.modal', function() {
 			tidyBeforeClosingModal();
+		});
+
+		validator = $form.validate({
+			ignore: "",
+			rules: {
+				texto: {
+					required: true
+				},
+				inicio: {
+					required: true
+				},
+				fin: {
+					required: true
+				}
+			},
+		    highlight: function(element) {
+		        $(element).closest('.form-group').addClass('has-error');
+		    },
+		    unhighlight: function(element) {
+		        $(element).closest('.form-group').removeClass('has-error');
+		    }
 		});
 	});
 
@@ -162,11 +184,12 @@
 	function submitNoticia() {
 		$("#inicio").val($fromDate.val());
 		$("#fin").val($toDate.val());
-
-		create("noticias", $form, function(data) {
-			table.row.add(data).draw();
-			closeModal();
-		});
+		if (validator.form()) {
+			create("noticias", $form, function(data) {
+				table.row.add(data).draw();
+				closeModal();
+			});
+		};
 	}
 
 	function updateNoticia(id, row) {		
@@ -181,10 +204,12 @@
 		$("#inicio").val($fromDate.val());
 		$("#fin").val($toDate.val());
 
-		update("noticias", id, $form, function(data) {
-			table.row(row).data(data).draw();
-			closeModal();
-		});
+		if (validator.form()) {
+			update("noticias", id, $form, function(data) {
+				table.row(row).data(data).draw();
+				closeModal();
+			});
+		};
 	}
 
 	function tidyBeforeClosingModal() {

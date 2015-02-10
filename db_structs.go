@@ -36,7 +36,7 @@ type Medicamentos struct {
 	Imagen      string `db:"imagen" json:"imagen"`
 	Nombre      string `db:"nombre" json:"nombre"`
 	Codigo      string `db:"codigo" json:"codigo"`
-	Enalmacen   int64  `db:"enalmacen" json:"enalmacen"`
+	Enalmacen   int64  `db:"enalmacen" json:"enalmacen,string"`
 }
 
 type Noticias struct {

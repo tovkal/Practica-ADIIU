@@ -46,7 +46,7 @@
 	}
 
 	function createNoticia(noticia) {
-		return "<p class='news-text'>" + noticia["texto"] + "</p>";
+		return "<div class='news-wrapper'><p>" + noticia["texto"] + "</p><p class='news-dates' style='bottom:25px;'><strong>Data Inici:</strong>" + noticia["inicio"] + "</p><p class='news-dates' style='bottom: 0px;'><strong>Data Fi:</strong>" + noticia["fin"] + "</p></div>";
 	}
 </script>
 {{end}}

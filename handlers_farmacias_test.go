@@ -17,7 +17,7 @@ func TestGetAllFarmacias(t *testing.T) {
 }
 
 func TestGetFarmacia(t *testing.T) {
-	resp := sendTest("farmacias/Milano", "GET", "")
+	resp := sendTest("farmacias/1", "GET", "")
 
 	CodeIs(resp, 200, t)
 	ContentTypeIsJson(resp, t)

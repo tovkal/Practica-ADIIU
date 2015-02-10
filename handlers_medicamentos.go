@@ -26,10 +26,13 @@ func getMedicamento(w http.ResponseWriter, r *http.Request) {
 func postMedicamento(w http.ResponseWriter, r *http.Request) {
 	medicamento := Medicamentos{}
 	if err := DecodeJson(r, &medicamento); err != nil {
+		log.Error(err.Error())
 		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
 	if err := api.DB.Save(&medicamento).Error; err != nil {
+		log.Error(err.Error())
 		Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

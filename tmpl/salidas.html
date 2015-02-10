@@ -48,7 +48,7 @@
 		</div>
     </div>
 	<div class="col-md-2 pull-down">
-		<button id="createSeccioBtn" type="button" class="btn btn-success responsable-farmacia" onclick="createSalida()">Afegir sortida</button>
+		<button id="createSeccioBtn" type="button" class="btn btn-success" onclick="createSalida()">Afegir sortida</button>
 	</div>
 </div>
 <table id="categoriasTable" class="table table-hover">
@@ -125,6 +125,7 @@
                 	<div id="modalAlert" class="alert alert-danger hidden" role="alert"></div>
                     <form id="salidaForm" class="form-horizontal" role="form">
                     	<div class="form-group">
+                    		<span class="help-block col-sm-10 col-sm-offset-2">Només els medicaments en estoc apareixen a la llista.</span>
                     		<label for="medicamentSelect" class="col-sm-2 control-label">Nom Medicament</label>
                     		<div class="col-sm-10">
                     			<select id="medicamentSelect" name="idmedicamento" class="form-control">
@@ -141,7 +142,7 @@
                     	<div class="form-group">
                     		<label for="quantitat" class="col-sm-2 control-label">Quantitat</label>
                     		<div class="col-sm-10">
-                    			<input type="number" id="quantitat" name="cantidad" class="form-control" placeholder="Quantitat" min="0"/>
+                    			<input type="number" id="quantitat" name="cantidad" class="form-control" placeholder="Quantitat" min="1"/>
                     		</div>
                     	</div>
                     </form>
@@ -161,10 +162,10 @@
 	var $farmaciaSelect = $('#farmaciaSelect');
 	var $quantitat = $('#quantitat');
 	var $alert = $("#modalAlert");
+	var validator;
 
 	$(document).ready(function() {
 		$medicamentSelect.on('change', function (){
-			console.log("changed");
 			// Get id of selected medicamento
 			var idMedicamento = $(this).find("option:selected").val();
 			setMaxQuantity(idMedicamento);
@@ -174,7 +175,6 @@
 	function setMaxQuantity(idMedicamento) {
 		// Fetch medicamento's stock, and set as maximum in the quantity field
 		read("medicamentos", idMedicamento, function(data) {
-			console.log(data);
 			$quantitat.attr("max", data["enalmacen"]);
 		});
 	}
@@ -184,11 +184,16 @@
 		read("medicamentos", null, function(data) {
 			$medicamentSelect.children("option").remove();
 
+			var firstMedicamentoID;
+
 			$.each(data, function(key, value) {
-				$medicamentSelect.append(createOption(value.id, value.nombre));
+				if (value["enalmacen"] > 0) {
+					firstMedicamentoID = value.id;
+					$medicamentSelect.append(createOption(value.id, value.nombre));
+				};
 			});
 
-			setMaxQuantity(data[0]["id"]);
+			setMaxQuantity(data[firstMedicamentoID]["id"]);
 		});
 
 		read("farmacias", readCookie("nik"), function(data) {
@@ -200,14 +205,28 @@
 			});*/
 		});
 
+		validator = $form.validate({
+			rules: {
+				cantidad: "required"
+			},
+		    highlight: function(element) {
+		        $(element).closest('.form-group').addClass('has-error');
+		    },
+		    unhighlight: function(element) {
+		        $(element).closest('.form-group').removeClass('has-error');
+		    }
+		});
+
 		$modal.modal('show');
 	}
 
 	function submitSalida() {
-		create("salidas", $form, function(data) {
-			table.row.add(data).draw();
-			substractStock(data);
-		});
+		if (validator.form()) {
+			create("salidas", $form, function(data) {
+				table.row.add(data).draw();
+				substractStock(data);
+			});
+		};
 	}
 
 	function substractStock(salida) {

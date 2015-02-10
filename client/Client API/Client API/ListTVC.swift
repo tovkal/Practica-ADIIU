@@ -61,7 +61,7 @@ class ListTVC: UITableViewController, UITableViewDataSource {
             break;
         case "Medicamentos":
             cell.textLabel?.text = self.tableData[indexPath.row]["nombre"].string!
-            let estoc = self.tableData[indexPath.row]["enalmacen"].number!
+            let estoc = self.tableData[indexPath.row]["enalmacen"].string!
             cell.detailTextLabel?.text = "Estoc: \(estoc)"
             break;
         case "Noticias":
