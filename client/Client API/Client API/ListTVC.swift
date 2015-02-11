@@ -10,7 +10,7 @@ import UIKit
 import SwiftyJSON
 import Alamofire
 
-class ListTVC: UITableViewController, UITableViewDataSource {
+class ListTVC: UITableViewController {
     
     var operationTitle: String?
     var method: String?
@@ -25,10 +25,6 @@ class ListTVC: UITableViewController, UITableViewDataSource {
         self.title = operationTitle
         
         fetchData()
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
     
     // MARK: - Table view data source
@@ -94,10 +90,35 @@ class ListTVC: UITableViewController, UITableViewDataSource {
         }
     }
     
+    // MARK: - Table animation
+    func animateTable() {
+        tableView.reloadData()
+        
+        let cells = tableView.visibleCells()
+        let tableHeight = tableView.bounds.size.height
+        
+        // Move all cells to the bottom of the screen
+        for c in cells {
+            let cell = c as UITableViewCell
+            cell.transform = CGAffineTransformMakeTranslation(0, tableHeight)
+        }
+        
+        var index = 0
+        for c in cells {
+            let cell = c as UITableViewCell
+            UIView.animateWithDuration(1.5, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: nil, animations: {
+                cell.transform = CGAffineTransformMakeTranslation(0, 0)
+            }, completion: nil)
+            
+            index++
+        }
+        
+    }
+    
     // MARK: - API Client
     
     private func fetchData() {
-        var url: String = GlobalConstants.api + method!
+        var url: String = GlobalConstants.apiEndpoint + method!
         
         Alamofire.request(.GET, url, parameters: nil)
             .responseJSON { (req, res, json, error) in
@@ -107,7 +128,7 @@ class ListTVC: UITableViewController, UITableViewDataSource {
                 else {
                     NSLog("Success: \(url)")
                     self.tableData = JSON(json!)
-                    self.list.reloadData()
+                    self.animateTable()
                 }
         }
     }

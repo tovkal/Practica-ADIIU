@@ -16,7 +16,7 @@ class CategoriaView: UIView {
     func setImage(imageName: String) {
         if imageName != "" {
             // If the image does not exist, we need to download it
-            var imgURL: NSURL = NSURL(string: GlobalConstants.imgDirectory + imageName)!
+            var imgURL: NSURL = NSURL(string: GlobalConstants.assetEndpoint + imageName)!
             
             // Download an NSData representation of the image at the URL
             let request: NSURLRequest = NSURLRequest(URL: imgURL)

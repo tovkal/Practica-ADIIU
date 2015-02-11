@@ -7,7 +7,6 @@
 //
 
 struct GlobalConstants {
-    static let host = "http://localhost:3000"
-    static let api = host + "/api"
-    static let imgDirectory = host + "/static/img/uploads/"
+    static let apiEndpoint = "http://adiiu.tovkal.com/api"
+    static let assetEndpoint = "http://tempstaticadiiu.tovkal.com/img/uploads/"
 }

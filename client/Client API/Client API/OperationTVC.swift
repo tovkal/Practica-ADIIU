@@ -17,8 +17,8 @@ class OperationTVC: UITableViewController {
         super.viewDidLoad()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    override func viewWillAppear(animated: Bool) {
+        animateTable()
     }
     
     // MARK: - Table view data source
@@ -52,5 +52,30 @@ class OperationTVC: UITableViewController {
                 tvc.method = operations[tvc.operationTitle!]
             }
         }
+    }
+    
+    // MARK: - Table animation
+    func animateTable() {
+        tableView.reloadData()
+        
+        let cells = tableView.visibleCells()
+        let tableHeight = tableView.bounds.size.height
+        
+        // Move all cells to the bottom of the screen
+        for c in cells {
+            let cell = c as UITableViewCell
+            cell.transform = CGAffineTransformMakeTranslation(0, tableHeight)
+        }
+        
+        var index = 0
+        for c in cells {
+            let cell = c as UITableViewCell
+            UIView.animateWithDuration(1.5, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: nil, animations: {
+                cell.transform = CGAffineTransformMakeTranslation(0, 0)
+                }, completion: nil)
+            
+            index++
+        }
+        
     }
 }
