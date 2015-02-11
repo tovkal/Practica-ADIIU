@@ -12,7 +12,7 @@ function disablePhotoUpload() {
 
 // Set the image as the background of the element
 function setBackgroundImage(element, image) {
-	$("#" + element).css('background-image', 'url("http://staticadiiu.tovkal.com/img/uploads/' + image + '")');
+	$("#" + element).css('background-image', 'url("http://tempstaticadiiu.tovkal.com/img/uploads/' + image + '")');
 	$("#" + element).addClass('background-image-style');
 }
 

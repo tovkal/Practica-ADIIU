@@ -1,9 +1,11 @@
 package main
 
 import (
-	"io"
+	"io/ioutil"
 	"net/http"
-	"os"
+
+	"github.com/goamz/goamz/aws"
+	"github.com/goamz/goamz/s3"
 )
 
 type fileResponse struct {
@@ -22,7 +24,12 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 
 	defer file.Close()
 
-	out, err := os.Create("./static/img/uploads/" + header.Filename)
+	out, err := ioutil.ReadAll(file)
+
+	uploadToBucket(header.Filename, out)
+
+	// Read to file
+	/*out, err := os.Create("./static/img/uploads/" + header.Filename)
 	if err != nil {
 		Error(w, "Unable to create the file. Check your write permissions", http.StatusInternalServerError)
 		return
@@ -34,11 +41,30 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	if _, err = io.Copy(out, file); err != nil {
 		Error(w, err.Error(), http.StatusInternalServerError)
 		return
-	}
+	}*/
 
 	response := fileResponse{}
 	response.Status = "success"
 	response.FileName = header.Filename
 
 	WriteJson(w, response)
+}
+
+func uploadToBucket(fileName string, data []byte) {
+	log.Notice("Going to upload image to S3: " + fileName)
+	auth := aws.Auth{
+		AccessKey: "ACCESS KEY HERE!!",
+		SecretKey: "SECRET KEY HERE!!",
+	}
+
+	// EUCentral needs V4
+	s := s3.New(auth, aws.EUWest)
+	bucket := s.Bucket("BUCKET NAME HERE!!")
+
+	err := bucket.Put(fileName, data, "binary/octet-stream", s3.BucketOwnerFull, s3.Options{})
+	if err != nil {
+		log.Error(err.Error())
+	}
+
+	log.Notice("File upload successful")
 }

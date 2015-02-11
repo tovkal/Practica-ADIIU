@@ -25,8 +25,7 @@ var templates = template.Must(template.ParseFiles(
 	makePath("login"),
 ))
 
-//const staticPath = "http://staticadiiu.tovkal.com"
-const staticPath = "../static"
+const staticPath = "http://tempstaticadiiu.tovkal.com"
 const port = ":3000"
 
 var api = Api{}
