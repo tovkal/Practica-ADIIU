@@ -90,6 +90,7 @@
 		$loginButton.text("Logout").attr("onclick", "logout()");
 
 		createCookie("nivel", user["nivel"], 100);
+		createCookie("id", user["id"], 100);
 		createCookie("nik", user["nik"], 100);
 
 		applyNivel();
@@ -103,7 +104,9 @@
 			type: "POST",
 			success: function(response) {
 				$loginModal.modal("hide");
-				eraseCookie("nivel"); 
+				eraseCookie("nivel");
+				eraseCookie("id");
+				eraseCookie("nik");
 				window.location = "/";
 				applyNivel();
 			}

@@ -64,8 +64,8 @@ CREATE TABLE IF NOT EXISTS `entradas` (
 --
 
 INSERT INTO `entradas` (`id`, `idmedicamento`, `cantidad`, `fechahora`) VALUES
-(1, 1, 22, '2014-11-26 16:18:16'),
-(2, 2, 46, '2014-11-28 12:28:04');
+(1, 1, 30, '2015-01-01 16:18:16'),
+(2, 2, 50, '2015-02-04 12:28:04');
 
 -- --------------------------------------------------------
 
@@ -135,12 +135,12 @@ CREATE TABLE IF NOT EXISTS `noticias` (
 INSERT INTO `noticias` (`id`, `texto`, `inicio`, `fin`) VALUES
 (1, 'Soy una noticia que va del 16 al 25', '2014-11-16', '2014-11-25'),
 (2, 'Soy una noticia que va del 23 al 29', '2014-11-23', '2014-11-29'),
-(3, 'Soy una noticia que va del 8 al 25', '2015-02-08', '2015-02-25'),
-(4, 'Soy una noticia que va del 8 al 25', '2015-02-08', '2015-02-25'),
-(5, 'Soy una noticia que va del 8 al 25', '2015-02-08', '2015-02-25'),
-(6, 'Soy una noticia que va del 8 al 25', '2015-02-08', '2015-02-25'),
-(7, 'Soy una noticia que va del 8 al 25', '2015-02-08', '2015-02-25'),
-(8, 'Soy una noticia que va del 8 al 25', '2015-02-08', '2015-02-25');
+(3, 'Exemple noticia que va del 8 al 25 de febrer', '2015-02-08', '2015-02-25'),
+(4, 'Estimats clients, hem pujat els preus un 10%. Gràcies per la seva confiança.', '2015-02-10', '2015-03-10'),
+(5, 'Hem retirat tres medicaments degut al descobriment de nous efectes secundaris', '2015-02-08', '2015-02-25'),
+(6, 'Distribuidora Viruela anuncia la compra de la cadena de farmacies Pneumònia', '2015-02-08', '2015-05-25'),
+(7, 'Anunciam canvis en el tractament de dades. Vendrem a Facebook totes les dades que recopilam sobre vosté. Gràcies per la confiança.', '2015-02-08', '2015-02-25'),
+(8, 'Informació als responsables de magatzem: Per favor, no pujar fotografies de categorias o medicaments inadequades', '2015-02-08', '2015-02-25');
 
 -- --------------------------------------------------------
 
@@ -162,14 +162,10 @@ CREATE TABLE IF NOT EXISTS `salidas` (
 --
 
 INSERT INTO `salidas` (`id`, `idmedicamento`, `fechahora`, `cantidad`, `idfarmacia`) VALUES
-(1, 1, '2014-11-23 10:20:40', 3, 1),
-(2, 2, '2014-11-23 18:04:12', 4, 1),
-(3, 1, '2014-11-29 14:10:04', 5, 1);
+(1, 1, '2015-01-04 10:20:40', 3, 1),
+(2, 2, '2015-01-05 18:04:12', 4, 1),
+(3, 1, '2015-02-06 14:10:04', 5, 1);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-CREATE USER 'wsfarmacia'@'localhost' IDENTIFIED BY 'wsfarmacia';
-GRANT ALL ON wsfarmacia.* TO 'wsfarmacia'@'localhost';
-

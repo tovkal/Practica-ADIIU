@@ -196,10 +196,10 @@
 			setMaxQuantity(data[firstMedicamentoID]["id"]);
 		});
 
-		read("farmacias", readCookie("nik"), function(data) {
+		read("farmacias", readCookie("id"), function(data) {
 			$farmaciaSelect.children("option").remove();
 			$farmaciaSelect.append(createOption(data.id, data.nik));
-			// Should there be more than one, remove redCookie("nik") and use the for-each bellow.
+			// Should there be more than one, remove redCookie("id") and use the for-each bellow.
 			/*$.each(data, function(key, value) {
 				$farmaciaSelect.append(createOption(value.id, value.nik));
 			});*/

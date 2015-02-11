@@ -61,7 +61,7 @@ func uploadToBucket(fileName string, data []byte) {
 	s := s3.New(auth, aws.EUWest)
 	bucket := s.Bucket("BUCKET NAME HERE!!")
 
-	err := bucket.Put(fileName, data, "binary/octet-stream", s3.BucketOwnerFull, s3.Options{})
+	err := bucket.Put("/img/uploads/"+fileName, data, "binary/octet-stream", s3.BucketOwnerFull, s3.Options{})
 	if err != nil {
 		log.Error(err.Error())
 	}
